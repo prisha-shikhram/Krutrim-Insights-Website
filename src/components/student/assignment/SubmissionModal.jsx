@@ -1,0 +1,79 @@
+// import icons
+import { UploadCloud, CheckCircle, X, FileType, Loader2 } from "lucide-react";
+
+// submission modal component
+export default function SubmissionModal({ setIsModalOpen, isSubmitting, activeAssignment, selectedFile, handleFileChange, handleFinalSubmit }) {
+    return (
+        <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-in fade-in duration-300">
+            <div className="bg-white w-full max-w-lg rounded-4xl p-8 shadow-2xl relative animate-in zoom-in-95 duration-300">
+                <button
+                    onClick={() => setIsModalOpen(false)}
+                    disabled={isSubmitting}
+                    className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-600 disabled:opacity-50 cursor-pointer"
+                >
+                    <X size={20} />
+                </button>
+
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center">
+                        <FileType size={20} />
+                    </div>
+
+                    <div>
+                        <h3 className="text-xl font-black text-slate-800">Submit Work</h3>
+                        <p className="text-xs text-slate-500 line-clamp-1">{activeAssignment?.title}</p>
+                    </div>
+                </div>
+
+                <label
+                    className={`group relative border-2 border-dashed rounded-3xl p-10 flex flex-col items-center justify-center gap-4 transition-all cursor-pointer 
+                    ${selectedFile ? 'border-emerald-400 bg-emerald-50/30'
+                            : 'border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/30'}`}
+                >
+                    <input
+                        type="file"
+                        className="hidden"
+                        accept=".pdf"
+                        disabled={isSubmitting}
+                        onChange={handleFileChange}
+                    />
+
+                    <div
+                        className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all shadow-sm 
+                        ${selectedFile ? 'bg-emerald-500 text-white'
+                                : 'bg-slate-50 text-slate-400 group-hover:text-indigo-500 group-hover:bg-white'}`}
+                    >
+                        {selectedFile ? <CheckCircle size={32} /> : <UploadCloud size={32} />}
+                    </div>
+
+                    <div className="text-center">
+                        <p className="text-sm font-bold text-slate-700">{selectedFile ? selectedFile.name : "Choose PDF to upload"}</p>
+                        <p className="text-xs text-slate-400 mt-1">
+                            {selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB` : "Maximum file size: 10MB"}
+                        </p>
+                    </div>
+                </label>
+
+                <div className="mt-8 flex gap-3">
+                    <button
+                        onClick={() => setIsModalOpen(false)}
+                        disabled={isSubmitting}
+                        className="flex-1 py-4 rounded-2xl border border-slate-200 text-slate-600 font-bold text-sm hover:bg-slate-50 
+                        transition-colors disabled:opacity-50 cursor-pointer"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        onClick={handleFinalSubmit}
+                        disabled={isSubmitting || !selectedFile}
+                        className="flex-1 py-4 rounded-2xl bg-indigo-600 text-white font-bold text-sm hover:bg-indigo-700 transition-all 
+                        shadow-lg shadow-indigo-100 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                        {isSubmitting ? <Loader2 size={18} className="animate-spin" /> : "Finalize Submission"}
+                    </button>
+                </div>
+            </div>
+        </div>
+    )
+}

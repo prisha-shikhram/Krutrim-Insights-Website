@@ -1,0 +1,73 @@
+// import icons
+import { MessageSquare, User, Clock } from "lucide-react";
+
+// notice list
+export default function NoticeList({ notices, NOTICE_TYPES, mentor }) {
+    return (
+        <div className="space-y-10">
+            {notices.length === 0 ? (
+                <div className="bg-white p-20 rounded-4xl border border-dashed border-slate-200 text-center text-slate-400">
+                    <MessageSquare className="mx-auto mb-4 opacity-20" size={48} />
+                    <p className="text-sm font-medium">No official announcements yet.</p>
+                </div>
+            ) : (
+                notices.map((notice) => {
+                    const dateObj = new Date(notice.createdAt);
+                    const day = dateObj.toLocaleDateString("en-IN", { day: "2-digit" });
+                    const month = dateObj.toLocaleDateString("en-IN", { month: "short" });
+                    const typeStyles = NOTICE_TYPES[notice.noticeType || "general"];
+
+                    return (
+                        <div key={notice.noticeId} className="flex gap-6 items-start">
+                            {/* Date Box */}
+                            <div
+                                className="flex flex-col items-center justify-center min-w-16.5 h-18.75 bg-white border border-slate-100 
+                                rounded-3xl shadow-sm text-indigo-600"
+                            >
+                                <span className="text-2xl font-black leading-none">{day}</span>
+                                <span className="text-[11px] font-black uppercase tracking-tight">{month}</span>
+                            </div>
+
+                            {/* Content Card */}
+                            <div className="flex-1 bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm relative overflow-hidden">
+                                <div className="flex flex-wrap items-center justify-between gap-4 mb-2">
+                                    <div className="flex items-center gap-3">
+                                        <h4 className="font-black text-slate-800 text-xl tracking-tight">{notice.title}</h4>
+
+                                        <span
+                                            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg border text-[9px] font-black tracking-widest 
+                                            ${typeStyles.color}`}
+                                        >
+                                            {typeStyles.icon} {typeStyles.label}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-2 mb-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                    <User size={13} />
+
+                                    <span>
+                                        {notice.createdBy}
+                                        <span className="mx-2 text-slate-200">|</span>
+                                        <span className="text-indigo-600">{notice.role || "Mentor"}</span>
+                                    </span>
+
+                                    {/* Show status if the mentor created it themselves and it's pending */}
+                                    {notice.createdBy === mentor.name && notice.approved === false && (
+                                        <span className="flex items-center gap-1 text-amber-500 ml-2">
+                                            <Clock size={12} /> Pending Admin Review
+                                        </span>
+                                    )}
+                                </div>
+
+                                <p className="text-[15px] text-slate-500 font-medium leading-relaxed">
+                                    {notice.content}
+                                </p>
+                            </div>
+                        </div>
+                    );
+                })
+            )}
+        </div>
+    );
+}
