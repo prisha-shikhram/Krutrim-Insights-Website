@@ -191,6 +191,7 @@ export default function ContactFormSection() {
                                             <option>Data Analysis powered by Next GenAI</option>
                                             <option>Web Development with AI</option>
                                             <option>AI for Business and Management</option>
+                                            <option>Rapid Data Analysis & Agentic AI Program</option>
                                         </select>
 
                                         <div
