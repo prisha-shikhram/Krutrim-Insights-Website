@@ -126,7 +126,7 @@ export default function HeroSection() {
             <SocialBar socialLinks={socialLinks} />
 
             {/* Top heading */}
-            <div className="flex flex-col justify-center items-center w-full mt-30 -mb-16">
+            <div className="flex flex-col justify-center items-center w-full mt-16 -mb-16">
                 <motion.h1
                     initial={{ y: 16, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
@@ -245,27 +245,6 @@ export default function HeroSection() {
                     isOpen={isModalOpen}
                     onClose={() => setIsModalOpen(false)}
                 />
-
-                {/* Scroll floating button */}
-                <motion.div
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.6 }}
-                    className="flex justify-center mt-8"
-                >
-                    <motion.button
-                        onClick={() => window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })}
-                        animate={{ y: [0, 6, 0] }}
-                        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
-                        className="flex flex-col items-center gap-1.5 pb-4 text-slate-400 hover:text-[#0189c7] transition-colors group cursor-pointer"
-                    >
-                        <span className="text-[10px] font-semibold tracking-widest uppercase">Scroll</span>
-
-                        <div className="w-5 h-8 rounded-full border-2 border-current flex items-start justify-center pt-1.5">
-                            <div className="w-1 h-1.5 rounded-full bg-current" />
-                        </div>
-                    </motion.button>
-                </motion.div>
             </div>
         </section>
     );
