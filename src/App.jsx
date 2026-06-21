@@ -40,6 +40,7 @@ import MentorNoticePage from "./sections/Mentor/MentorNoticePage";
 import MentorAssignments from "./sections/Mentor/MentorAssignments";
 import MentorAttendance from "./sections/Mentor/MentorAttendance";
 import MentorProjects from "./sections/Mentor/MentorProjects";
+import MentorNotes from "./sections/Mentor/MentorNotes";
 
 // student portal pages
 import StudentLogin from "./sections/Student/StudentLogin";
@@ -125,6 +126,7 @@ export default function App() {
             <Route path="assignments" element={<MentorAssignments />} />
             <Route path="attendance" element={<MentorAttendance />} />
             <Route path="projects" element={<MentorProjects />} />
+            <Route path="notes" element={<MentorNotes />} />
             <Route path="notices" element={<MentorNoticePage />} />
           </Route>
         </Route>

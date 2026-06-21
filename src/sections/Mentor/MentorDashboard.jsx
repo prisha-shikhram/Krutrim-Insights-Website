@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import icons
-import { LayoutDashboard, ClipboardCheck, BookOpen, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, GraduationCap } from "lucide-react";
+import { LayoutDashboard, ClipboardCheck, BookOpen, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, GraduationCap, FolderOpen } from "lucide-react";
 
 // import toast
 import toast, { Toaster } from "react-hot-toast";
@@ -66,6 +66,7 @@ export default function MentorDashboard() {
         projects: "Project Mentorship",
         notices: "Announcements",
         settings: "Profile Settings",
+        notes: "Study Materials & Notes",
     };
 
     // get title
@@ -100,6 +101,7 @@ export default function MentorDashboard() {
         { id: "attendance", label: "Attendance", icon: <ClipboardCheck size={20} /> },
         { id: "assignments", label: "Assignments", icon: <BookOpen size={20} /> },
         { id: "projects", label: "Projects", icon: <MessageSquare size={20} /> },
+        { id: "notes", label: "Notes", icon: <FolderOpen size={20} /> },
         { id: "notices", label: "Notices", icon: <Bell size={20} /> },
     ];
 
