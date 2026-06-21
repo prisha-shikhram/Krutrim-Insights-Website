@@ -10,17 +10,19 @@ import toast from "react-hot-toast";
 // import outlet context
 import { useOutletContext } from "react-router-dom";
 
-// import omponents
+// import components
 import NoticeHeader from "../../components/mentor/notice/MentorNoticeHeader";
 import NoticeList from "../../components/mentor/notice/MentorNoticeList";
 import CreateModal from "../../components/admin/notice/CreateModal";
 
-// api url
+// api urls
 const PORTAL_API = "https://hnhefbqnzc.execute-api.ap-south-1.amazonaws.com/student/portal";
+const BATCH_API = "https://6p7z2hkjxc.execute-api.ap-south-1.amazonaws.com/student/batches";
 
 // mentor notice page
 export default function MentorNoticePage() {
     const [notices, setNotices] = useState([]);
+    const [batches, setBatches] = useState([]);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [showModal, setShowModal] = useState(false);
@@ -32,6 +34,7 @@ export default function MentorNoticePage() {
         title: "",
         content: "",
         type: "general",
+        targetBatch: ""
     });
 
     // types of notices
@@ -45,14 +48,21 @@ export default function MentorNoticePage() {
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
-        fetchNotices();
+        fetchInitialData();
     }, []);
 
-    // fetch notices
-    const fetchNotices = async (silent = false) => {
+    // Combined fetch function to pull batches and notices simultaneously
+    const fetchInitialData = async (silent = false) => {
         if (!silent) setLoading(true);
 
         try {
+            // Fetch batches
+            const batchRes = await fetch(BATCH_API);
+            const batchData = await batchRes.json();
+            const actualBatches = Array.isArray(batchData) ? batchData : (batchData.Items || []);
+            setBatches(actualBatches);
+
+            // Fetch notices
             const res = await fetch(PORTAL_API, {
                 method: "POST",
                 headers: {
@@ -65,13 +75,11 @@ export default function MentorNoticePage() {
             });
 
             if (!res.ok) throw new Error("Server error");
-
             const data = await res.json();
-
             setNotices(Array.isArray(data) ? data : []);
 
         } catch (err) {
-            console.error("Fetch Notices Error:", err);
+            console.error("Initialization Error:", err);
             toast.error("Notice board sync failed");
         } finally {
             setLoading(false);
@@ -93,6 +101,7 @@ export default function MentorNoticePage() {
                     title: formData.title,
                     content: formData.content,
                     noticeType: formData.type,
+                    targetBatch: formData.targetBatch,
                     createdBy: mentor.name,
                     role: "Mentor"
                 })
@@ -100,9 +109,11 @@ export default function MentorNoticePage() {
 
             if (!res.ok) throw new Error();
             toast.success("Notice sent for approval!", { id: tid });
-            setFormData({ title: "", content: "", type: "general" });
+
+            // Reset form completely including the batch parameter
+            setFormData({ title: "", content: "", type: "general", targetBatch: "" });
             setShowModal(false);
-            fetchNotices(true);
+            fetchInitialData(true); // refresh view silently
         } catch (err) {
             toast.error("Failed to submit notice", { id: tid });
         } finally {
@@ -139,6 +150,7 @@ export default function MentorNoticePage() {
                     formData={formData}
                     NOTICE_TYPES={NOTICE_TYPES}
                     submitting={submitting}
+                    batches={batches}
                 />
             )}
         </div>

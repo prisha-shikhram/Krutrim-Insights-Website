@@ -1,5 +1,5 @@
 // import icons
-import { MessageSquare, CheckCircle, Clock, User } from "lucide-react";
+import { MessageSquare, CheckCircle, Clock, User, Users } from "lucide-react";
 
 // notice list component
 export default function NoticeList({ notices, NOTICE_TYPES, user, handleApprove }) {
@@ -45,7 +45,8 @@ export default function NoticeList({ notices, NOTICE_TYPES, user, handleApprove 
                                         </span>
                                     </div>
 
-                                    {user.isSuper && !notice.approved && (
+                                    {/* Safely check if user object and isSuper property exists */}
+                                    {user && user.isSuper && !notice.approved && (
                                         <button
                                             onClick={() => handleApprove(notice.noticeId, notice.createdAt)}
                                             className="bg-emerald-50 text-emerald-600 px-4 py-2 rounded-xl text-[10px] font-black cursor-pointer 
@@ -57,7 +58,7 @@ export default function NoticeList({ notices, NOTICE_TYPES, user, handleApprove 
                                     )}
                                 </div>
 
-                                <div className="flex items-center gap-2 mb-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">
+                                <div className="flex flex-wrap items-center gap-2 mb-5 text-[11px] font-black text-slate-400 uppercase tracking-widest">
                                     <User size={13} />
 
                                     <span>
@@ -66,8 +67,22 @@ export default function NoticeList({ notices, NOTICE_TYPES, user, handleApprove 
                                         <span className="text-[#0189c7]">{notice.role || "Mentor"}</span>
                                     </span>
 
+                                    {/* INTEGRATED: TARGET AUDIENCE BATCH DISPLAY */}
+                                    <span className="mx-2 text-slate-200">|</span>
+                                    <div className="flex items-center gap-1">
+                                        <Users size={13} className="text-slate-400" />
+
+                                        {notice.targetBatch === "all" || !notice.targetBatch ? (
+                                            <span className="text-slate-500 bg-slate-100 px-2 py-0.5 rounded text-[10px]">All Batches</span>
+                                        ) : (
+                                            <span className="text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded text-[10px]">
+                                                Batch: {notice.targetBatch}
+                                            </span>
+                                        )}
+                                    </div>
+
                                     {notice.approved === false && (
-                                        <span className="flex items-center gap-1 text-amber-500 ml-2">
+                                        <span className="flex items-center gap-1 text-amber-500 ml-auto">
                                             <Clock size={12} /> Pending Approval
                                         </span>
                                     )}
@@ -82,5 +97,5 @@ export default function NoticeList({ notices, NOTICE_TYPES, user, handleApprove 
                 })
             )}
         </div>
-    )
+    );
 }
