@@ -16,13 +16,19 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
         file: null
     });
 
+    // allowed types
+    const allowedTypes = [
+        "application/pdf",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+
     // handle file change
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file && file.type === "application/pdf") {
+        if (file && allowedTypes.includes(file.type)) {
             setFormData({ ...formData, file });
         } else {
-            toast.error("Please select a valid PDF file");
+            toast.error("Please select a valid PDF or DOCX file");
             e.target.value = null;
         }
     };
@@ -31,8 +37,8 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // 1. Check for required fields before starting network calls
-        if (!formData.file) return toast.error("Please upload the assignment PDF");
+        // validation error message
+        if (!formData.file) return toast.error("Please upload the assignment file");
 
         // FIX: Ensure mentor data exists before proceeding
         if (!mentor || !mentor.email) {
@@ -44,13 +50,13 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
         const tid = toast.loading("Processing assignment...");
 
         try {
-            // 1. GET SIGNED URL FOR S3
+            // GET SIGNED URL FOR S3
             const urlRes = await fetch("https://ixov8eynl3.execute-api.ap-south-1.amazonaws.com/get-upload-url", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     fileName: `assignment_${Date.now()}_${formData.file.name.replace(/\s/g, '_')}`,
-                    fileType: "application/pdf",
+                    fileType: formData.file.type,
                     uploadType: "assignments"
                 })
             });
@@ -58,16 +64,16 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
             if (!urlRes.ok) throw new Error("Failed to get upload authorization");
             const { uploadUrl, fileUrl } = await urlRes.json();
 
-            // 2. UPLOAD TO S3
+            // UPLOAD TO S3
             const uploadRes = await fetch(uploadUrl, {
                 method: "PUT",
-                headers: { "Content-Type": "application/pdf" },
+                headers: { "Content-Type": formData.file.type },
                 body: formData.file
             });
 
             if (!uploadRes.ok) throw new Error("S3 Upload Failed");
 
-            // 3. CREATE DYNAMODB RECORD
+            // CREATE DYNAMODB RECORD
             const saveRes = await fetch("https://2dsr6yh6rc.execute-api.ap-south-1.amazonaws.com/mentor/assignments", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -76,7 +82,6 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
                     title: formData.title,
                     deadline: formData.deadline,
                     pdfUrl: fileUrl,
-                    // Use a fallback just in case, though the guard clause above is better
                     createdBy: mentor.email || "Unknown Mentor"
                 })
             });
@@ -152,7 +157,7 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
 
                     {/* File Upload Area */}
                     <div className="space-y-2">
-                        <label className="text-[11px] font-black uppercase text-slate-400 ml-1">Assignment PDF</label>
+                        <label className="text-[11px] font-black uppercase text-slate-400 ml-1">Assignment Document</label>
 
                         <label
                             className={`flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-4xl transition-all cursor-pointer 
@@ -167,7 +172,7 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
                                 ) : (
                                     <>
                                         <Upload className="text-slate-300 mb-2" size={24} />
-                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Select PDF Document</p>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Select PDF or DOCX Document</p>
                                     </>
                                 )}
                             </div>
@@ -175,7 +180,7 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
                             <input
                                 type="file"
                                 className="hidden"
-                                accept="application/pdf"
+                                accept="application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                 onChange={handleFileChange}
                             />
                         </label>
