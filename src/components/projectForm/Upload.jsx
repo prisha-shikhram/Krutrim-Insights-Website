@@ -1,5 +1,40 @@
 // upload component
-export default function Upload({ preview, error, dragOver, setDragOver, onDrop, onFileSelect, fileRef, PRIMARY, labelCls, focused, setFocused, text }) {
+export default function Upload({
+    submissionType, form, onChange, errors, preview, error, dragOver, setDragOver, onDrop, onFileSelect, fileRef, PRIMARY,
+    labelCls, inputCls, focused, setFocused, text
+}) {
+    // 1. Render Link Input Field Context
+    if (submissionType === "link") {
+        return (
+            <div style={{ animation: "slideUp 0.5s .34s both" }}>
+                <label
+                    className={labelCls}
+                    style={{ color: focused === "projectUrl" ? PRIMARY : "#9ca3af" }}
+                >
+                    Project Deployment Link
+                </label>
+
+                <input
+                    name="projectUrl"
+                    type="url"
+                    value={form.projectUrl || ""}
+                    onChange={onChange}
+                    onFocus={() => setFocused("projectUrl")}
+                    onBlur={() => setFocused(null)}
+                    placeholder="https://yourproject.vercel.app"
+                    className={inputCls}
+                    style={{
+                        borderColor: errors?.projectUrl ? "#ef4444" : focused === "projectUrl" ? PRIMARY : "#e5e7eb"
+                    }}
+                    required
+                />
+
+                {errors?.projectUrl && <p className="text-red-500 text-xs mt-1.5">{errors.projectUrl}</p>}
+            </div>
+        );
+    }
+
+    // 2. Default: Render Drag & Drop Image Box
     return (
         <div style={{ animation: "slideUp 0.5s .34s both" }}>
             <label
@@ -78,5 +113,5 @@ export default function Upload({ preview, error, dragOver, setDragOver, onDrop, 
 
             {error && <p className="text-red-500 text-xs mt-1.5">{error}</p>}
         </div>
-    )
+    );
 }
