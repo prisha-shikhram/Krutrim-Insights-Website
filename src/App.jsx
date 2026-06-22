@@ -54,6 +54,7 @@ import StudentAssignment from "./sections/Student/StudentAssignment";
 import StudentNoticeBoard from "./sections/Student/StudentNoticeBoard";
 import StudentSettings from "./sections/Student/StudentSettings";
 import StudentProjects from "./sections/Student/StudentProjects";
+import StudentNotes from "./sections/Student/StudentNotes";
 
 // college pages
 import CollegeMain from "./pages/CollegeMain";
@@ -146,6 +147,7 @@ export default function App() {
             <Route path="attendance" element={<StudententAttendance />} />
             <Route path="assignments" element={<StudentAssignment />} />
             <Route path="projects" element={<StudentProjects />} />
+            <Route path="notes" element={<StudentNotes />} />
             <Route path="notices" element={<StudentNoticeBoard />} />
             <Route path="settings" element={<StudentSettings />} />
           </Route>

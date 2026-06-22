@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import icons
-import { LayoutDashboard, CalendarCheck, FileEdit, FolderGit2, LogOut, ChevronLeft, ChevronRight, GraduationCap, Bell, Settings } from "lucide-react";
+import { LayoutDashboard, CalendarCheck, FileEdit, FolderGit2, LogOut, ChevronLeft, ChevronRight, GraduationCap, Bell, Settings, FolderOpen } from "lucide-react";
 
 // import toast
 import toast, { Toaster } from "react-hot-toast";
@@ -71,6 +71,7 @@ export default function StudentDashboard() {
         attendance: "Attendance Record",
         assignments: "My Assignments",
         projects: "Project Submissions",
+        notes: "Study Materials & Notes",
         notices: "Notice Board",
         settings: "Account Settings",
     };
@@ -107,6 +108,7 @@ export default function StudentDashboard() {
         { id: "attendance", label: "Attendance", icon: <CalendarCheck size={20} /> },
         { id: "assignments", label: "Assignments", icon: <FileEdit size={20} /> },
         { id: "projects", label: "Projects", icon: <FolderGit2 size={20} /> },
+        { id: "notes", label: "Notes", icon: <FolderOpen size={20} /> },
         { id: "notices", label: "Notice Board", icon: <Bell size={20} /> },
         { id: "settings", label: "Settings", icon: <Settings size={20} /> },
     ];
