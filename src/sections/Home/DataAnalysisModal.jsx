@@ -53,7 +53,7 @@ export default function DataAnalysisModal({ isOpen, onClose }) {
 
                         {/* Scrollable Container Wrapper */}
                         <div className="overflow-y-auto p-6 md:p-10 custom-scrollbar">
-                            
+
                             {/* Badges / Header metrics */}
                             <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pr-8">
                                 <span className="bg-orange-500 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full animate-pulse">
@@ -125,7 +125,7 @@ export default function DataAnalysisModal({ isOpen, onClose }) {
                                     className="w-full bg-orange-500 hover:bg-orange-600 text-white font-black py-4 rounded-xl shadow-lg transition-all 
                                     transform active:scale-[0.99] uppercase tracking-widest text-xs md:text-sm cursor-pointer"
                                 >
-                                    Secure Your Seat & Contact Us
+                                    Contact Us & Secure Your Seat
                                 </button>
                             </Link>
                         </div>
