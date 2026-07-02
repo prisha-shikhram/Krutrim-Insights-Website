@@ -46,13 +46,13 @@ export default function CollegeHeader() {
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="text-4xl md:text-7xl font-black tracking-tight text-slate-900 leading-[1.1]">
+                <h1 className="text-4xl md:text-6xl font-black tracking-tight text-slate-900 leading-[1.1]">
                     AI Learning <br />
                     <span className="text-[#0189c7]">For Every Campus</span>
                 </h1>
 
                 {/* Subtext */}
-                <p className="mx-auto mt-8 max-w-2xl text-lg md:text-xl text-slate-600 leading-relaxed font-medium">
+                <p className="mx-auto mt-8 max-w-2xl text-lg text-slate-600 leading-relaxed font-medium">
                     We bring industry-relevant AI seminars and workshops to colleges
                     and student communities—empowering learners with practical skills
                     and real-world exposure.

@@ -14,7 +14,7 @@ export default function CollegeActions() {
             >
                 <button
                     className="group flex items-center gap-2 px-8 py-4 bg-white text-[#0189c7] font-bold rounded-xl shadow-lg 
-                    transition-all hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto justify-center"
+                    transition-all active:scale-95 cursor-pointer w-full sm:w-auto justify-center"
                 >
                     <Mail className="max-md:hidden w-4 h-4 transition-transform group-hover:rotate-12" />
                     Bring this to your campus

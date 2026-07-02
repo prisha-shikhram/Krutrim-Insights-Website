@@ -31,13 +31,13 @@ export default function CourseHero({ badge, title, highlight, description, modul
                 </div>
 
                 {/* Main Heading */}
-                <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-7xl leading-[1.1]">
+                <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl leading-[1.1]">
                     {title} <br />
                     <span className="text-[#0189c7]">{highlight}</span>
                 </h1>
 
                 {/* Description */}
-                <p className="mx-auto mt-6 max-w-2xl text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed font-medium">
+                <p className="mx-auto mt-6 max-w-2xl text-base md:text-lg text-gray-600 leading-relaxed font-medium">
                     {description}
                 </p>
 

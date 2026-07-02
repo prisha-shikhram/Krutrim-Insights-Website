@@ -6,20 +6,20 @@ const advantages = [
     {
         title: "Industry Relevant Curriculum",
         description: "Gain future-ready skills through a curriculum shaped according to industry needs and emerging tech trends.",
-        image: "/images/advantage/Curriculum.jpg",
-        icon: <GraduationCap className="w-8 h-8 text-blue-600" />
+        image: "/images/advantage/Curriculum.avif",
+        icon: <GraduationCap className="w-7 h-7 text-blue-600" />
     },
     {
         title: "Hands-on, Real-world Learning",
         description: "Build practical expertise through live experiential learning with immersive projects and cutting-edge tools.",
-        image: "/images/advantage/Coding.jpg",
-        icon: <Code2 className="w-8 h-8 text-blue-600" />
+        image: "/images/advantage/Coding.avif",
+        icon: <Code2 className="w-7 h-7 text-blue-600" />
     },
     {
         title: "Comprehensive Career Support",
         description: "Accelerate your career with personalized mentoring by experts, mock interviews, and resume building sessions.",
-        image: "/images/advantage/Career.jpg",
-        icon: <Briefcase className="w-8 h-8 text-blue-600" />
+        image: "/images/advantage/Career.webp",
+        icon: <Briefcase className="w-7 h-7 text-blue-600" />
     },
 ];
 

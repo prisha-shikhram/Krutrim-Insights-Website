@@ -42,7 +42,7 @@ export default function FAQSection() {
     const [openIndex, setOpenIndex] = useState(0);
 
     return (
-        <section className="bg-white py-20 px-6">
+        <section className="bg-white py-24 px-6">
             <div className="mx-auto max-w-4xl">
                 {/* Header */}
                 <div className="mb-12 text-center">

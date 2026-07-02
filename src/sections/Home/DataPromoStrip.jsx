@@ -19,7 +19,6 @@ export default function DataPromoStrip({ onOpenModal }) {
                     style={{ backgroundColor: '#0189c7' }}
                 >
                     <div className="max-w-7xl mx-auto px-4 py-2.5 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-3 text-xs md:text-sm">
-                        
                         {/* Text and Tag Container */}
                         <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left w-full md:w-auto">
                             <span className="bg-orange-500 font-black px-2.5 py-1.5 max-sm:py-0.5 rounded text-[9px] uppercase tracking-wider animate-pulse shrink-0">
@@ -27,7 +26,9 @@ export default function DataPromoStrip({ onOpenModal }) {
                             </span>
 
                             <span className="font-medium tracking-wide leading-relaxed">
-                                Rapid Data Analysis & Agentic AI Program (2 Months) — <strong className="font-extrabold text-amber-300">Guaranteed Stipend Internship</strong>
+                                Rapid Data Analysis & Agentic AI Program (2 Months) — <strong className="font-extrabold text-amber-300">
+                                    Guaranteed Stipend Internship
+                                </strong>
                             </span>
                         </div>
 
@@ -49,7 +50,6 @@ export default function DataPromoStrip({ onOpenModal }) {
                                 &times;
                             </button>
                         </div>
-                        
                     </div>
                 </motion.div>
             )}

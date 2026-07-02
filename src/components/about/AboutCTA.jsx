@@ -14,7 +14,7 @@ export default function AboutCTA() {
             >
                 <button
                     className="group flex items-center gap-2 px-8 py-4 bg-white text-[#0189c7] font-bold rounded-xl shadow-lg 
-                    transition-all hover:scale-105 active:scale-95 cursor-pointer max-md:w-full justify-center"
+                    transition-all active:scale-95 cursor-pointer max-md:w-full justify-center"
                 >
                     <Building2 className="w-4 h-4 max-md:hidden" />
                     Explore Programs for Your Team

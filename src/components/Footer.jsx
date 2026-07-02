@@ -38,7 +38,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="bg-[#020817] text-gray-400 py-12 md:py-20 px-6 border-t border-white/5">
+        <footer className="bg-[#020817] text-gray-400 py-12 md:pt-16 md:pb-10 px-6 border-t border-white/5">
             <div className="mx-auto max-w-7xl">
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
                     {/* Brand Section */}
@@ -81,15 +81,15 @@ export default function Footer() {
                     </div>
 
                     {/* Cources Links */}
-                    <div className="md:col-span-4 space-y-6">
-                        <h4 className="text-[16px] font-bold uppercase tracking-[0.2em] text-white/90">Our Courses</h4>
+                    <div className="md:col-span-4 space-y-5">
+                        <h4 className="text-[16px] font-semibold uppercase tracking-wider text-white/90">Our Courses</h4>
 
-                        <ul className="space-y-4">
+                        <ul className="space-y-3">
                             {courseLinks.map((item, idx) => (
                                 <li key={idx}>
                                     <Link
                                         to={item.link}
-                                        className="hover:text-[#0189c7] transition-colors"
+                                        className="hover:text-[#0189c7] transition-colors text-[15px]"
                                     >
                                         {item.name}
                                     </Link>
@@ -99,15 +99,15 @@ export default function Footer() {
                     </div>
 
                     {/* Quick Links */}
-                    <div className="md:col-span-3 space-y-6">
-                        <h4 className="text-[16px] font-bold uppercase tracking-[0.2em] text-white/90">Quick Links</h4>
+                    <div className="md:col-span-3 space-y-5">
+                        <h4 className="text-[16px] font-semibold uppercase tracking-wider text-white/90">Quick Links</h4>
 
-                        <ul className="space-y-4">
+                        <ul className="space-y-3">
                             {companyLinks.map((item, idx) => (
                                 <li key={idx}>
                                     <Link
                                         to={item.link}
-                                        className="hover:text-[#0189c7] transition-colors"
+                                        className="hover:text-[#0189c7] transition-colors text-[15px]"
                                     >
                                         {item.name}
                                     </Link>
@@ -126,7 +126,7 @@ export default function Footer() {
                             <Link
                                 key={idx}
                                 to={item.link}
-                                className="hover:text-[#0189c7] transition-colors"
+                                className="hover:text-[#0189c7] transition-colors text-[14px]"
                             >
                                 {item.name}
                             </Link>

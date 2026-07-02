@@ -14,7 +14,7 @@ export default function CallToAction({
 }) {
     return (
         <section className="relative py-20 px-6 overflow-hidden bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff]">
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-5xl">
                 {/* Main Card Container */}
                 <div className="relative overflow-hidden rounded-[40px] bg-[#0189c7] px-8 py-16 md:px-16 text-center shadow-2xl">
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-125 h-125 bg-white opacity-20 rounded-full blur-[100px]" />
@@ -48,7 +48,7 @@ export default function CallToAction({
                             <button
                                 onClick={onButtonClick}
                                 className="group relative flex items-center gap-3 px-10 py-4 bg-white text-[#0189c7] font-extrabold text-lg
-                                rounded-2xl shadow-xl transition-all duration-300 hover:scale-105 hover:bg-blue-50 active:scale-95 cursor-pointer"
+                                rounded-2xl shadow-xl transition-all duration-300 hover:bg-blue-50 active:scale-95 cursor-pointer"
                             >
                                 {buttonText}
                                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />

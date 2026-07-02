@@ -17,10 +17,10 @@ export default function ImpactGrid({ impactItems }) {
                 >
                     {/* Icon Container*/}
                     <div
-                        className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-50 border border-gray-100 shadow-sm 
-                        group-hover:bg-white group-hover:border-[#0189c7]/30 group-hover:shadow-md transition-all duration-300"
+                        className="flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-50 border border-gray-100 shadow-inner 
+                        group-hover:bg-[#0189c7]/5 group-hover:border-[#0189c7]/20 transition-all duration-300 mb-5"
                     >
-                        <item.icon className="w-8 h-8 text-[#0189c7]" />
+                        <item.icon className="w-6 h-6 text-[#0189c7]" />
                     </div>
 
                     {/* Impact Text Content */}

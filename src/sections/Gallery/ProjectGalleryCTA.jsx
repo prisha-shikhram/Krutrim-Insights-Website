@@ -1,9 +1,6 @@
 // import icons
 import { Code2, CheckCircle2 } from 'lucide-react';
 
-// Feature bar data specific to builders
-const features = ["step-by-step guides", "source code included", "production-ready tools"];
-
 // import components
 import ProjectCTA from '../../components/gallery/ProjectCTA';
 
@@ -11,7 +8,7 @@ import ProjectCTA from '../../components/gallery/ProjectCTA';
 export default function ProjectGalleryCTA() {
     return (
         <section className="py-20 px-6 bg-gray-50">
-            <div className="mx-auto max-w-7xl">
+            <div className="mx-auto max-w-5xl">
                 <div className="relative overflow-hidden rounded-4xl bg-[#0189c7] px-8 py-12 md:py-16 text-center shadow-2xl">
                     {/* Background Decorative Elements */}
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-125 h-125 bg-white opacity-20 rounded-full blur-[100px]" />
@@ -49,19 +46,6 @@ export default function ProjectGalleryCTA() {
 
                         {/* CTA Buttons Container */}
                         <ProjectCTA />
-
-                        {/* Lower Feature Bar */}
-                        <div className="max-sm:hidden mt-12 flex flex-wrap justify-center gap-x-8 gap-y-4">
-                            {features.map((feature, index) => (
-                                <div
-                                    key={index}
-                                    className="flex items-center gap-2 text-white/90 text-sm font-medium"
-                                >
-                                    <CheckCircle2 className="w-4 h-4 text-white" />
-                                    {feature.charAt(0).toUpperCase() + feature.slice(1)}
-                                </div>
-                            ))}
-                        </div>
                     </div>
                 </div>
             </div>

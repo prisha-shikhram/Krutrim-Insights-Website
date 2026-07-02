@@ -55,7 +55,7 @@ export default function WhyKrutrim() {
                     viewport={{ once: true }}
                     className="mb-20 text-center"
                 >
-                    <p className="text-[20px] sm:text-2xl md:text-[27px] -mt-5 text-gray-400 font-light leading-relaxed max-w-4xl mx-auto">
+                    <p className="text-[20px] sm:text-2xl -mt-10 text-gray-400 font-light leading-relaxed max-w-4xl mx-auto">
                         “Most AI courses focus on <span className="text-gray-900 font-medium">concepts</span>, but
                         learners struggle to <span className="text-[#0189c7] font-medium italic">apply them</span> in real-world scenarios.”
                     </p>

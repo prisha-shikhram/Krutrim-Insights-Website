@@ -12,7 +12,7 @@ export default function Map() {
     return (
         <div className="space-y-8">
             {/* embedded map */}
-            <div className="w-full h-112.5 rounded-[40px] overflow-hidden border border-slate-100 shadow-sm group">
+            <div className="w-full h-100 rounded-[40px] overflow-hidden border border-slate-100 shadow-sm group">
                 <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3326.7070408274353!2d77.1517988!3d28.6932931!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d032fb37dbe2b%3A0xce7d6a4e3a3f079e!2sKrutrim%20Insights!5e1!3m2!1sen!2sin"
                     width="100%"

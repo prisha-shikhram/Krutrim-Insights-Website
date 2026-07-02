@@ -12,7 +12,7 @@ export default function RelevanceGrid({ relevanceItems }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: idx * 0.1 }}
-                    className="group p-8 rounded-3xl border border-gray-100 bg-gray-50/50 hover:bg-white hover:shadow-xl 
+                    className="group p-8 rounded-3xl border border-gray-100 bg-white/50 hover:bg-white hover:shadow-xl 
                     hover:shadow-[#0189c7]/5 transition-all duration-300"
                 >
                     {/* Icon Container */}

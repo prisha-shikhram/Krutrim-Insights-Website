@@ -34,7 +34,7 @@ export default function AdvantageBoxes({ advantages }) {
                         {/* Back Side */}
                         <div className="absolute inset-0 h-full w-full rounded-2xl bg-[#0189c7] p-8 text-white backface-hidden transform-[rotateY(180deg)]">
                             <div className="flex flex-col h-full justify-center items-center text-center">
-                                <div className="mb-4 rounded-full bg-white p-3">
+                                <div className="mb-4 rounded-full bg-white p-4">
                                     {item.icon}
                                 </div>
 

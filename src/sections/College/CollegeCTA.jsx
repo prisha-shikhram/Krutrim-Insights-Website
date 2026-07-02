@@ -12,7 +12,7 @@ export default function CollegeCTA() {
             className="py-20 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] scroll-mt-10"
         >
             <div className="mx-auto max-w-5xl">
-                <div className="relative overflow-hidden rounded-4xl bg-[#0189c7] px-8 py-16 md:py-20 text-center shadow-2xl">
+                <div className="relative overflow-hidden rounded-4xl bg-[#0189c7] px-8 py-16 text-center shadow-2xl">
                     {/* Background Decorative Lighting */}
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-125 h-125 bg-white opacity-20 rounded-full blur-[100px]" />
                     <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-cyan-100 opacity-20 rounded-full blur-[80px]" />
@@ -28,7 +28,7 @@ export default function CollegeCTA() {
                         {/* Animated School Icon Badge */}
                         <div
                             className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 
-                            shadow-inner animate-bounce [animation-duration:3s]"
+                            shadow-inner"
                         >
                             <School className="w-8 h-8 text-white" />
                         </div>

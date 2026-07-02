@@ -11,7 +11,6 @@ export default function HomeActions({ handleScroll, handleScrollCTA }) {
                 className="group flex items-center gap-3 px-8 py-4 bg-[#0189c7] text-white font-bold rounded-2xl shadow-xl shadow-[#0189c7]/20 
                 transition-all cursor-pointer max-sm:w-full max-sm:justify-center"
             >
-                <School className="w-5 h-5 text-white/80" />
                 Get This In Your Campus
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>

@@ -14,7 +14,7 @@ export default function CourseCTA({ scrollToCurriculum }) {
             >
                 <button
                     className="group flex w-full sm:w-auto items-center justify-center gap-2 px-10 py-3.5 bg-[#0189c7] text-white
-                    font-bold rounded-xl shadow-lg hover:shadow-[#0189c7]/20 transition-all hover:-translate-y-1 active:scale-95 cursor-pointer text-[16px]"
+                    font-bold rounded-xl shadow-lg hover:shadow-[#0189c7]/20 transition-all active:scale-95 cursor-pointer text-[16px]"
                 >
                     Contact Us
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />

@@ -4,14 +4,14 @@ import { ArrowUpRight } from 'lucide-react';
 // cosultation CTA section component
 export default function ConsultationCTA() {
     return (
-        <div className="w-full max-w-7xl mx-auto px-6 py-12 max-[900px]:py-16 my-10">
+        <div className="w-full max-w-7xl mx-auto p-5 my-10">
             <div
-                className="flex flex-col min-[900px]:flex-row items-center justify-between gap-6 py-10 px-8 md:p-12 rounded-3xl 
+                className="flex flex-col min-[900px]:flex-row items-center justify-between gap-6 py-10 px-8 md:p-10 rounded-3xl 
                 bg-linear-to-br from-[#f0f9ff] via-[#f8fdff] to-white border border-blue-50 shadow-sm"
             >
                 {/* Left Content */}
                 <div className="space-y-2 text-center min-[900px]:text-left">
-                    <h3 className="text-2xl font-bold text-gray-900 mb-5">
+                    <h3 className="text-2xl font-bold text-gray-900 mb-3">
                         Still not sure where to start?
                     </h3>
 

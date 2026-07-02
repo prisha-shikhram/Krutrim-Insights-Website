@@ -43,7 +43,7 @@ export default function CurriculumModule({ index, title, isLast }) {
                                 <div className="h-px w-8 bg-[#0189c7]/20" />
                             </div>
 
-                            <h3 className="text-xl md:text-2xl font-semibold sm:font-bold text-gray-900 group-hover:text-[#0189c7] transition-colors leading-tight">
+                            <h3 className="text-xl font-semibold sm:font-bold text-gray-900 group-hover:text-[#0189c7] transition-colors leading-tight">
                                 {title}
                             </h3>
                         </div>
