@@ -11,7 +11,7 @@ const projects = [
     description: "An intelligent automation workflow that streamlines the job application process end-to-end using n8n. It scrapes job listings, filters them based on relevance, and customizes resumes dynamically for each role."
   },
   {
-    title: "Travel Kro – Voice Agent",
+    title: "Travel Kro - Voice Agent",
     type: "Voice AI",
     img: "/images/projects/2.png",
     description: "A smart voice-enabled assistant that helps users plan their vacations effortlessly through natural conversation. It understands user preferences like budget and destination to generate personalized travel plans."
@@ -41,19 +41,19 @@ const projects = [
     description: "An interactive, game-inspired system that uses AI to optimize signal flow in real time. It analyzes vehicle density and prioritizes traffic flow to reduce congestion in a simulated environment."
   },
   {
-    title: "Nexus AI – Multi-LLM Router",
+    title: "Nexus AI - Multi-LLM Router",
     type: "Model Merging",
     img: "/images/projects/7.png",
     description: "A unified platform that integrates multiple LLMs and intelligently routes queries to the most suitable model based on user intent, enhancing efficiency and accuracy across different AI strengths."
   },
   {
-    title: "Emotion AI – Gesture Recognition",
+    title: "Emotion AI - Gesture Recognition",
     type: "Computer Vision",
     img: "/images/projects/8.png",
     description: "An AI system that detects facial expressions and hand gestures in real time. It recognizes movements to trigger specific responses, creating a natural and touch-free human-computer interaction."
   },
   {
-    title: "MediBot – AI Healthcare Chatbot",
+    title: "MediBot - AI Healthcare Chatbot",
     type: "Healthcare AI",
     img: "/images/projects/9.png",
     description: "An AI-powered healthcare assistant providing medical information and guidance. It helps users understand symptoms and general health-related queries through accessible conversational interaction."
@@ -81,7 +81,7 @@ const projects = [
 // project collage section
 export default function ProjectCollageSection() {
   return (
-    <section className="bg-white py-24 px-6">
+    <section className="bg-white py-24 max-sm:py-16 px-6">
       <div className="mx-auto max-w-7xl">
         {/* Section header */}
         <SectionHeader

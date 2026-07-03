@@ -21,7 +21,7 @@ export default function SupportBox({ student, }) {
                     </p>
                 </div>
 
-                {/* Prisha */}
+                {/* Bhavesh */}
                 <a
                     href={`mailto:bhavesh.tyagi@krutriminsights.com?subject=Support Needed - ${student.name}`}
                     className="flex items-center justify-between p-6 rounded-4xl bg-white/60 backdrop-blur-md border border-white 

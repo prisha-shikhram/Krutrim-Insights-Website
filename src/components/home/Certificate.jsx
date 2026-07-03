@@ -27,13 +27,13 @@ export default function Certificate() {
                 animate-bounce transition-all"
             >
                 <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <CheckCircle2 className="text-emerald-600 w-6 h-6" />
+                    <div className="h-10 w-10 max-sm:h-8 max-sm:w-8 rounded-full bg-emerald-100 flex items-center justify-center">
+                        <CheckCircle2 className="text-emerald-600 w-6 h-6 max-sm:w-4 max-sm:h-4" />
                     </div>
 
                     <div>
-                        <p className="text-xs text-gray-400 font-bold uppercase tracking-tighter">Status</p>
-                        <p className="text-sm font-bold text-gray-900">Verified Professional</p>
+                        <p className="text-xs max-sm:text-[10px] text-gray-400 font-bold uppercase tracking-tighter">Status</p>
+                        <p className="text-sm max-sm:text-[12px] font-bold text-gray-900">Verified Professional</p>
                     </div>
                 </div>
             </div>

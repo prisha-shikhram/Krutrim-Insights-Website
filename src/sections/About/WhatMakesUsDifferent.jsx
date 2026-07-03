@@ -34,7 +34,7 @@ export default function WhatMakesUsDifferent() {
     return (
         <section
             id="what-makes-us-different"
-            className="py-20 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] px-6 scroll-mt-10"
+            className="sm:py-24 py-16 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] px-6 scroll-mt-10"
         >
             <div className="max-w-7xl mx-auto">
                 {/* Section Header */}

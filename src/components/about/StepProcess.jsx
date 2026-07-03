@@ -20,7 +20,7 @@ export default function StepProcess({ engagementSteps }) {
                     >
                         {/* Step Marker */}
                         <div
-                            className="w-8 h-8 rounded-full bg-[#0189c7] text-white text-[10px] font-bold flex items-center justify-center 
+                            className="max-sm:hidden w-8 h-8 rounded-full bg-[#0189c7] text-white text-[10px] font-bold flex items-center justify-center 
                             mb-4 shadow-lg shadow-sky-100"
                         >
                             {step.number}
@@ -28,7 +28,7 @@ export default function StepProcess({ engagementSteps }) {
 
                         {/* Step Icon Circle */}
                         <div
-                            className="w-20 h-20 bg-white border border-gray-100 shadow-sm rounded-full flex items-center justify-center
+                            className="w-20 h-20 max-sm:w-18 max-sm:h-18 bg-white border border-gray-100 shadow-sm rounded-full flex items-center justify-center
                             mb-6 group-hover:border-[#0189c7]/30 group-hover:shadow-md transition-all"
                         >
                             {step.icon}

@@ -85,7 +85,7 @@ export default function ContactFormSection() {
     return (
         <section
             id="send-message"
-            className="bg-white py-24 px-6 scroll-mt-10"
+            className="bg-white py-24 max-sm:py-16 px-6 scroll-mt-10"
         >
             {/* Toast Container */}
             <Toaster

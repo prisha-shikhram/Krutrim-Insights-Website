@@ -3,7 +3,8 @@ import { Check, Eye, EyeOff } from "lucide-react";
 
 // edit admin modal
 export default function EditAdminModal({
-    isEditing, setShowAddModal, handleAction, newAdmin, setNewAdmin, permissionOptions, togglePermission, showPassword, setShowPassword, generatePassword, PRIMARY }) {
+    isEditing, setShowAddModal, handleAction, newAdmin, setNewAdmin, permissionOptions, togglePermission,
+    showPassword, setShowPassword, generatePassword, PRIMARY }) {
     return (
         <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm animate-in fade-in duration-300">
             <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">

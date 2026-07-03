@@ -54,7 +54,7 @@ import TrustStatsCards from '../../components/home/TrustStatsCards';
 // trust stats section component
 export default function TrustStatsSection() {
     return (
-        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] py-24 px-6">
+        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] sm:py-24 py-16 px-6">
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}
                 <SectionHeader

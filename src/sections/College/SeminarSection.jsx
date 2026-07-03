@@ -41,7 +41,7 @@ export default function SeminarSection() {
     return (
         <section
             id='seminar'
-            className="py-24 px-6 bg-slate-50/50 overflow-hidden scroll-mt-10"
+            className="sm:py-24 py-16 px-6 bg-slate-50/50 overflow-hidden scroll-mt-10"
         >
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}

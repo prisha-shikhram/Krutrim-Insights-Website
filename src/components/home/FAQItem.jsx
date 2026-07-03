@@ -9,8 +9,7 @@ export default function FAQItem({ question, answer, isOpen, onClick }) {
                 onClick={onClick}
                 className={`flex w-full items-center justify-between p-6 text-left transition-colors cursor-pointer ${isOpen ? 'bg-sky-50' : 'hover:bg-gray-50'}`}
             >
-                <span className="text-lg font-semibold text-gray-900">{question}</span>
-
+                <span className="text-lg max-sm:text-[16px] font-semibold text-gray-900 max-sm:max-w-[80%]">{question}</span>
                 <div
                     className={`flex h-8 w-8 items-center justify-center rounded-lg transition-transform duration-300
                     ${isOpen ? 'bg-sky-500text-white rotate-180' : 'bg-sky-50 text-sky-500'}`}

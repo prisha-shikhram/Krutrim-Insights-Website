@@ -3,7 +3,8 @@ import { Search, Filter, Download } from "lucide-react";
 
 // leads header component
 export default function LeadsHeader({
-    searchTerm, setSearchTerm, showCollegeFilter = false, selectedCollege, setSelectedCollege, colleges = [], collegeStats = {}, onExport
+    searchTerm, setSearchTerm, showCollegeFilter = false, selectedCollege,
+    setSelectedCollege, colleges = [], collegeStats = {}, onExport
 }) {
     return (
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-white p-6 rounded-4xl border border-gray-100 shadow-sm">

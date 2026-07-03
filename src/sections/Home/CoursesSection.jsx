@@ -70,7 +70,7 @@ export default function CoursesSection() {
     return (
         <section
             id="courses"
-            className="bg-gray-50 py-24 px-6 scroll-mt-10"
+            className="bg-gray-50 sm:py-24 py-16 px-6 scroll-mt-10"
         >
             <div className="mx-auto max-w-6xl">
                 {/* Section Header */}

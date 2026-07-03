@@ -68,7 +68,7 @@ export default function ProjectCard({ projects }) {
                         </div>
 
                         {/* Content Area */}
-                        <div className="p-8 flex flex-col justify-between grow">
+                        <div className="p-8 max-sm:py-5 max-sm:px-6 flex flex-col justify-between grow">
                             <div>
                                 <h4 className={`text-xl font-bold transition-colors duration-300
                                 ${isExpanded ? 'text-[#0189c7]' : 'text-slate-900'}`}>

@@ -13,10 +13,10 @@ export default function CallToAction({
     secondaryText = "Limited seats available for the next batch"
 }) {
     return (
-        <section className="relative py-20 px-6 overflow-hidden bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff]">
+        <section className="relative sm:py-24 py-16 px-6 overflow-hidden bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff]">
             <div className="mx-auto max-w-5xl">
                 {/* Main Card Container */}
-                <div className="relative overflow-hidden rounded-[40px] bg-[#0189c7] px-8 py-16 md:px-16 text-center shadow-2xl">
+                <div className="relative overflow-hidden rounded-[40px] bg-[#0189c7] px-8 py-12 md:px-16 text-center shadow-2xl">
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-125 h-125 bg-white opacity-20 rounded-full blur-[100px]" />
                     <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-cyan-100 opacity-20 rounded-full blur-[80px]" />
 

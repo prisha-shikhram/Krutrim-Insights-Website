@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 // impact grid component
 export default function ImpactGrid({ impactItems }) {
     return (
-        <div className="mt-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="mt-20 max-sm:mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {impactItems.map((item, idx) => (
                 <motion.div
                     key={idx}

@@ -5,7 +5,7 @@ import VisualAnchor from "../../components/utils/VisualAnchor";
 // contact header
 export default function ContactHeader() {
     return (
-        <section className="relative w-full h-[50vh] sm:h-[75vh] min-h-125 pt-38 pb-20 lg:pt-32 lg:pb-16 flex items-center justify-center px-6 overflow-hidden">
+        <section className="relative w-full h-[50vh] sm:h-[75vh] min-h-125 pt-30 pb-20 lg:pt-32 lg:pb-16 flex items-center justify-center px-6 overflow-hidden">
             {/* Gradient Background */}
             <Gradient />
 

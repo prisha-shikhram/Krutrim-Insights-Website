@@ -21,7 +21,7 @@ export default function LearningSteps({ steps }) {
                     >
                         {/* Step Number Circle */}
                         <div
-                            className="w-8 h-8 rounded-full bg-[#0189c7] text-white flex items-center justify-center font-bold text-sm mb-6 
+                            className="max-sm:hidden w-8 h-8 rounded-full bg-[#0189c7] text-white flex items-center justify-center font-bold text-sm mb-6 
                             shadow-lg shadow-sky-100 group-hover:scale-110 transition-transform duration-300"
                         >
                             {step.number}
@@ -29,7 +29,7 @@ export default function LearningSteps({ steps }) {
 
                         {/* Icon Container */}
                         <div
-                            className="w-20 h-20 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#0189c7]/10 
+                            className="w-20 h-20 max-sm:w-18 max-sm:h-18 bg-gray-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-[#0189c7]/10 
                             transition-colors duration-300"
                         >
                             {step.icon}

@@ -37,7 +37,7 @@ const relevanceItems = [
 // industry relevance section
 export default function IndustryRelevance() {
     return (
-        <section className="py-24 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden">
+        <section className="py-24 max-sm:py-16 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden">
             <div className="mx-auto max-w-7xl">
                 {/* Reusable Section Header */}
                 <SectionHeader

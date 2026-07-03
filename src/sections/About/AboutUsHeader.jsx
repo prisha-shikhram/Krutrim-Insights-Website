@@ -10,7 +10,7 @@ export default function AboutUsHeader() {
             <Gradient />
 
             {/* CONTENT CONTAINER */}
-            <div className="relative z-10 mx-auto max-w-4xl text-center py-10">
+            <div className="relative z-10 mx-auto max-w-4xl text-center py-10 max-sm:-mt-10">
                 {/* Badge */}
                 <div className="inline-block px-4 py-1 mb-6 rounded-full bg-[#0189c7]/10 border border-[#0189c7]/20">
                     <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-[#0189c7]">

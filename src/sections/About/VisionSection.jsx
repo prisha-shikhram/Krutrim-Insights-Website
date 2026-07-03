@@ -27,7 +27,7 @@ import VisionCard from "../../components/about/VisionCards";
 // vision section component
 export default function VisionSection() {
     return (
-        <section className="bg-white py-24 px-6 overflow-hidden">
+        <section className="bg-white sm:py-24 py-16 px-6 overflow-hidden">
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}
                 <SectionHeader

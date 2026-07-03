@@ -15,7 +15,7 @@ export default function TrainingHeader() {
     };
 
     return (
-        <section className="relative w-full min-h-[90vh] flex items-center justify-center px-6 overflow-hidden pt-20">
+        <section className="relative w-full min-h-[90vh] flex items-center justify-center px-6 overflow-hidden pt-20 max-sm:-mt-10">
             {/* Gradient Background */}
             <Gradient />
 

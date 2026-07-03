@@ -6,7 +6,8 @@ import { Loader2, Search } from "lucide-react";
 
 // assign modal component
 export default function AssignModal({
-    showAssignModal, setShowAssignModal, selectedStudents, setSelectedStudents, handleConfirmAssignment, searchTerm, setSearchTerm, filteredUnassigned, submitting
+    showAssignModal, setShowAssignModal, selectedStudents, setSelectedStudents, handleConfirmAssignment,
+    searchTerm, setSearchTerm, filteredUnassigned, submitting
 }) {
     return (
         <Modal

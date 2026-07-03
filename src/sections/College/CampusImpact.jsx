@@ -32,7 +32,7 @@ const impactItems = [
 // campus impact section
 export default function CampusImpact() {
     return (
-        <section className="py-24 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden">
+        <section className="sm:py-24 py-16 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden">
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}
                 <SectionHeader

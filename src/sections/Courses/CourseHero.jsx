@@ -18,7 +18,7 @@ export default function CourseHero({ badge, title, highlight, description, modul
     };
 
     return (
-        <section className="relative w-full h-screen min-h-150 flex items-center justify-center px-6 overflow-hidden pt-26">
+        <section className="relative w-full h-screen min-h-150 flex items-center justify-center px-6 overflow-hidden pt-26 max-sm:-mt-10">
             {/* Gradient background */}
             <Gradient />
 

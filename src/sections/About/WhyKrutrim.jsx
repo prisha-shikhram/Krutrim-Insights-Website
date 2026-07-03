@@ -39,7 +39,7 @@ export default function WhyKrutrim() {
     return (
         <section
             id='why-krutrim'
-            className="py-24 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden scroll-mt-5"
+            className="sm:py-24 py-16 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] overflow-hidden scroll-mt-5"
         >
             <div className="max-w-5xl mx-auto">
                 {/* Section header */}
@@ -55,7 +55,7 @@ export default function WhyKrutrim() {
                     viewport={{ once: true }}
                     className="mb-20 text-center"
                 >
-                    <p className="text-[20px] sm:text-2xl -mt-10 text-gray-400 font-light leading-relaxed max-w-4xl mx-auto">
+                    <p className="text-[20px] sm:text-2xl -mt-10 text-gray-400 font-light leading-relaxed max-w-xl mx-auto">
                         “Most AI courses focus on <span className="text-gray-900 font-medium">concepts</span>, but
                         learners struggle to <span className="text-[#0189c7] font-medium italic">apply them</span> in real-world scenarios.”
                     </p>

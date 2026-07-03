@@ -49,7 +49,7 @@ export default function Navbar() {
     const [activeDropdown, setActiveDropdown] = useState(null);
 
     return (
-        <div className="flex flex-row justify-between items-center pl-3 pr-6 xl:px-12 py-4 shadow-sm fixed top-0 left-0 w-full z-50 bg-white">
+        <div className="flex flex-row justify-between items-center pl-3 pr-6 xl:px-12 max-sm:py-2 py-4 shadow-sm fixed top-0 left-0 w-full z-50 bg-white">
             {/* Logo */}
             <Link to="/">
                 <div className="flex flex-row items-center gap-3 -mt-1">
@@ -59,9 +59,9 @@ export default function Navbar() {
                         className="h-10 w-10 sm:h-13 sm:w-13 xl:-ml-3"
                     />
 
-                    <div className="flex flex-col cursor-pointer font-[Times-New-Roman] leading-3">
-                        <h3 className="text-black text-2xl sm:text-3xl sm:font-semibold">Krutrim Insights</h3>
-                        <h5 className="text-[#0189c7] text-[12px] min-[500px]:text-[14px] font-medium">
+                    <div className="flex flex-col cursor-pointer font-[Inter] leading-3">
+                        <h3 className="text-black text-2xl sm:text-3xl sm:font-semibold max-sm:-mb-1">Krutrim Insights</h3>
+                        <h5 className="max-sm:hidden text-[#0189c7] text-[12px] min-[500px]:text-[14px] font-medium">
                             Don't Compete with AI. Collaborate with it.
                         </h5>
                     </div>

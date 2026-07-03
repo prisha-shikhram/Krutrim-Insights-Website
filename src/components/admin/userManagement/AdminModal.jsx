@@ -6,7 +6,8 @@ import ModelHeader from "../../admin/userManagement/ModelHeader";
 
 // admin modal component
 export default function AdminModal({
-    isEditing, setShowAddModal, handleAction, newAdmin, setNewAdmin, permissionOptions, togglePermission, showPassword, setShowPassword, generatePassword, PRIMARY
+    isEditing, setShowAddModal, handleAction, newAdmin, setNewAdmin, permissionOptions, togglePermission,
+    showPassword, setShowPassword, generatePassword, PRIMARY
 }) {
     return (
         <div

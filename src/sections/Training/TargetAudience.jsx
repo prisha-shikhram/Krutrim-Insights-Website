@@ -42,7 +42,7 @@ import AudienceCards from '../../components/training/AudienceCards';
 // target audience section
 export default function TargetAudience() {
     return (
-        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] py-24 px-6">
+        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] sm:py-24 py-16 px-6">
             <div className="mx-auto max-w-7xl">
                 {/* Header Section */}
                 <SectionHeader

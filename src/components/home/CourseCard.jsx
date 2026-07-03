@@ -35,8 +35,8 @@ export default function CourseCard({ course }) {
 
             {/* CONTENT CONTAINER (The Overlapping Part) */}
             <div
-                className="absolute inset-x-0 bottom-0 z-10 flex flex-col bg-white px-6 pb-8 pt-10 transition-all duration-500 ease-in-out
-                h-115 sm:h-87.5 sm:group-hover:h-115 rounded-t-4xl shadow-[0_-15px_30px_rgba(0,0,0,0.05)] sm:group-hover:shadow-[0_-20px_40px_rgba(0,0,0,0.12)]"
+                className="absolute inset-x-0 bottom-0 z-10 flex flex-col bg-white px-6 pb-8 pt-10 max-sm:pt-5 transition-all duration-500 ease-in-out
+                h-115 sm:h-87.5 sm:group-hover:h-115 sm:rounded-t-4xl shadow-[0_-15px_30px_rgba(0,0,0,0.05)] sm:group-hover:shadow-[0_-20px_40px_rgba(0,0,0,0.12)]"
             >
                 {/* Course Title */}
                 <h3 className="mb-4 text-2xl font-extrabold leading-tight text-gray-900 transition-colors sm:group-hover:text-blue-600">

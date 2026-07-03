@@ -28,7 +28,7 @@ export default function CollegeHeader() {
     };
 
     return (
-        <section className="relative w-full h-[95vh] sm:h-[85vh] pt-20 sm:pt-40 pb-6 sm:pb-24 flex items-center justify-center px-6 overflow-hidden">
+        <section className="relative w-full h-[85vh] pt-20 sm:pt-40 pb-6 sm:pb-24 flex items-center justify-center px-6 overflow-hidden">
             {/* Gradient Background */}
             <Gradient />
 

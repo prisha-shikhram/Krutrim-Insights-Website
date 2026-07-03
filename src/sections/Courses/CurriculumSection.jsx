@@ -10,7 +10,7 @@ export default function CurriculumSection({ modules }) {
     return (
         <section
             id="curriculum"
-            className="relative bg-gray-50 py-24 px-6 scroll-mt-10 overflow-hidden"
+            className="relative bg-gray-50 sm:py-24 py-16 px-6 scroll-mt-10 overflow-hidden"
         >
             {/* Decorative Gradient Background */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-4xl opacity-40 pointer-events-none">

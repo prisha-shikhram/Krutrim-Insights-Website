@@ -30,7 +30,7 @@ import AdvantageBoxes from "../../components/home/AdvantageBoxes";
 // advantage section
 export default function AdvantageSection() {
     return (
-        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] py-24 px-6">
+        <section className="bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] sm:py-24 py-16 px-6">
             <div className="mx-auto max-w-6xl">
                 {/* Header */}
                 <SectionHeader

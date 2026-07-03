@@ -9,10 +9,10 @@ export default function CollegeCTA() {
     return (
         <section
             id='CTA'
-            className="py-20 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] scroll-mt-10"
+            className="sm:py-24 py-16 px-6 bg-linear-to-br from-[#f5fbff] via-[#eaf6fc] to-[#ffffff] scroll-mt-10"
         >
             <div className="mx-auto max-w-5xl">
-                <div className="relative overflow-hidden rounded-4xl bg-[#0189c7] px-8 py-16 text-center shadow-2xl">
+                <div className="relative overflow-hidden rounded-4xl bg-[#0189c7] px-8 py-12 text-center shadow-2xl">
                     {/* Background Decorative Lighting */}
                     <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-125 h-125 bg-white opacity-20 rounded-full blur-[100px]" />
                     <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-72 h-72 bg-cyan-100 opacity-20 rounded-full blur-[80px]" />

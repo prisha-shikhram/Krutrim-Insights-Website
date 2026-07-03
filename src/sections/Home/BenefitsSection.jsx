@@ -33,10 +33,10 @@ import SectionHeader from "../../components/utils/SectionHeader";
 // BenefitsSection Component
 export default function BenefitsSection() {
     return (
-        <section className="bg-gray-50 py-24 px-6 overflow-hidden">
+        <section className="bg-gray-50 sm:py-24 py-16 px-6 overflow-hidden">
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}
-                <div className="flex justify-center items-center flex-col sm:mb-5">
+                <div className="flex justify-center items-center flex-col mb-3 sm:mb-5">
                     <SectionHeader
                         title="More benefits at"
                         highlight="no extra cost"

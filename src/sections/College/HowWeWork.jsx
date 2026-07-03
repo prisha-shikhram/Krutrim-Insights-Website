@@ -32,7 +32,7 @@ const steps = [
 // how we work section
 export default function HowWeWork() {
     return (
-        <section className="py-24 px-6 bg-slate-50/50 overflow-hidden">
+        <section className="sm:py-24 py-16 px-6 bg-slate-50/50 overflow-hidden">
             <div className="mx-auto max-w-7xl">
                 {/* Section Header */}
                 <SectionHeader

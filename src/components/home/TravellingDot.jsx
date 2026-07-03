@@ -20,6 +20,7 @@ export default function TravellingDot({ p0, p1, p2, p3, delay, duration = 2.4, c
 
     useEffect(() => {
         let cancelled = false;
+
         const startTimeout = setTimeout(() => {
             if (cancelled) return;
             const loop = (timestamp) => {
@@ -33,6 +34,7 @@ export default function TravellingDot({ p0, p1, p2, p3, delay, duration = 2.4, c
             };
             rafRef.current = requestAnimationFrame(loop);
         }, delay * 1000);
+
         return () => {
             cancelled = true;
             clearTimeout(startTimeout);
