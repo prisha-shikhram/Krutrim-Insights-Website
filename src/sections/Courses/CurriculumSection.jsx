@@ -26,7 +26,7 @@ export default function CurriculumSection({ modules }) {
                 />
 
                 {/* Curriculum Timeline */}
-                <div className="relative mt-24">
+                <div className="relative mt-24 max-sm:mt-16">
                     {modules.map((module, idx) => (
                         <CurriculumModule
                             key={idx}

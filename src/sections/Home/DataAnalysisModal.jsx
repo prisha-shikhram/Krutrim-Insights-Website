@@ -23,7 +23,7 @@ export default function DataAnalysisModal({ isOpen, onClose }) {
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-9999 flex items-center justify-center p-4">
+                <div className="fixed inset-0 z-9999 flex items-center justify-center p-4 sm:p-6">
                     {/* Backdrop Overlay */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -39,21 +39,23 @@ export default function DataAnalysisModal({ isOpen, onClose }) {
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.95, opacity: 0, y: 15 }}
                         transition={{ type: "spring", duration: 0.4, bounce: 0 }}
-                        className="relative w-full max-w-3xl rounded-3xl overflow-hidden shadow-2xl text-white border border-white/10 flex flex-col max-h-[calc(100vh-2rem)]"
+                        className="relative w-full max-w-3xl h-full max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-4rem)] rounded-3xl 
+                        overflow-hidden shadow-2xl text-white border border-white/10 flex flex-col"
                         style={{ backgroundColor: '#0189c7' }}
                     >
-                        {/* Close button icon */}
-                        <button
-                            onClick={onClose}
-                            className="absolute top-4 right-4 md:top-5 md:right-6 z-20 text-white/70 hover:text-white text-3xl font-light transition-colors cursor-pointer"
-                            aria-label="Close modal"
-                        >
-                            &times;
-                        </button>
+                        {/* Statically positioned header banner bar keeping close accessible */}
+                        <div className="absolute top-0 inset-x-0 h-14 z-20 flex items-center justify-end px-4 pointer-events-none">
+                            <button
+                                onClick={onClose}
+                                className="text-white/70 hover:text-white text-3xl font-light transition-colors cursor-pointer pointer-events-auto"
+                                aria-label="Close modal"
+                            >
+                                &times;
+                            </button>
+                        </div>
 
                         {/* Scrollable Container Wrapper */}
-                        <div className="overflow-y-auto p-6 md:p-10 custom-scrollbar">
-
+                        <div className="overflow-y-auto flex-1 p-6 pt-12 md:p-10 md:pt-10 no-scrollbar">
                             {/* Badges / Header metrics */}
                             <div className="flex flex-wrap items-center justify-between gap-3 mb-5 pr-8">
                                 <span className="bg-orange-500 text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full animate-pulse">

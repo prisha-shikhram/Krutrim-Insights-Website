@@ -106,7 +106,8 @@ export default function BrochureModal({ isOpen, onClose }) {
                         initial={{ scale: 0.9, opacity: 0, y: 20 }}
                         animate={{ scale: 1, opacity: 1, y: 0 }}
                         exit={{ scale: 0.9, opacity: 0, y: 20 }}
-                        className="relative w-full max-w-6xl bg-white rounded-[40px] shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 mt-20"
+                        className="relative w-full max-w-6xl bg-white rounded-[40px] max-sm:rounded-2xl shadow-2xl overflow-hidden 
+                        grid grid-cols-1 lg:grid-cols-2 mt-20"
                     >
                         {/* Close Button */}
                         <button
@@ -118,7 +119,7 @@ export default function BrochureModal({ isOpen, onClose }) {
                         </button>
 
                         {/* LEFT: FORM SECTION */}
-                        <div className="p-8 md:p-12 lg:p-16 flex flex-col justify-center">
+                        <div className="py-8 px-5 md:p-12 lg:p-16 flex flex-col justify-center">
                             {step === 'form' ? (
                                 <motion.div
                                     initial={{ opacity: 0 }}

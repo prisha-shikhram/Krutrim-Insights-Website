@@ -5,7 +5,7 @@ import VisualAnchor from "../../components/utils/VisualAnchor";
 // about section header component
 export default function AboutUsHeader() {
     return (
-        <section className="relative w-full min-h-[60vh] flex items-center justify-center px-6 overflow-hidden pt-20">
+        <section className="relative w-full max-sm:min-h-[60vh] min-h-[90vh] flex items-center justify-center px-6 overflow-hidden pt-20">
             {/* Gradient Background */}
             <Gradient />
 

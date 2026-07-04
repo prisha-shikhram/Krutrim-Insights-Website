@@ -14,7 +14,7 @@ export default function PartnershipCTA() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 md:p-10 rounded-3xl bg-[#f8fbff] border border-blue-50 flex flex-col lg:flex-row items-center justify-between gap-8"
+            className="p-8 md:p-10 rounded-3xl bg-white border border-blue-50 flex flex-col lg:flex-row items-center justify-between gap-8 shadow-sm"
         >
             <div className="flex flex-col lg:flex-row gap-6 items-center">
                 <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-sm shrink-0 border border-blue-50">

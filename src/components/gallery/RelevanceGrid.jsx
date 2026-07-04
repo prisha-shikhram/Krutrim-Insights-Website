@@ -17,10 +17,10 @@ export default function RelevanceGrid({ relevanceItems }) {
                 >
                     {/* Icon Container */}
                     <div
-                        className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm border border-gray-100 
+                        className="mb-6 flex h-14 w-14 max-sm:h-12 max-sm:w-12 items-center justify-center rounded-2xl bg-white shadow-sm border border-gray-100 
                         group-hover:border-[#0189c7]/30 transition-colors"
                     >
-                        <item.icon className="w-7 h-7 text-[#0189c7]" />
+                        <item.icon className="w-7 h-7 max-sm:w-6 max-sm:h-6 text-[#0189c7]" />
                     </div>
 
                     {/* Text Content */}

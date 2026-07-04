@@ -5,7 +5,7 @@ import VisualAnchor from "../../components/utils/VisualAnchor";
 // gallery section header
 export default function GalleryHeader() {
     return (
-        <section className="relative w-full h-[50vh] sm:h-[75vh] min-h-125 flex items-center justify-center px-6 overflow-hidden pt-16 sm:pt-24">
+        <section className="relative w-full h-[50vh] sm:h-[90vh] min-h-125 flex items-center justify-center px-6 overflow-hidden pt-16 sm:pt-24">
             {/* Gradient background */}
             <Gradient />
 

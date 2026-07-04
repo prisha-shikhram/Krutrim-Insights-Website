@@ -104,7 +104,7 @@ export default function ContactFormSection() {
                 {/* Form container */}
                 <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     {/* FORM */}
-                    <div className="relative p-8 md:p-10 rounded-[40px] bg-slate-50 border border-slate-100 shadow-sm">
+                    <div className="relative p-5 md:p-10 rounded-[40px] max-sm:rounded-2xl bg-slate-50 border border-slate-100 shadow-sm">
                         {!submitted ? (
                             <form
                                 onSubmit={handleSubmit}

@@ -7,8 +7,8 @@ export default function Certificate() {
         <div className="flex-1 relative w-full flex justify-center items-center">
             {/* Certificate Image Placeholder */}
             <div
-                className="relative aspect-4/3 w-full max-w-lg overflow-hidden rounded-4xl border border-gray-100 bg-white/80 p-6
-                shadow-2xl backdrop-blur-sm group hover:border-gray-200 transition-all duration-300"
+                className="relative aspect-4/3 w-full max-w-lg overflow-hidden rounded-4xl max-sm:rounded-2xl border 
+                border-gray-100 bg-white/80 p-6 max-sm:p-3 shadow-2xl backdrop-blur-sm group hover:border-gray-200 transition-all duration-300"
             >
                 {/* Certificate Image */}
                 <img

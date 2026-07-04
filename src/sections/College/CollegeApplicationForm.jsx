@@ -99,9 +99,12 @@ export default function CollegeApplicationForm({ collegeName = "Our Partner Coll
                 reverseOrder={false}
             />
 
-            <div className="mx-auto max-w-7xl bg-slate-50 rounded-[48px] overflow-hidden border border-slate-100 shadow-sm grid grid-cols-1 lg:grid-cols-2 mt-10">
+            <div
+                className="mx-auto max-w-7xl bg-slate-50 rounded-[48px] max-sm:rounded-2xl overflow-hidden border 
+                border-slate-100 shadow-sm grid grid-cols-1 lg:grid-cols-2 mt-10"
+            >
                 {/* LEFT: FORM SECTION */}
-                <div className="py-8 px-8 md:px-12 lg:py-10 lg:px-16 flex flex-col justify-center bg-white">
+                <div className="py-8 px-4 md:px-12 lg:py-10 lg:px-16 flex flex-col justify-center bg-white">
                     {!submitted ? (
                         <>
                             <header className="mb-10">
