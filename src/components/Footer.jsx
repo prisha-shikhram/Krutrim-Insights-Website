@@ -72,7 +72,7 @@ export default function Footer() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     aria-label={social.label}
-                                    className="p-3 rounded-xl bg-white/5 hover:bg-[#0189c7] hover:text-white transition-all duration-300"
+                                    className="p-3 rounded-lg bg-white/5 hover:bg-[#0189c7] hover:text-white transition-all duration-300"
                                 >
                                     {social.icon}
                                 </a>

@@ -21,7 +21,7 @@ export default function DesktopNav({ navlinks }) {
                                     className="flex items-center gap-1 text-[#0189c7] text-xl font-medium hover:text-slate-500 font-[Montserrat]"
                                 >
                                     {navlink.label}
-                                    <FiChevronDown className="transition-transform group-hover:rotate-180" />
+                                    <FiChevronDown size={16} className="transition-transform group-hover:rotate-180 -mb-1" />
                                 </Link>
 
                                 {/* Dropdown Menu */}
@@ -55,7 +55,7 @@ export default function DesktopNav({ navlinks }) {
             </ul>
 
             <Link to="/student/login">
-                <button className="bg-[#0189c7] px-6 py-2 text-xl rounded-lg text-white font-medium cursor-pointer font-[Montserrat]">
+                <button className="bg-[#0189c7] px-4 py-2 text-xl rounded-lg text-white font-medium cursor-pointer font-[Montserrat]">
                     Student Portal
                 </button>
             </Link>

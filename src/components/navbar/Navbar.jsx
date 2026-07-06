@@ -56,7 +56,7 @@ export default function Navbar() {
                     <img
                         src="/favicon/logo.svg"
                         alt="logo"
-                        className="h-10 w-10 sm:h-13 sm:w-13 xl:-ml-3"
+                        className="h-10 w-10 sm:h-13 sm:w-13 xl:-ml-3 xl:-mr-1"
                     />
 
                     <div className="flex flex-col cursor-pointer font-[Inter] leading-3">
