@@ -4,7 +4,7 @@ import { Plus } from "lucide-react"
 // assignment header components
 export default function AssignmentHeader({ setShowCreate }) {
     return (
-        <div className="flex items-center justify-between bg-white px-8 py-6 rounded-4xl border border-slate-100 shadow-sm">
+        <div className="flex items-center justify-between bg-white px-8 py-6 rounded-3xl border border-slate-100 shadow-sm">
             <div>
                 <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Assignment Lab</h2>
                 <p className="text-xs text-slate-400 font-medium">Create and distribute tasks to your batches</p>

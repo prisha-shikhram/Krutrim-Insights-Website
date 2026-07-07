@@ -180,7 +180,10 @@ export default function ContactLeads() {
                                     </td>
 
                                     <td className="px-8 py-5">
-                                        <span className="px-3 py-1.5 bg-blue-50 text-[#0189c7] rounded-lg text-xs font-bold border border-blue-100 uppercase">
+                                        <span
+                                            className="px-3 py-1.5 bg-blue-50 text-[#0189c7] rounded-lg text-xs font-bold border 
+                                            border-blue-100 truncate uppercase"
+                                        >
                                             {lead.course || "N/A"}
                                         </span>
                                     </td>

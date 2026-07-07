@@ -76,7 +76,7 @@ export default function CreateProjectModal({ onClose, refresh, mentor, PROJECT_A
 
                         <button
                             onClick={onClose}
-                            className="p-3 hover:bg-slate-50 text-slate-400 hover:text-slate-800 rounded-full transition-colors cursor-pointer"
+                            className="p-3 hover:bg-slate-100 text-slate-400 hover:text-slate-800 rounded-full transition-colors cursor-pointer"
                         >
                             <X size={20} />
                         </button>
@@ -120,7 +120,7 @@ export default function CreateProjectModal({ onClose, refresh, mentor, PROJECT_A
                             <button
                                 onClick={handleCreate}
                                 disabled={loading}
-                                className="w-full py-5 bg-slate-900 text-white rounded-4xl font-black uppercase text-[10px] tracking-[0.2em] 
+                                className="w-full py-5 bg-slate-900 text-white rounded-4xl font-black text-sm tracking-widest
                                 shadow-xl hover:bg-indigo-600 hover:shadow-indigo-200 active:scale-[0.98] transition-all disabled:opacity-50 
                                 flex items-center justify-center gap-3 cursor-pointer"
                             >
@@ -129,7 +129,7 @@ export default function CreateProjectModal({ onClose, refresh, mentor, PROJECT_A
                                 ) : (
                                     <Sparkles size={16} className="text-indigo-400" />
                                 )}
-                                {loading ? "Creating..." : "Initialize Workspace"}
+                                {loading ? "Creating..." : "Initialize Project"}
                             </button>
                         </div>
                     </div>

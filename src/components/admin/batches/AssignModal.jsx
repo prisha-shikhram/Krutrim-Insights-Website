@@ -19,7 +19,7 @@ export default function AssignModal({
                 <>
                     <button
                         onClick={() => setShowAssignModal(null)}
-                        className="flex-1 py-4 font-bold text-slate-400 cursor-pointer"
+                        className="flex-1 py-3 font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
                     >
                         Cancel
                     </button>
@@ -27,7 +27,8 @@ export default function AssignModal({
                     <button
                         onClick={handleConfirmAssignment}
                         disabled={selectedStudents.length === 0 || submitting}
-                        className="flex-1 bg-blue-600 text-white py-4 rounded-2xl font-black text-sm disabled:opacity-50 transition-all cursor-pointer"
+                        className="flex-1 bg-blue-600 text-white py-3 rounded-2xl font-black text-sm disabled:opacity-50 transition-all cursor-pointer
+                        hover:bg-blue-700 hover:shadow-blue-200 hover:shadow-lg "
                     >
                         {submitting ? <Loader2 className="animate-spin mx-auto" /> : `Assign ${selectedStudents.length} Students`}
                     </button>

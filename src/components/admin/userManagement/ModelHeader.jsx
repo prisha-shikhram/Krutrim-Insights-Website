@@ -15,7 +15,7 @@ export default function ModelHeader({ isEditing, setShowAddModal }) {
 
             <button
                 onClick={() => setShowAddModal(false)}
-                className="p-2 hover:bg-white rounded-full transition-colors cursor-pointer"
+                className="p-2 rounded-full transition-colors cursor-pointer hover:bg-gray-200"
             >
                 <X size={20} className="text-gray-400" />
             </button>

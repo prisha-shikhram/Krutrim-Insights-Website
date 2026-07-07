@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // import icons
-import { Lock, ShieldAlert, ChevronRight, Loader2, ArrowLeft } from 'lucide-react';
+import { Lock, ShieldAlert, ChevronRight, Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 
 // import components
 import MentorLogin from '../sections/Mentor/MentorLogin';
@@ -18,6 +18,7 @@ export default function MentorLoginPage() {
     const [gatePass, setGatePass] = useState("");
     const [error, setError] = useState(false);
     const [verifying, setVerifying] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     // handle gate check logic
     const handleGateCheck = (e) => {
@@ -81,16 +82,29 @@ export default function MentorLoginPage() {
                                     className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-[#0189c7] transition-colors"
                                     size={20}
                                 />
+
                                 <input
                                     required
                                     autoFocus
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     placeholder="ENTRY KEY"
-                                    className="w-full pl-14 pr-6 py-4 bg-white border-2 border-slate-100 rounded-3xl text-slate-900 
-                                    text-center tracking-[0.6em] outline-none focus:border-[#0189c7] focus:ring-8 focus:ring-[#0189c7]/5 
+                                    className="w-full pl-14 pr-14 py-4 bg-white border-2 border-slate-100 rounded-3xl text-slate-900 
+                                    text-center tracking-[0.2em] outline-none focus:border-[#0189c7] focus:ring-8 focus:ring-[#0189c7]/5 
                                     transition-all font-bold input-glow text-sm"
                                     onChange={(e) => setGatePass(e.target.value)}
                                 />
+
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    className="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#0189c7] transition-colors cursor-pointer"
+                                >
+                                    {showPassword ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
+                                </button>
                             </div>
 
                             {error && (

@@ -4,7 +4,7 @@ import { Bell, Plus } from "lucide-react"
 // notice header
 export default function NoticeHeader({ setShowModal }) {
     return (
-        <div className="flex items-center justify-between bg-white px-8 py-5 rounded-2xl border border-slate-100 shadow-sm">
+        <div className="flex items-center justify-between bg-white px-8 py-5 rounded-3xl border border-slate-100 shadow-sm">
             <div className="flex items-center gap-5">
                 <div className="p-3.5 bg-indigo-50 text-indigo-600 rounded-full">
                     <Bell size={22} />

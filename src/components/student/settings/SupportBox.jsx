@@ -21,20 +21,22 @@ export default function SupportBox({ student, }) {
                     </p>
                 </div>
 
-                {/* Bhavesh */}
+                {/* Abhishek */}
                 <a
-                    href={`mailto:bhavesh.tyagi@krutriminsights.com?subject=Support Needed - ${student.name}`}
+                    href={`mailto:abhishek@krutriminsights.com?subject=Support Needed - ${student.name}`}
                     className="flex items-center justify-between p-6 rounded-4xl bg-white/60 backdrop-blur-md border border-white 
                     hover:bg-white transition-all shadow-sm group"
                 >
                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center 
-                            group-hover:scale-110 transition-transform">
+                        <div
+                            className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center 
+                            group-hover:scale-110 transition-transform"
+                        >
                             <User size={18} />
                         </div>
 
                         <div>
-                            <p className="text-sm font-bold text-slate-700 leading-none">Bhavesh Tyagi</p>
+                            <p className="text-sm font-bold text-slate-700 leading-none">Abhishek</p>
                             <p className="text-[10px] text-slate-400 font-bold mt-1 uppercase tracking-tight">Admin Support</p>
                         </div>
                     </div>

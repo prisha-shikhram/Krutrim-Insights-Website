@@ -170,7 +170,7 @@ export default function CreateNotesModal({ onClose, refresh, mentor }) {
                     <button
                         disabled={submitting}
                         type="submit"
-                        className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-sm cursor-pointer shadow-xl 
+                        className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-sm cursor-pointer shadow-xl 
                         hover:bg-slate-800 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                         {submitting ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}

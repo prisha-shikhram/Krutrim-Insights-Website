@@ -80,7 +80,7 @@ export default function ShareAssignmentModal({ onClose, assignment, batches }) {
 
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-50 rounded-full transition-colors cursor-pointer"
+                        className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
                     >
                         <X size={20} className="text-slate-400" />
                     </button>

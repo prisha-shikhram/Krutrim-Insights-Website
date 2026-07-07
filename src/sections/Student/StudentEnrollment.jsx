@@ -5,9 +5,7 @@ import { useState, useRef, useCallback } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 // import icons
-import {
-    GraduationCap, AlertCircle, Loader2
-} from "lucide-react";
+import { GraduationCap, AlertCircle, Loader2 } from "lucide-react";
 
 // import components
 import Background from "../../components/utils/BackgroundEffect";
@@ -246,7 +244,7 @@ export default function StudentEnrollment() {
                 {/* Header */}
                 <div className="flex flex-col items-center mb-12 text-center">
                     <div
-                        className="w-20 h-20 rounded-3xl flex items-center justify-center text-white mb-6 shadow-2xl animate-bounce-subtle"
+                        className="w-18 h-18 rounded-3xl flex items-center justify-center text-white mb-6 shadow-2xl animate-bounce-subtle"
                         style={{ background: `linear-gradient(135deg, ${PRIMARY}, #00c6ff)` }}
                     >
                         <GraduationCap size={40} />

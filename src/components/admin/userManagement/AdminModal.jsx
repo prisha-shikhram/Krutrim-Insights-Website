@@ -117,7 +117,7 @@ export default function AdminModal({
                                     type="button"
                                     onClick={generatePassword}
                                     className="px-4 py-2 border border-[#0189c7] text-[#0189c7] rounded-xl text-xs font-bold hover:bg-blue-50 
-                                    transition-colors"
+                                    transition-colors cursor-pointer"
                                 >
                                     AUTO-GENERATE
                                 </button>

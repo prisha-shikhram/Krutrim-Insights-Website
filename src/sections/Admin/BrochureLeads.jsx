@@ -173,7 +173,7 @@ export default function BrochureLeads() {
                                         </div>
                                     </td>
 
-                                    <td className="px-8 py-5 space-y-2">
+                                    <td className="px-4 py-5 space-y-2">
                                         <div className="flex items-center gap-2 group/email">
                                             <Mail size={14} className="text-[#0189c7]" />
 
@@ -192,12 +192,15 @@ export default function BrochureLeads() {
                                     </td>
 
                                     <td className="px-8 py-5">
-                                        <span className="px-3 py-1.5 bg-blue-50 text-[#0189c7] rounded-lg text-xs font-bold border border-blue-100 uppercase">
+                                        <span
+                                            className="px-3 py-1.5 bg-blue-50 text-[#0189c7] rounded-lg text-xs font-bold 
+                                            border border-blue-100 uppercase truncate"
+                                        >
                                             {lead.course || "N/A"}
                                         </span>
                                     </td>
 
-                                    <td className="px-8 py-5 text-gray-400">
+                                    <td className="px-4 py-5 text-gray-400">
                                         <div className="flex items-center gap-2">
                                             <Calendar size={14} />
 
@@ -211,7 +214,7 @@ export default function BrochureLeads() {
                                         </div>
                                     </td>
 
-                                    <td className="px-8 py-5 text-right">
+                                    <td className="px-4 py-5 text-right">
                                         <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition">
                                             <button
                                                 onClick={() => handleContactClick("whatsapp", lead.name, lead.phone)}

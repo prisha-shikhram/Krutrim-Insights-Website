@@ -16,7 +16,7 @@ export default function CreateModal({ showCreateModal, setShowCreateModal, submi
                 <>
                     <button
                         onClick={() => setShowCreateModal(false)}
-                        className="flex-1 py-4 font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
+                        className="flex-1 py-3 font-bold text-slate-400 hover:text-slate-600 cursor-pointer"
                     >
                         Cancel
                     </button>
@@ -25,7 +25,8 @@ export default function CreateModal({ showCreateModal, setShowCreateModal, submi
                         form="create-batch-form"
                         type="submit"
                         disabled={submitting}
-                        className="flex-1 bg-blue-600 text-white py-4 rounded-2xl font-black text-sm flex items-center justify-center cursor-pointer"
+                        className="flex-1 bg-blue-600 text-white py-3 rounded-2xl font-black text-sm flex items-center justify-center cursor-pointer
+                        hover:bg-blue-700 hover:shadow-blue-200 hover:shadow-lg transition-all"
                     >
                         {submitting ? <Loader2 className="animate-spin" /> : "Create Batch"}
                     </button>

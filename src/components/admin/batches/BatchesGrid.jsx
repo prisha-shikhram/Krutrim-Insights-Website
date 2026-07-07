@@ -39,7 +39,7 @@ export default function BatchesGrid({ batches, setShowAssignModal, setSearchTerm
                     </div>
 
                     <div className="mb-10 flex-1 relative z-10">
-                        <h3 className="text-xl font-black text-slate-800 leading-tight group-hover:text-indigo-600 transition-colors">
+                        <h3 className="text-xl font-black text-slate-800 leading-tight group-hover:text-indigo-600 transition-colors mb-3">
                             {batch.batchName}
                         </h3>
 
@@ -55,18 +55,18 @@ export default function BatchesGrid({ batches, setShowAssignModal, setSearchTerm
                     <div className="flex gap-3 relative z-10">
                         <button
                             onClick={() => { setShowAssignModal(batch.batchCode); setSearchTerm(""); }}
-                            className="flex-1 flex items-center justify-center gap-2 py-4 bg-white border border-slate-100 text-slate-600 
+                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-100 text-slate-600 
                             font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:border-indigo-600 
-                            hover:text-white hover:shadow-lg hover:shadow-indigo-200 transition-all duration-300 cursor-pointer"
+                            hover:text-white transition-all duration-300 cursor-pointer"
                         >
                             <Plus size={16} /> Assign
                         </button>
 
                         <button
                             onClick={() => setShowManageModal(batch)}
-                            className="flex-1 flex items-center justify-center gap-2 py-4 bg-white border border-slate-100 text-slate-600 
+                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-100 text-slate-600 
                             font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-emerald-600 hover:border-emerald-600 
-                            hover:text-white hover:shadow-lg hover:shadow-emerald-200 transition-all duration-300 cursor-pointer"
+                            hover:text-white transition-all duration-300 cursor-pointer"
                         >
                             <Edit3 size={16} /> Manage
                         </button>

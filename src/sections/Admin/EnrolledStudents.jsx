@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 
 // import icons
-import { Search, ExternalLink, FolderOpen, Loader2 } from "lucide-react";
+import { Search, ExternalLink, FolderOpen, Loader2, ChevronDown } from "lucide-react";
 
 // import toast
 import toast from "react-hot-toast";
@@ -117,15 +117,23 @@ export default function EnrolledStudents() {
                         />
                     </div>
 
-                    <select
-                        className="bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2.5 text-sm font-bold text-slate-600 outline-none cursor-pointer"
-                        value={batchFilter}
-                        onChange={e => setBatchFilter(e.target.value)}
-                    >
-                        <option value="All">All Batches</option>
-                        <option value="UNASSIGNED">Unassigned</option>
-                        <option value="ACTIVE">Active</option>
-                    </select>
+                    <div className="relative inline-block group">
+                        <select
+                            className="appearance-none bg-slate-50 border border-slate-100 rounded-2xl pl-4 pr-10 py-2.5 text-sm font-bold 
+                            text-slate-600 outline-none cursor-pointer"
+                            value={batchFilter}
+                            onChange={(e) => setBatchFilter(e.target.value)}
+                        >
+                            <option value="All">All Batches</option>
+                            <option value="UNASSIGNED">Unassigned</option>
+                        </select>
+
+                        <ChevronDown
+                            className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none transition-transform
+                            duration-300 group-hover:rotate-180"
+                            size={16}
+                        />
+                    </div>
                 </div>
             </div>
 

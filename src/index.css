@@ -44,7 +44,7 @@ body {
 }
 
 .select-group:hover .select-chevron {
-    transform: translateY(-50%) rotate(180deg) !important;
+    transform: rotate(180deg) !important;
 }
 
 /* shake animation */

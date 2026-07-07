@@ -6,7 +6,7 @@ export default function StudentProfile({ student, onImageUpload }) {
     return (
         <div className="mb-5 p-4 rounded-2xl bg-indigo-50/50 border border-indigo-100">
             <div className="flex flex-col items-center text-center">
-                <div className="relative w-20 h-20 mb-3">
+                <div className="relative w-26 h-26 mb-3">
                     {student.profileImg ? (
                         <img
                             src={student.profileImg}

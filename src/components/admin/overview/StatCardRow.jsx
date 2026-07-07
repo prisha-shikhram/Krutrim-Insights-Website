@@ -2,7 +2,7 @@
 import StatCard from "./StatCard";
 
 // import icons
-import { Mail, BookOpen, School, FolderKanban } from "lucide-react";
+import { Mail, BookOpen, School, FolderKanban, User } from "lucide-react";
 
 // navigation
 import { useNavigate } from "react-router-dom";
@@ -41,6 +41,20 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
             color: "#059669",
             icon: <FolderKanban size={18} />,
             route: "/admin/dashboard/project"
+        },
+        {
+            key: "registration",
+            title: "Registration Forms",
+            color: "#7c3aed",
+            icon: <School size={18} />,
+            route: "/admin/dashboard/registered"
+        },
+        {
+            key: "enrollment",
+            title: "Enrolled students",
+            color: "#7c3aed",
+            icon: <User size={18} />,
+            route: "/admin/dashboard/enrolled"
         }
     ];
 
@@ -59,8 +73,8 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
                     <div
                         key={card.key}
                         onClick={() => {
-                            onNavigate("Contact Leads");
-                            navigate("/admin/dashboard/contact");
+                            onNavigate(card.title);
+                            navigate(card.route);
                         }}
                         className={`transition-all duration-300
                             ${allowed

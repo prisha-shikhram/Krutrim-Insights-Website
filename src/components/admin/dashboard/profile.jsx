@@ -6,7 +6,7 @@ export default function Profile({ user, handleImageUpload }) {
     return (
         <div className="mb-5 p-4 rounded-2xl bg-gray-50 border border-gray-100">
             <div className="flex flex-col items-center text-center">
-                <div className="relative w-24 h-24 mb-3">
+                <div className="relative w-28 h-28 mb-3">
                     {user.profileImg ? (
                         <img
                             src={user.profileImg}

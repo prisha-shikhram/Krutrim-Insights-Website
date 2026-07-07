@@ -15,8 +15,8 @@ export default function Header({ setShowAddModal, setShowMentorModal, PRIMARY, r
                 {/* Mentor Button */}
                 <button
                     onClick={() => setShowMentorModal(true)}
-                    className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl 
-                    font-semibold text-sm transition-all hover:scale-105 active:scale-95 cursor-pointer shadow-lg shadow-emerald-100"
+                    className="flex items-center gap-2 px-5 py-2.5 bg-emerald-500 text-white rounded-xl 
+                    font-semibold text-sm transition-all hover:scale-102 active:scale-95 cursor-pointer shadow-lg shadow-emerald-100"
                 >
                     <UserPlus size={18} />
                     Create Mentor
@@ -26,7 +26,7 @@ export default function Header({ setShowAddModal, setShowMentorModal, PRIMARY, r
                 <button
                     onClick={() => { resetForm(); setShowAddModal(true); }}
                     className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-white font-semibold text-sm transition-all 
-                    hover:scale-105 active:scale-95 cursor-pointer"
+                    hover:scale-102 active:scale-95 cursor-pointer"
                     style={{
                         background: `linear-gradient(135deg, ${PRIMARY}, #00c6ff)`,
                         boxShadow: "0 10px 20px rgba(1,137,199,0.2)"

@@ -4,7 +4,7 @@ import { Plus } from "lucide-react";
 // Notes header component
 export default function NotesHeader({ setShowCreate }) {
     return (
-        <div className="flex items-center justify-between bg-white px-8 py-6 rounded-[2.5rem] border border-slate-100 shadow-sm">
+        <div className="flex items-center justify-between bg-white px-8 py-6 rounded-3xl border border-slate-100 shadow-sm">
             <div>
                 <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">Study Notes</h2>
                 <p className="text-xs text-slate-400 font-medium">Upload and manage learning resources for student batches</p>

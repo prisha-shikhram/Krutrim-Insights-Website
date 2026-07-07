@@ -108,7 +108,7 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
 
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-50 rounded-full transition-colors cursor-pointer"
+                        className="p-2 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
                     >
                         <X size={20} className="text-slate-400" />
                     </button>
@@ -190,7 +190,7 @@ export default function CreateAssignmentModal({ onClose, refresh, mentor }) {
                     <button
                         disabled={submitting}
                         type="submit"
-                        className="w-full bg-slate-900 text-white py-5 rounded-2xl font-black text-sm cursor-pointer shadow-xl 
+                        className="w-full bg-slate-900 text-white py-4 rounded-2xl font-black text-sm cursor-pointer shadow-xl 
                         hover:bg-slate-800 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                         {submitting ? <Loader2 className="animate-spin" size={18} /> : <Send size={18} />}

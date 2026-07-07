@@ -16,7 +16,7 @@ export default function BatchHeader({ setShowCreateModal, batches }) {
 
             <button
                 onClick={() => setShowCreateModal(true)}
-                className="flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-sm hover:bg-blue-700 
+                className="flex items-center gap-2 bg-blue-600 text-white px-6 py-4 rounded-2xl font-bold text-sm hover:bg-blue-700 
                 hover:shadow-blue-200 hover:shadow-lg transition-all active:scale-95 cursor-pointer"
             >
                 <Plus size={18} strokeWidth={3} /> Create New Batch

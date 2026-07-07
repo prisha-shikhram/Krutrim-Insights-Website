@@ -1,5 +1,5 @@
 // import icons
-import { Mail, BookOpen, School, FolderKanban } from "lucide-react";
+import { Mail, BookOpen, School, FolderKanban, User } from "lucide-react";
 
 // navigation
 import { useNavigate } from "react-router-dom";
@@ -29,6 +29,18 @@ const SOURCE_META = {
         icon: <FolderKanban size={10} />,
         className: "text-emerald-600 bg-emerald-100 border-emerald-200",
         route: "/admin/dashboard/project"
+    },
+    registration: {
+        label: "Registration",
+        icon: <BookOpen size={10} />,
+        className: "text-amber-500 bg-amber-100 border-amber-200",
+        route: "/admin/dashboard/registered"
+    },
+    enrollment: {
+        label: "Enrollment",
+        icon: <User size={10} />,
+        className: "text-green-500 bg-green-100 border-green-200",
+        route: "/admin/dashboard/enrolled"
     }
 };
 

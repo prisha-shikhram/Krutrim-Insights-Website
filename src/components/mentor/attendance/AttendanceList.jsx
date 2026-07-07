@@ -48,16 +48,16 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                                                 </div>
 
                                                 <div>
-                                                    <p className="text-xs font-bold text-slate-700 leading-none">{rec.studentEmail.split('@')[0]}</p>
-                                                    <p className="text-[10px] text-slate-400 mt-1">{rec.studentEmail}</p>
+                                                    <p className="text-sm font-bold text-slate-700 leading-none">{rec.studentEmail.split('@')[0]}</p>
+                                                    <p className="text-[12px] text-slate-400 mt-1">{rec.studentEmail}</p>
                                                 </div>
                                             </div>
                                         </td>
 
-                                        <td className="p-6 text-[11px] font-bold text-slate-600">{rec.date}</td>
+                                        <td className="p-6 text-[12px] font-bold text-slate-600">{rec.date}</td>
 
                                         <td className="p-6">
-                                            <span className="text-[10px] font-black bg-indigo-50 text-indigo-500 px-3 py-1 rounded-lg uppercase">
+                                            <span className="text-[12px] font-black bg-indigo-50 text-indigo-500 px-3 py-1 rounded-lg uppercase">
                                                 {rec.batchCode}
                                             </span>
                                         </td>
@@ -65,7 +65,7 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                                         <td className="p-6">
                                             <div className="flex justify-center">
                                                 <span
-                                                    className={`text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter 
+                                                    className={`text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter 
                                                     ${rec.status === 'present' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}
                                                 >
                                                     {rec.status}

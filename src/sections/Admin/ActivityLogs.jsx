@@ -151,12 +151,12 @@ export default function ActivityLogs() {
                                     key={log.id}
                                     className="group hover:bg-[#0189c7]/5 transition-colors"
                                 >
-                                    <td className="px-8 py-5">
+                                    <td className="px-8 py-5 truncate">
                                         <div className="text-slate-800 font-bold text-sm">{log.date}</div>
                                         <div className="text-[10px] text-slate-400 font-medium uppercase">{log.time}</div>
                                     </td>
 
-                                    <td className="px-8 py-5">
+                                    <td className="px-8 py-5 truncate">
                                         <div className="flex items-center gap-3">
                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black border
                                                 ${log.admin === "Unknown" ? "bg-rose-50 text-rose-500 border-rose-100"
@@ -169,7 +169,7 @@ export default function ActivityLogs() {
                                         </div>
                                     </td>
 
-                                    <td className="px-8 py-5">
+                                    <td className="px-8 py-5 truncate">
                                         <div
                                             className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border text-[10px] font-black tracking-wider 
                                             uppercase ${getActionStyle(log.type)}`}

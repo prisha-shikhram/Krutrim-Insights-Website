@@ -6,7 +6,7 @@ export default function MentorProfile({ mentor, onImageUpload }) {
     return (
         <div className="mb-5 p-4 rounded-2xl bg-slate-50 border border-slate-100">
             <div className="flex flex-col items-center text-center">
-                <div className="relative w-20 h-20 mb-3">
+                <div className="relative w-28 h-28 mb-3">
                     {mentor.profileImg ? (
                         <img
                             src={mentor.profileImg}
