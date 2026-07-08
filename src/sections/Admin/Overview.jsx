@@ -22,7 +22,7 @@ export default function Overview({ PRIMARY }) {
     const hasFetched = useRef(false);
 
     const [data, setData] = useState({
-        stats: { contact: 0, brochure: 0, colleges: 0, project: 0 },
+        stats: { contact: 0, brochure: 0, colleges: 0, project: 0, registration: 0, enrolled: 0 },
         recent: [],
         loading: true,
         error: null
@@ -70,7 +70,9 @@ export default function Overview({ PRIMARY }) {
                     contact: result?.stats?.contact || 0,
                     brochure: result?.stats?.brochure || 0,
                     colleges: result?.stats?.colleges || 0,
-                    project: result?.stats?.project || 0
+                    project: result?.stats?.project || 0,
+                    registration: result?.stats?.registration || 0,
+                    enrolled: result?.stats?.enrolled || 0
                 },
                 recent: normalizedRecent,
                 loading: false,

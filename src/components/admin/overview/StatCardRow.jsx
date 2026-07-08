@@ -50,7 +50,7 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
             route: "/admin/dashboard/registered"
         },
         {
-            key: "enrollment",
+            key: "enrolled",
             title: "Enrolled students",
             color: "#7c3aed",
             icon: <User size={18} />,
@@ -65,7 +65,7 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {CARDS.map((card) => {
                 const allowed = user.isSuper || user.permissions?.includes(card.key);
 
