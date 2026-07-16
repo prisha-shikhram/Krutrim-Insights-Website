@@ -16,6 +16,10 @@ export const ProtectedRoute = ({ userType = "admin" }) => {
         mentor: {
             tokenKey: "mentor_token",
             loginPath: "/mentor/login"
+        },
+        payment: {
+            tokenKey: "admin_payment_token",
+            path: "/admin/payment/dashboard"
         }
     };
 

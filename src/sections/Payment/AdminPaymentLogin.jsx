@@ -11,13 +11,12 @@ import toast, { Toaster } from 'react-hot-toast';
 import Background from "../../components/utils/BackgroundEffect";
 import AdminHeader from "../../components/admin/login/Header";
 import InputFields from "../../components/admin/login/InputFields";
-import { recordLog } from "../../components/utils/logger";
 
 // Primary color
 const PRIMARY = "#0189c7";
 
-// admin login component
-export default function AdminLogin() {
+// admin payment login component
+export default function AdminPaymentLogin() {
     const [credentials, setCredentials] = useState({ email: "", password: "" });
     const [loading, setLoading] = useState(false);
     const [focused, setFocused] = useState(null);
@@ -60,7 +59,7 @@ export default function AdminLogin() {
                 data = {};
             }
 
-            console.log("LOGIN RESPONSE:", {
+            console.log("PAYMENT LOGIN RESPONSE:", {
                 status: res.status,
                 data
             });
@@ -68,65 +67,39 @@ export default function AdminLogin() {
             // 403 → Not allowed
             if (res.status === 403) {
                 console.error("403 ERROR:", data);
-
-                try {
-                    await recordLog("ACCESS_DENIED", `Email: ${userEmail}`, "security_alert");
-                } catch { }
-
                 throw new Error(data?.error || "Access denied (not authorized)");
             }
 
             // 401 → Invalid credentials
             if (res.status === 401) {
                 console.error("401 ERROR:", data);
-
-                try {
-                    await recordLog("LOGIN_FAILURE", `Email: ${userEmail}`, "security_alert");
-                } catch { }
-
                 throw new Error(data?.error || "Invalid credentials");
             }
 
             // Other errors
             if (!res.ok) {
                 console.error("UNKNOWN ERROR:", data);
-
                 throw new Error(data?.error || "Login failed");
             }
 
-            // SUCCESS
-            localStorage.setItem("admin_token", data.token);
-            localStorage.setItem("is_super", String(data.user.isSuper));
-            localStorage.setItem("admin_name", data.user.name);
-            localStorage.setItem("admin_data", JSON.stringify(data.user));
-
-            try {
-                await recordLog(
-                    "LOGIN_SUCCESS",
-                    data.user.isSuper ? "Super Admin Portal" : "Sub Admin Portal",
-                    "security"
-                );
-            } catch { }
+            // SUCCESS - Keys now include payment keyword
+            localStorage.setItem("admin_payment_token", data.token);
+            localStorage.setItem("is_payment_super", String(data.user.isSuper));
+            localStorage.setItem("admin_payment_name", data.user.name);
+            localStorage.setItem("admin_payment_data", JSON.stringify(data.user));
 
             toast.success(`Welcome, ${data.user.name}!`, { id: loadingToast });
 
             setTimeout(() => {
-                navigate("/admin/dashboard", { replace: true });
+                navigate("/admin/payment/dashboard", { replace: true });
             }, 500);
 
         } catch (err) {
-            console.error("Login Error:", {
+            console.error("Payment Login Error:", {
                 message: err.message,
                 stack: err.stack,
                 responseStatus: res?.status
             });
-
-            // Log system errors only (avoid duplicate logs for 401/403)
-            if (!res || (res.status !== 401 && res.status !== 403)) {
-                try {
-                    await recordLog("SYSTEM_ERROR", err.message, "system");
-                } catch { }
-            }
 
             toast.error(err.message || "Something went wrong", { id: loadingToast });
 
@@ -154,7 +127,7 @@ export default function AdminLogin() {
                 style={{ animation: "slideUp 0.7s cubic-bezier(.16,1,.3,1) both" }}
             >
                 {/* Admin Header */}
-                <AdminHeader PRIMARY={PRIMARY} text="Admin login" />
+                <AdminHeader PRIMARY={PRIMARY} text="Payment Portal Login" />
 
                 {/* Form */}
                 <form
@@ -192,7 +165,7 @@ export default function AdminLogin() {
                 </form>
 
                 <p className="text-center text-gray-400 text-[10px] mt-8 uppercase tracking-[2px]">
-                    Internal Systems — Secured by Admin-Auth 2.0
+                    Internal Systems — Secured by Payment-Auth 2.0
                 </p>
             </div>
         </div>

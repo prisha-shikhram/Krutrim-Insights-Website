@@ -2,7 +2,7 @@
 import { ShieldCheck } from "lucide-react";
 
 // header component for admin login
-export default function AdminHeader({ PRIMARY }) {
+export default function AdminHeader({ PRIMARY, text }) {
     return (
         <div className="flex flex-col items-center mb-10">
             <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-white mb-4"
@@ -13,7 +13,7 @@ export default function AdminHeader({ PRIMARY }) {
                 <ShieldCheck size={32} />
             </div>
 
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Admin Login</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{text}</h1>
             <p className="text-gray-400 text-sm mt-2">Authorized Access Only</p>
         </div>
     )

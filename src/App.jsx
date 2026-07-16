@@ -56,6 +56,9 @@ import StudentSettings from "./sections/Student/StudentSettings";
 import StudentProjects from "./sections/Student/StudentProjects";
 import StudentNotes from "./sections/Student/StudentNotes";
 
+// payment portal pages
+import AdminPaymentLoginPage from "./pages/AdminPaymentLoginPage";
+
 // college pages
 import CollegeMain from "./pages/CollegeMain";
 import College1 from "./pages/College1";
@@ -151,6 +154,11 @@ export default function App() {
             <Route path="notices" element={<StudentNoticeBoard />} />
             <Route path="settings" element={<StudentSettings />} />
           </Route>
+        </Route>
+
+        {/* --- Payment AUTH ROUTES --- */}
+        <Route element={<PublicRoute userType="payment" />}>
+          <Route path="/admin/payment/login" element={<AdminPaymentLoginPage />} />
         </Route>
 
         {/* --- COURSE & COLLEGE ROUTES --- */}

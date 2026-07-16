@@ -16,6 +16,10 @@ export const PublicRoute = ({ userType = "admin" }) => {
         mentor: {
             tokenKey: "mentor_token",
             path: "/mentor/dashboard"
+        },
+        payment: {
+            tokenKey: "admin_payment_token",
+            path: "/admin/payment/dashboard"
         }
     };
 
