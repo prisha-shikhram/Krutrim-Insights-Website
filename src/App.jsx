@@ -58,6 +58,15 @@ import StudentNotes from "./sections/Student/StudentNotes";
 
 // payment portal pages
 import AdminPaymentLoginPage from "./pages/AdminPaymentLoginPage";
+import AdminPaymentDashboard from "./sections/Payment/AdminPaymentDashboard";
+
+// admin payment dashboard pages
+import PaymentOverview from "./sections/Payment/PaymentOverview";
+import PaymentModule from "./sections/Payment/PaymentModule";
+import DelayTracker from "./sections/Payment/DelayTracker";
+import PaymentReminders from "./sections/Payment/PaymentReminders";
+import CreatePaymentStructure from "./sections/Payment/CreatePaymentStructure";
+import PaymentHistory from "./sections/Payment/PaymentHistory";
 
 // college pages
 import CollegeMain from "./pages/CollegeMain";
@@ -159,6 +168,19 @@ export default function App() {
         {/* --- Payment AUTH ROUTES --- */}
         <Route element={<PublicRoute userType="payment" />}>
           <Route path="/admin/payment/login" element={<AdminPaymentLoginPage />} />
+        </Route>
+
+        <Route element={<ProtectedRoute userType="payment" />}>
+          <Route path="/admin/payment/dashboard" element={<AdminPaymentDashboard />}>
+            <Route index element={<PaymentOverview />} />
+
+            <Route path="overview" element={<PaymentOverview />} />
+            <Route path="enrolled" element={<EnrolledStudents />} />
+            <Route path="payment-module" element={<PaymentModule />} />
+            <Route path="payment-history" element={<PaymentHistory />} />
+            <Route path="reminders" element={<PaymentReminders />} />
+            <Route path="delay-tracker" element={<DelayTracker />} />
+          </Route>
         </Route>
 
         {/* --- COURSE & COLLEGE ROUTES --- */}

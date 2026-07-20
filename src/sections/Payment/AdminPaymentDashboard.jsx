@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import icons
-import { LayoutDashboard, Users, CreditCard, Bell, ShieldAlert, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Users, CreditCard, Bell, ShieldAlert, LogOut, ChevronLeft, ChevronRight, History } from "lucide-react";
 
 // import toast
 import toast, { Toaster } from "react-hot-toast";
@@ -94,6 +94,7 @@ export default function AdminPaymentDashboard() {
         overview: "Overview Dashboard",
         enrolled: "Enrolled Students",
         "payment-module": "Payment Module",
+        "payment-history": "Payment History",
         reminders: "Payment Reminders",
         "delay-tracker": "Delay Tracker",
     };
@@ -127,6 +128,7 @@ export default function AdminPaymentDashboard() {
         { id: "overview", label: "Overview", icon: <LayoutDashboard size={20} /> },
         { id: "enrolled", label: "Enrolled Students", icon: <Users size={20} /> },
         { id: "payment-module", label: "Payment Module", icon: <CreditCard size={20} /> },
+        { id: "payment-history", label: "Payment History", icon: <History size={20} /> },
         { id: "reminders", label: "Reminders", icon: <Bell size={20} /> },
         { id: "delay-tracker", label: "Delay Tracker", icon: <ShieldAlert size={20} /> }
     ];

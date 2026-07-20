@@ -25,7 +25,7 @@ export default function StatCard({ title, count, color, icon, trend, allowed }) 
             {/* MAIN VALUE */}
             <div className={`transition-all ${!allowed && "blur-[2px] opacity-40"}`}>
                 <h4
-                    className="text-4xl font-black tracking-tight"
+                    className="text-3xl font-black tracking-tight"
                     style={{ color }}
                 >
                     {count ?? 0}
