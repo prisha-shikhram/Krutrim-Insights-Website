@@ -1,11 +1,16 @@
 // import hooks
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 // import icons
-import { Plus, Trash2, Save, Calendar, DollarSign, Clock, CheckCircle2, ChevronDown, CreditCard, ShieldCheck, AlertTriangle, Calculator, ArrowLeft } from "lucide-react";
+import {
+    Plus, Trash2, Save, Calendar, DollarSign, Clock, CheckCircle2, ChevronDown, CreditCard, ShieldCheck, AlertTriangle, Calculator, ArrowLeft
+} from "lucide-react";
 
 // import toast
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+
+// import custom logs hook
+import { usePaymentLogs } from "../../components/utils/usePaymentLogs";
 
 // create payment structure
 export default function CreatePaymentStructure({
@@ -14,6 +19,13 @@ export default function CreatePaymentStructure({
 }) {
     const [loading, setLoading] = useState(false);
     const [fetching, setFetching] = useState(true);
+    const [initialHasStructure, setInitialHasStructure] = useState(false);
+
+    // Reference to hold initial loaded state for field-by-field diff comparison
+    const initialStructureRef = useRef(null);
+
+    // Logging hook
+    const { logAction } = usePaymentLogs();
 
     // State to handle custom delete modal overlay
     const [deleteModal, setDeleteModal] = useState({ isOpen: false, targetId: null, index: null });
@@ -22,7 +34,12 @@ export default function CreatePaymentStructure({
     const [structure, setStructure] = useState({
         totalFees: "",
         registrationAmount: "",
+        registrationDueDate: "",
+        registrationIsPaid: "Pending", // "Pending" | "Paid"
         registrationPaidDate: "",
+        registrationPaymentMode: "UPI", // "Cash" | "UPI" | "Cheque" | "Other"
+        registrationReferenceId: "",
+        registrationOtherModeText: "",
         installments: [
             {
                 id: Date.now(),
@@ -30,12 +47,14 @@ export default function CreatePaymentStructure({
                 dueDate: "",
                 paidStatus: "Pending", // Pending | Paid
                 paidDate: "",
-                modeOfPayment: "UPI" // UPI | Cash
+                modeOfPayment: "UPI", // Cash | UPI | Cheque | Other
+                referenceId: "",
+                otherModeText: ""
             }
         ]
     });
 
-    // EPARATED ENDPOINT TOPOLOGY CONFIGURATION
+    // SEPARATED ENDPOINT TOPOLOGY CONFIGURATION
     const FETCH_API_URL = "https://pfbizwkb87.execute-api.ap-south-1.amazonaws.com/payment/students";
     const CREATE_API_URL = "https://pfbizwkb87.execute-api.ap-south-1.amazonaws.com/payment/create";
 
@@ -63,14 +82,29 @@ export default function CreatePaymentStructure({
 
                 const data = await response.json();
 
-                // If a structure configuration has already been initialized, map it directly into active state
-                if (isMounted && data && data.hasStructure) {
-                    setStructure({
+                if (isMounted && data) {
+                    setInitialHasStructure(Boolean(data.hasStructure));
+
+                    const loadedStructure = {
                         totalFees: data.totalFees || "",
                         registrationAmount: data.registrationAmount || "",
+                        registrationDueDate: data.registrationDueDate || "",
+                        registrationIsPaid: data.registrationIsPaid ? "Paid" : "Pending",
                         registrationPaidDate: data.registrationPaidDate || "",
+                        registrationPaymentMode: data.registrationPaymentMode || "UPI",
+                        registrationReferenceId: data.registrationReferenceId || "",
+                        registrationOtherModeText: data.registrationOtherModeText || "",
                         installments: data.installments && data.installments.length > 0
-                            ? data.installments
+                            ? data.installments.map(ins => ({
+                                id: ins.id || (Date.now() + Math.random()),
+                                amount: ins.amount || "",
+                                dueDate: ins.dueDate || "",
+                                paidStatus: ins.paidStatus || "Pending",
+                                paidDate: ins.paidDate || "",
+                                modeOfPayment: ins.modeOfPayment || "UPI",
+                                referenceId: ins.referenceId || "",
+                                otherModeText: ins.otherModeText || ""
+                            }))
                             : [
                                 {
                                     id: Date.now(),
@@ -78,10 +112,16 @@ export default function CreatePaymentStructure({
                                     dueDate: "",
                                     paidStatus: "Pending",
                                     paidDate: "",
-                                    modeOfPayment: "UPI"
+                                    modeOfPayment: "UPI",
+                                    referenceId: "",
+                                    otherModeText: ""
                                 }
                             ]
-                    });
+                    };
+
+                    setStructure(loadedStructure);
+                    // Store deep copy for mutation comparisons on submit
+                    initialStructureRef.current = JSON.parse(JSON.stringify(loadedStructure));
                 }
             } catch (err) {
                 console.error("Failed to parse historical structure fields:", err);
@@ -104,7 +144,15 @@ export default function CreatePaymentStructure({
 
     // Handle primary top-level registration parameter updates
     const handleFieldChange = (field, value) => {
-        setStructure(prev => ({ ...prev, [field]: value }));
+        setStructure(prev => {
+            const updated = { ...prev, [field]: value };
+            if (field === "registrationIsPaid" && value === "Pending") {
+                updated.registrationPaidDate = "";
+                updated.registrationReferenceId = "";
+                updated.registrationOtherModeText = "";
+            }
+            return updated;
+        });
     };
 
     // Append a new milestone structure configuration installment row
@@ -119,7 +167,9 @@ export default function CreatePaymentStructure({
                     dueDate: "",
                     paidStatus: "Pending",
                     paidDate: "",
-                    modeOfPayment: "UPI"
+                    modeOfPayment: "UPI",
+                    referenceId: "",
+                    otherModeText: ""
                 }
             ]
         }));
@@ -127,10 +177,6 @@ export default function CreatePaymentStructure({
 
     // Trigger the custom modal overlay instead of standard browser prompt
     const triggerDeleteModal = (id, index) => {
-        if (structure.installments.length === 1) {
-            toast.error("At least one structural milestone row configuration is required.");
-            return;
-        }
         setDeleteModal({ isOpen: true, targetId: id, index });
     };
 
@@ -156,6 +202,8 @@ export default function CreatePaymentStructure({
 
                 if (field === "paidStatus" && value === "Pending") {
                     updated.paidDate = "";
+                    updated.referenceId = "";
+                    updated.otherModeText = "";
                 }
                 return updated;
             })
@@ -169,7 +217,7 @@ export default function CreatePaymentStructure({
         const due = new Date(dueDateStr);
         due.setHours(0, 0, 0, 0);
 
-        let compareDate = new Date("2026-07-18");
+        let compareDate = new Date();
         if (currentStatus === "Paid" && paidDateStr) {
             compareDate = new Date(paidDateStr);
         }
@@ -194,38 +242,111 @@ export default function CreatePaymentStructure({
     );
     const unallocatedAmount = remainingBalance - allocatedInstallmentsSum;
 
-    // Save and transmit clean computed state schemas to network routing endpoints
+    // Save and transmit clean computed state schemas to network routing endpoints with automated logging
     const handleSaveStructure = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        const tid = toast.loading("Syncing structural matrices to AWS runtime...");
 
-        if (registrationAmountNum + allocatedInstallmentsSum !== totalFeesNum) {
-            toast.error(
-                `Accounting mismatch: Reg (${registrationAmountNum}) + Installments (${allocatedInstallmentsSum}) must equal Total Fees (${totalFeesNum})`,
-                { id: tid }
-            );
-            setLoading(false);
+        // 1. Mandatory Top-level Checks
+        if (!structure.totalFees) {
+            toast.error("Total Fees Amount is mandatory.");
+            return;
+        }
+        if (!structure.registrationAmount) {
+            toast.error("Registration Amount is mandatory.");
+            return;
+        }
+        if (!structure.registrationDueDate) {
+            toast.error("Registration Due Date is mandatory.");
             return;
         }
 
+        // 2. Registration Row Strict Validation if Paid
+        if (structure.registrationIsPaid === "Paid") {
+            if (!structure.registrationPaidDate) {
+                toast.error("Registration Paid Date is mandatory when status is Paid.");
+                return;
+            }
+            if (
+                (structure.registrationPaymentMode === "UPI" || structure.registrationPaymentMode === "Cheque") &&
+                !structure.registrationReferenceId.trim()
+            ) {
+                toast.error(
+                    `Reference / ${structure.registrationPaymentMode === "Cheque" ? "Cheque Number" : "Transaction ID"} is mandatory for Registration.`
+                );
+                return;
+            }
+            if (structure.registrationPaymentMode === "Other" && !structure.registrationOtherModeText.trim()) {
+                toast.error("Please specify the mode description for 'Other' on Registration.");
+                return;
+            }
+        }
+
+        // 3. Installments Row Strict Validation
+        for (let i = 0; i < structure.installments.length; i++) {
+            const ins = structure.installments[i];
+
+            if (!ins.amount || Number(ins.amount) <= 0) {
+                toast.error(`Amount is mandatory for Installment #${i + 1}.`);
+                return;
+            }
+            if (!ins.dueDate) {
+                toast.error(`Due Date is mandatory for Installment #${i + 1}.`);
+                return;
+            }
+
+            if (ins.paidStatus === "Paid") {
+                if (!ins.paidDate) {
+                    toast.error(`Paid Date is mandatory for Installment #${i + 1}.`);
+                    return;
+                }
+                if (
+                    (ins.modeOfPayment === "UPI" || ins.modeOfPayment === "Cheque") &&
+                    !ins.referenceId.trim()
+                ) {
+                    toast.error(
+                        `Reference / ${ins.modeOfPayment === "Cheque" ? "Cheque Number" : "Transaction ID"} is mandatory for Installment #${i + 1}.`
+                    );
+                    return;
+                }
+                if (ins.modeOfPayment === "Other" && !ins.otherModeText.trim()) {
+                    toast.error(`Please specify mode description for 'Other' on Installment #${i + 1}.`);
+                    return;
+                }
+            }
+        }
+
+        setLoading(true);
+        const tid = toast.loading("Syncing structural matrices to AWS runtime...");
+
         try {
             const activeAuthToken = localStorage.getItem("admin_payment_token");
+            const adminName = localStorage.getItem("admin_payment_name") || "Admin User";
+            const isRegPaid = structure.registrationIsPaid === "Paid";
 
             const finalPayload = {
                 email: student.email,
                 totalFees: String(structure.totalFees),
                 registrationAmount: String(structure.registrationAmount),
-                registrationPaidDate: structure.registrationPaidDate,
+                registrationDueDate: structure.registrationDueDate,
+                registrationIsPaid: isRegPaid,
+                registrationPaidDate: isRegPaid ? structure.registrationPaidDate : "",
+                registrationPaymentMode: isRegPaid ? structure.registrationPaymentMode : "",
+                registrationReferenceId: isRegPaid ? structure.registrationReferenceId : "",
+                registrationOtherModeText: isRegPaid ? structure.registrationOtherModeText : "",
                 isCreated: true,
-                installments: structure.installments.map(ins => ({
-                    id: String(ins.id),
-                    amount: String(ins.amount),
-                    dueDate: ins.dueDate,
-                    paidStatus: ins.paidStatus,
-                    paidDate: ins.paidStatus === "Paid" ? ins.paidDate : "",
-                    modeOfPayment: ins.modeOfPayment
-                }))
+                installments: structure.installments.map(ins => {
+                    const isInsPaid = ins.paidStatus === "Paid";
+                    return {
+                        id: String(ins.id),
+                        amount: String(ins.amount),
+                        dueDate: ins.dueDate,
+                        paidStatus: ins.paidStatus,
+                        paidDate: isInsPaid ? ins.paidDate : "",
+                        modeOfPayment: isInsPaid ? ins.modeOfPayment : "",
+                        referenceId: isInsPaid ? ins.referenceId : "",
+                        otherModeText: isInsPaid ? ins.otherModeText : ""
+                    };
+                })
             };
 
             const response = await fetch(CREATE_API_URL, {
@@ -240,6 +361,38 @@ export default function CreatePaymentStructure({
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
                 throw new Error(errorData.error || `Server Exception Status Code: ${response.status}`);
+            }
+
+            // --- DYNAMODB AUDIT LOGGING ---
+            if (!initialHasStructure) {
+                // Log First-time Creation
+                await logAction({
+                    action: "STRUCTURE_CREATED",
+                    adminName,
+                    target: `Initialized payment structure for student ${student.name} (${student.email}) with Total Fees: ₹${structure.totalFees}`,
+                    type: "SUCCESS"
+                });
+            } else {
+                // Determine what changed for modified updates
+                const oldData = initialStructureRef.current || {};
+                const changes = [];
+
+                if (oldData.totalFees !== structure.totalFees) changes.id = changes.push(`Total Fees (${oldData.totalFees} -> ${structure.totalFees})`);
+                if (oldData.registrationAmount !== structure.registrationAmount) changes.push(`Reg Amount (${oldData.registrationAmount} -> ${structure.registrationAmount})`);
+                if (oldData.registrationDueDate !== structure.registrationDueDate) changes.push(`Reg Due Date (${oldData.registrationDueDate} -> ${structure.registrationDueDate})`);
+                if (oldData.registrationIsPaid !== structure.registrationIsPaid) changes.push(`Reg Status (${oldData.registrationIsPaid} -> ${structure.registrationIsPaid})`);
+                if (oldData.installments?.length !== structure.installments?.length) {
+                    changes.push(`Installment count updated (${oldData.installments?.length} -> ${structure.installments?.length})`);
+                }
+
+                const changeDescription = changes.length > 0 ? changes.join(", ") : "Updated financial parameters/installments";
+
+                await logAction({
+                    action: "STRUCTURE_UPDATED",
+                    adminName,
+                    target: `Modified payment structure for student ${student.name} (${student.email}): ${changeDescription}`,
+                    type: "WARNING"
+                });
             }
 
             toast.success("Payment architecture schema mapped successfully!", { id: tid });
@@ -268,9 +421,6 @@ export default function CreatePaymentStructure({
 
     return (
         <div className="space-y-6 p-1 max-w-6xl mx-auto relative">
-            {/* toast container */}
-            <Toaster position="top-center" />
-
             {/* HEADER INTERFACE FRAME */}
             <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
@@ -342,16 +492,16 @@ export default function CreatePaymentStructure({
                         Primary Parameters & Registration Timeline
                     </h3>
 
+                    {/* ROW 1: TOTAL FEES, REG AMOUNT, REG DUE DATE */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Fees Amount</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Total Fees Amount *</label>
 
                             <div className="relative">
                                 <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
 
                                 <input
                                     required
-                                    type="number"
                                     placeholder="Total target fees"
                                     value={structure.totalFees}
                                     onChange={(e) => handleFieldChange("totalFees", e.target.value)}
@@ -362,14 +512,13 @@ export default function CreatePaymentStructure({
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Registration Amount</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Registration Amount *</label>
 
                             <div className="relative">
                                 <DollarSign className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
 
                                 <input
                                     required
-                                    type="number"
                                     placeholder="Registration element"
                                     value={structure.registrationAmount}
                                     onChange={(e) => handleFieldChange("registrationAmount", e.target.value)}
@@ -380,7 +529,7 @@ export default function CreatePaymentStructure({
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Registration Paid Date</label>
+                            <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Registration Due Date *</label>
 
                             <div className="relative">
                                 <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -388,13 +537,131 @@ export default function CreatePaymentStructure({
                                 <input
                                     required
                                     type="date"
-                                    value={structure.registrationPaidDate}
-                                    onChange={(e) => handleFieldChange("registrationPaidDate", e.target.value)}
+                                    value={structure.registrationDueDate}
+                                    onChange={(e) => handleFieldChange("registrationDueDate", e.target.value)}
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl 
                                     text-slate-800 outline-none text-sm transition-all focus:border-[#0189c7] focus:bg-white"
                                 />
                             </div>
                         </div>
+                    </div>
+
+                    {/* ROW 2: STATUS CLEARANCE & CONDITIONAL REVEAL */}
+                    <div className="pt-4 border-t border-dashed border-slate-100 space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-end">
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Registration Status (isPaid)</label>
+
+                                <div className="relative">
+                                    <ShieldCheck className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+
+                                    <select
+                                        value={structure.registrationIsPaid}
+                                        onChange={(e) => handleFieldChange("registrationIsPaid", e.target.value)}
+                                        className={`w-full pl-10 pr-8 py-2.5 border rounded-xl font-bold text-sm outline-none appearance-none transition-all 
+                                            ${structure.registrationIsPaid === "Paid"
+                                                ? "bg-emerald-50 border-emerald-200 text-emerald-700"
+                                                : "bg-slate-50 border-slate-100 text-slate-700"
+                                            }`}
+                                    >
+                                        <option value="Pending">Pending</option>
+                                        <option value="Paid">Paid</option>
+                                    </select>
+
+                                    <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={16} />
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* EXPANDED REGISTRATION DETAILS IF PAID */}
+                        {structure.registrationIsPaid === "Paid" && (
+                            <div className="p-4 bg-emerald-50/50 border border-emerald-100 rounded-2xl space-y-4 animate-in fade-in duration-200">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    <div>
+                                        <label className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1.5">
+                                            Registration Paid Date *
+                                        </label>
+
+                                        <input
+                                            type="date"
+                                            value={structure.registrationPaidDate}
+                                            onChange={(e) => handleFieldChange("registrationPaidDate", e.target.value)}
+                                            className="w-full px-3.5 py-2 bg-white border border-emerald-200 rounded-xl text-slate-800 
+                                            text-sm font-semibold outline-none focus:border-emerald-500"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1.5">
+                                            Payment Mode *
+                                        </label>
+                                        <select
+                                            value={structure.registrationPaymentMode}
+                                            onChange={(e) => handleFieldChange("registrationPaymentMode", e.target.value)}
+                                            className="w-full px-3.5 py-2 bg-white border border-emerald-200 rounded-xl text-slate-800 
+                                            text-sm font-bold outline-none focus:border-emerald-500"
+                                        >
+                                            <option value="Cash">Cash</option>
+                                            <option value="UPI">UPI</option>
+                                            <option value="Cheque">Cheque</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    {/* Dynamic Reference Field */}
+                                    {(structure.registrationPaymentMode === "UPI" || structure.registrationPaymentMode === "Cheque") && (
+                                        <div>
+                                            <label className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1.5">
+                                                {structure.registrationPaymentMode === "Cheque" ? "Cheque Number *" : "UPI Reference / Txn ID *"}
+                                            </label>
+
+                                            <input
+                                                type="text"
+                                                placeholder={structure.registrationPaymentMode === "Cheque" ? "Enter cheque no." : "Enter txn reference no."}
+                                                value={structure.registrationReferenceId}
+                                                onChange={(e) => handleFieldChange("registrationReferenceId", e.target.value)}
+                                                className="w-full px-3.5 py-2 bg-white border border-emerald-200 rounded-xl text-slate-800 
+                                                text-sm font-medium outline-none focus:border-emerald-500"
+                                            />
+                                        </div>
+                                    )}
+
+                                    {structure.registrationPaymentMode === "Other" && (
+                                        <>
+                                            <div>
+                                                <label className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1.5">
+                                                    Describe Payment Mode *
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    placeholder="e.g. Bank Transfer / NEFT"
+                                                    value={structure.registrationOtherModeText}
+                                                    onChange={(e) => handleFieldChange("registrationOtherModeText", e.target.value)}
+                                                    className="w-full px-3.5 py-2 bg-white border border-emerald-200 rounded-xl text-slate-800 
+                                                    text-sm font-medium outline-none focus:border-emerald-500"
+                                                />
+                                            </div>
+
+                                            <div>
+                                                <label className="block text-[11px] font-bold text-emerald-800 uppercase tracking-wider mb-1.5">
+                                                    Reference ID (Optional)
+                                                </label>
+
+                                                <input
+                                                    type="text"
+                                                    placeholder="Enter reference no. if available"
+                                                    value={structure.registrationReferenceId}
+                                                    onChange={(e) => handleFieldChange("registrationReferenceId", e.target.value)}
+                                                    className="w-full px-3.5 py-2 bg-white border border-emerald-200 rounded-xl text-slate-800 
+                                                    text-sm font-medium outline-none focus:border-emerald-500"
+                                                />
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -422,7 +689,8 @@ export default function CreatePaymentStructure({
                             return (
                                 <div
                                     key={ins.id}
-                                    className="p-5 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-5 relative transition-all hover:border-slate-200"
+                                    className="p-5 bg-slate-50/50 rounded-2xl border border-slate-100 space-y-5 relative transition-all 
+                                    hover:border-slate-200"
                                 >
                                     {/* TITLE & DELETION ACTIONS ROW */}
                                     <div className="flex items-center justify-between">
@@ -439,17 +707,16 @@ export default function CreatePaymentStructure({
                                         </button>
                                     </div>
 
-                                    {/* ROW 1: CORE DATA ATTRIBUTES ROW */}
+                                    {/* ROW 1: AMOUNT, DUE DATE, STATUS CLEARANCE */}
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount</label>
+                                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Amount *</label>
 
                                             <div className="relative">
                                                 <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
 
                                                 <input
                                                     required
-                                                    type="number"
                                                     placeholder="Installment amount"
                                                     value={ins.amount}
                                                     onChange={(e) => handleInstallmentChange(ins.id, "amount", e.target.value)}
@@ -460,7 +727,7 @@ export default function CreatePaymentStructure({
                                         </div>
 
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Due Date</label>
+                                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Due Date *</label>
 
                                             <div className="relative">
                                                 <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
@@ -477,29 +744,6 @@ export default function CreatePaymentStructure({
                                         </div>
 
                                         <div className="space-y-1">
-                                            <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Payment Mode</label>
-
-                                            <div className="relative">
-                                                <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
-
-                                                <select
-                                                    value={ins.modeOfPayment}
-                                                    onChange={(e) => handleInstallmentChange(ins.id, "modeOfPayment", e.target.value)}
-                                                    className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-sm 
-                                                    outline-none appearance-none focus:border-[#0189c7]"
-                                                >
-                                                    <option value="UPI">UPI Protocol</option>
-                                                    <option value="Cash">Cash Ledger</option>
-                                                </select>
-
-                                                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={14} />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* ROW 2: CLEAN CLEARANCE TARGET AND REACTIVE TIMELINE INPUT ROW */}
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-3 border-t border-dashed border-slate-200 items-end">
-                                        <div className="space-y-1">
                                             <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Status Clearance</label>
 
                                             <div className="relative">
@@ -508,8 +752,12 @@ export default function CreatePaymentStructure({
                                                 <select
                                                     value={ins.paidStatus}
                                                     onChange={(e) => handleInstallmentChange(ins.id, "paidStatus", e.target.value)}
-                                                    className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-8 py-2 text-sm 
-                                                    outline-none appearance-none focus:border-[#0189c7]"
+                                                    className={`w-full bg-white border rounded-xl pl-9 pr-8 py-2 text-sm font-bold 
+                                                    outline-none appearance-none focus:border-[#0189c7] 
+                                                    ${ins.paidStatus === "Paid"
+                                                            ? "text-emerald-600 bg-emerald-50/50"
+                                                            : "text-slate-700"
+                                                        }`}
                                                 >
                                                     <option value="Pending">Pending</option>
                                                     <option value="Paid">Paid</option>
@@ -518,29 +766,98 @@ export default function CreatePaymentStructure({
                                                 <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" size={14} />
                                             </div>
                                         </div>
+                                    </div>
 
-                                        {/* Dynamic Paid Date Input Box */}
-                                        {ins.paidStatus === "Paid" ? (
-                                            <div className="space-y-1" style={{ animation: "fadeIn 0.2s ease-out both" }}>
-                                                <label className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Paid Date</label>
-
-                                                <div className="relative">
-                                                    <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
+                                    {/* ROW 2: CONDITIONAL PAID DETAILS FOR INSTALLMENTS */}
+                                    {ins.paidStatus === "Paid" && (
+                                        <div className="p-3.5 bg-emerald-50/60 border border-emerald-100 rounded-xl space-y-3 animate-in fade-in duration-200">
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                                <div>
+                                                    <label className="block text-[10px] font-bold text-emerald-800 uppercase mb-1">
+                                                        Paid Date *
+                                                    </label>
 
                                                     <input
-                                                        required
                                                         type="date"
                                                         value={ins.paidDate}
                                                         onChange={(e) => handleInstallmentChange(ins.id, "paidDate", e.target.value)}
-                                                        className="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-sm 
-                                                        outline-none focus:border-[#0189c7]"
+                                                        className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-slate-800 
+                                                        text-xs font-semibold outline-none focus:border-emerald-500"
                                                     />
                                                 </div>
+
+                                                <div>
+                                                    <label className="block text-[10px] font-bold text-emerald-800 uppercase mb-1">
+                                                        Payment Mode *
+                                                    </label>
+
+                                                    <select
+                                                        value={ins.modeOfPayment}
+                                                        onChange={(e) => handleInstallmentChange(ins.id, "modeOfPayment", e.target.value)}
+                                                        className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg text-slate-800 
+                                                        text-xs font-bold outline-none focus:border-emerald-500"
+                                                    >
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="UPI">UPI</option>
+                                                        <option value="Cheque">Cheque</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+
+                                                {/* Dynamic Reference Field */}
+                                                {(ins.modeOfPayment === "UPI" || ins.modeOfPayment === "Cheque") && (
+                                                    <div>
+                                                        <label className="block text-[10px] font-bold text-emerald-800 uppercase mb-1">
+                                                            {ins.modeOfPayment === "Cheque" ? "Cheque Number *" : "UPI Reference / Txn ID *"}
+                                                        </label>
+
+                                                        <input
+                                                            type="text"
+                                                            placeholder={ins.modeOfPayment === "Cheque" ? "Enter cheque no." : "Enter reference ID"}
+                                                            value={ins.referenceId}
+                                                            onChange={(e) => handleInstallmentChange(ins.id, "referenceId", e.target.value)}
+                                                            className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg 
+                                                            text-slate-800 text-xs font-medium outline-none focus:border-emerald-500"
+                                                        />
+                                                    </div>
+                                                )}
+
+                                                {ins.modeOfPayment === "Other" && (
+                                                    <>
+                                                        <div>
+                                                            <label className="block text-[10px] font-bold text-emerald-800 uppercase mb-1">
+                                                                Describe Mode *
+                                                            </label>
+
+                                                            <input
+                                                                type="text"
+                                                                placeholder="e.g. Bank Transfer"
+                                                                value={ins.otherModeText}
+                                                                onChange={(e) => handleInstallmentChange(ins.id, "otherModeText", e.target.value)}
+                                                                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg 
+                                                                text-slate-800 text-xs font-medium outline-none focus:border-emerald-500"
+                                                            />
+                                                        </div>
+
+                                                        <div>
+                                                            <label className="block text-[10px] font-bold text-emerald-800 uppercase mb-1">
+                                                                Reference ID (Optional)
+                                                            </label>
+
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Optional reference"
+                                                                value={ins.referenceId}
+                                                                onChange={(e) => handleInstallmentChange(ins.id, "referenceId", e.target.value)}
+                                                                className="w-full px-3 py-1.5 bg-white border border-emerald-200 rounded-lg 
+                                                                text-slate-800 text-xs font-medium outline-none focus:border-emerald-500"
+                                                            />
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
-                                        ) : (
-                                            <div className="h-9.5" />
-                                        )}
-                                    </div>
+                                        </div>
+                                    )}
 
                                     {/* REAL-TIME DYNAMIC VISUAL BADGES */}
                                     <div className="absolute top-4 right-16 flex gap-2">
@@ -552,6 +869,7 @@ export default function CreatePaymentStructure({
                                                 <Clock size={10} /> Computed Delay Flag ({liveMetrics.daysDelayed}d)
                                             </span>
                                         )}
+
                                         {ins.paidStatus === "Paid" && (
                                             <span
                                                 className="inline-flex items-center gap-1 text-[9px] font-extrabold bg-emerald-100 border 
@@ -572,12 +890,13 @@ export default function CreatePaymentStructure({
                     <div className="text-xs font-semibold text-slate-400 uppercase tracking-widest pl-2">
                         {unallocatedAmount === 0
                             ? "Structure perfectly balanced"
-                            : `Allocation skew: Target mismatch by ₹${Math.abs(unallocatedAmount)}`}
+                            : `Unallocated balance: ₹${Math.abs(unallocatedAmount)}`
+                        }
                     </div>
 
                     <button
                         type="submit"
-                        disabled={loading || unallocatedAmount !== 0}
+                        disabled={loading}
                         className="inline-flex cursor-pointer items-center gap-2 px-6 py-3 rounded-xl text-white font-bold text-xs 
                         tracking-widest bg-linear-to-r from-[#0189c7] to-[#00c6ff] shadow-lg shadow-blue-500/20 hover:opacity-90 
                         active:scale-[0.98] transition-all disabled:opacity-40 disabled:cursor-not-allowed uppercase"
@@ -606,7 +925,8 @@ export default function CreatePaymentStructure({
                         <div>
                             <h4 className="text-base font-black text-slate-900 tracking-tight">Remove Installment</h4>
                             <p className="text-xs text-slate-400 mt-1">
-                                Are you sure you want to delete Installment #{deleteModal.index + 1}? This action will change the computed balance allocation variables.
+                                Are you sure you want to delete Installment #{deleteModal.index + 1}? This action will change the computed
+                                balance allocation variables.
                             </p>
                         </div>
 

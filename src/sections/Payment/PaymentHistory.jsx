@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Search, CreditCard, Calendar, BookOpen, FileText, ArrowUpRight } from "lucide-react";
 
 // import toast
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 // payment history
 export default function PaymentHistory() {
@@ -72,9 +72,6 @@ export default function PaymentHistory() {
 
     return (
         <div className="space-y-6 p-1">
-            {/* toast container */}
-            <Toaster position="top-center" />
-
             {/* ACTION SEARCH PANEL HEADER */}
             <div className="bg-white p-5 rounded-3xl border border-gray-100 shadow-sm space-y-4">
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

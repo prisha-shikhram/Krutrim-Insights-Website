@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Users, UserCheck, DollarSign, TrendingUp, Clock, AlertTriangle, Calendar, CreditCard, BookOpen } from "lucide-react";
 
 // import toast
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 // import components
 import StatCard from "../../components/admin/overview/StatCard";
@@ -127,9 +127,6 @@ export default function PaymentOverview() {
 
     return (
         <div className="space-y-8 p-1">
-            {/* toast container */}
-            <Toaster position="top-center" />
-
             {/* STATS ANALYTICS GRID */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                 {statsConfigurationMatrix.map((stat, idx) => (

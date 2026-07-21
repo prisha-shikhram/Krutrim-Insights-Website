@@ -2,17 +2,22 @@
 import { useState, useEffect } from "react";
 
 // import icons
-import { Search, Bell, Calendar, CheckCircle2, Clock, AlertCircle, Send, Loader2 } from "lucide-react";
+import { Search, Bell, Calendar, CheckCircle2, Clock, AlertCircle, Send, Loader2, Mail } from "lucide-react";
 
 // import toast
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
-// paymennt reminder
+// import custom logs hook
+import { usePaymentLogs } from "../../components/utils/usePaymentLogs";
+
+// payment reminder
 export default function PaymentReminders() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState("");
     const [sendingId, setSendingId] = useState(null);
     const [reminderRecords, setReminderRecords] = useState([]);
+
+    const { logAction } = usePaymentLogs();
 
     const REMINDERS_API_URL = "https://pfbizwkb87.execute-api.ap-south-1.amazonaws.com/payment/reminders";
 
@@ -61,6 +66,7 @@ export default function PaymentReminders() {
 
         try {
             const activeAuthToken = localStorage.getItem("admin_payment_token");
+            const adminName = localStorage.getItem("admin_payment_name") || "Admin User";
             const targetUrl = `${REMINDERS_API_URL}?action=sendReminder`;
 
             const finalPayload = {
@@ -85,13 +91,26 @@ export default function PaymentReminders() {
                 throw new Error(errorData.error || `Server Exception Status: ${response.status}`);
             }
 
-            // Inline local mutation updating row UI flags instantly upon complete transaction receipt
+            // Inline local mutation updating row UI flags & incrementing manual count instantly
             setReminderRecords(prev => prev.map(item => {
                 if (item.email === record.email && item.installmentId === record.installmentId) {
-                    return { ...item, status: "Sent", isMailsSent: true };
+                    return {
+                        ...item,
+                        status: "Sent",
+                        isMailsSent: true,
+                        manualRemindersSentCount: (item.manualRemindersSentCount || 0) + 1
+                    };
                 }
                 return item;
             }));
+
+            // --- AUDIT LOG DISPATCH ---
+            await logAction({
+                action: "REMINDER_SENT",
+                adminName: adminName,
+                target: `Dispatched manual payment reminder to ${record.name} (${record.email}) for Installment #${record.installmentId} (Amount: ₹${Number(record.amount).toLocaleString("en-IN")}, Due: ${record.dueDate})`,
+                type: "INFO"
+            });
 
             toast.success(`Reminder notification email delivered successfully!`, { id: tid });
         } catch (err) {
@@ -110,8 +129,6 @@ export default function PaymentReminders() {
 
     return (
         <div className="space-y-6 p-1">
-            <Toaster position="top-center" />
-
             {/* ACTION SEARCH PANEL HEADER */}
             <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div className="relative flex-1 max-w-md">
@@ -154,6 +171,7 @@ export default function PaymentReminders() {
                                 <th className="px-6 py-3">Student</th>
                                 <th className="px-6 py-3">Amount Due</th>
                                 <th className="px-6 py-3">Due Date</th>
+                                <th className="px-6 py-3">Mails Sent</th>
                                 <th className="px-6 py-3">Reminder Status</th>
                                 <th className="px-6 py-3 text-right">Actions</th>
                             </tr>
@@ -162,13 +180,15 @@ export default function PaymentReminders() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td colSpan="6" className="py-20 text-center text-gray-400 italic">
                                         Loading systemic transmission matrices...
                                     </td>
                                 </tr>
                             ) : filteredReminders.length > 0 ? (
                                 filteredReminders.map((record, idx) => {
                                     const recordUniqueId = `${record.email}_${record.installmentId}`;
+                                    const autoCount = record.autoRemindersSentCount || 0;
+                                    const manualCount = record.manualRemindersSentCount || 0;
 
                                     return (
                                         <tr
@@ -217,7 +237,30 @@ export default function PaymentReminders() {
                                                 </div>
                                             </td>
 
-                                            {/* FIXED PROPERTY MATCH: References record.status directly */}
+                                            {/* DISPATCH COUNTS: AUTO & MANUAL */}
+                                            <td className="px-6 py-4 border-y border-gray-50">
+                                                <div className="flex items-center gap-1.5 text-xs font-semibold">
+                                                    <span
+                                                        title="Automated daily cron reminders sent"
+                                                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-100 text-slate-700 
+                                                        border border-slate-200 text-[11px]"
+                                                    >
+                                                        <Mail size={11} className="text-slate-400" />
+                                                        Auto: <strong className="text-slate-900">{autoCount}</strong>
+                                                    </span>
+
+                                                    <span
+                                                        title="Manual admin reminders sent"
+                                                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 text-[#0189c7] 
+                                                        border border-blue-100 text-[11px]"
+                                                    >
+                                                        <Send size={10} className="text-[#0189c7]" />
+                                                        Manual: <strong className="text-blue-900">{manualCount}</strong>
+                                                    </span>
+                                                </div>
+                                            </td>
+
+                                            {/* STATUS BADGE */}
                                             <td className="px-6 py-4 border-y border-gray-50">
                                                 <span
                                                     className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-extrabold 
@@ -238,7 +281,7 @@ export default function PaymentReminders() {
                                                 </span>
                                             </td>
 
-                                            {/* ACTION BUTTON WITH AUTOMATED isMailsSent TOGGLE LOGIC */}
+                                            {/* ACTION BUTTON */}
                                             <td className="px-6 py-4 text-right rounded-r-xl border-y border-r border-gray-50">
                                                 <button
                                                     onClick={() => handleSendReminder(record)}
@@ -273,7 +316,7 @@ export default function PaymentReminders() {
                                 })
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td colSpan="6" className="py-20 text-center text-gray-400 italic">
                                         No pending reminder processing queues located.
                                     </td>
                                 </tr>

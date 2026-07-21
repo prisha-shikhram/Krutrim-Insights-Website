@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import icons
-import { LayoutDashboard, Users, CreditCard, Bell, ShieldAlert, LogOut, ChevronLeft, ChevronRight, History } from "lucide-react";
+import { LayoutDashboard, FileText, Users, CreditCard, Bell, ShieldAlert, LogOut, ChevronLeft, ChevronRight, History } from "lucide-react";
 
 // import toast
 import toast, { Toaster } from "react-hot-toast";
@@ -97,6 +97,7 @@ export default function AdminPaymentDashboard() {
         "payment-history": "Payment History",
         reminders: "Payment Reminders",
         "delay-tracker": "Delay Tracker",
+        "payment-logs": "Payment Logs"
     };
 
     // get current page title
@@ -130,7 +131,8 @@ export default function AdminPaymentDashboard() {
         { id: "payment-module", label: "Payment Module", icon: <CreditCard size={20} /> },
         { id: "payment-history", label: "Payment History", icon: <History size={20} /> },
         { id: "reminders", label: "Reminders", icon: <Bell size={20} /> },
-        { id: "delay-tracker", label: "Delay Tracker", icon: <ShieldAlert size={20} /> }
+        { id: "delay-tracker", label: "Delay Tracker", icon: <ShieldAlert size={20} /> },
+        { id: "payment-logs", label: "Payment Logs", icon: <FileText size={20} /> }
     ];
 
     return (
