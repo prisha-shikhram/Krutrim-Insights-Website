@@ -67,6 +67,7 @@ import DelayTracker from "./sections/Payment/DelayTracker";
 import PaymentReminders from "./sections/Payment/PaymentReminders";
 import CreatePaymentStructure from "./sections/Payment/CreatePaymentStructure";
 import PaymentHistory from "./sections/Payment/PaymentHistory";
+import PaymentLogsPage from "./sections/Payment/PaymentLogsPage.jsx";
 
 // college pages
 import CollegeMain from "./pages/CollegeMain";
@@ -180,6 +181,7 @@ export default function App() {
             <Route path="payment-history" element={<PaymentHistory />} />
             <Route path="reminders" element={<PaymentReminders />} />
             <Route path="delay-tracker" element={<DelayTracker />} />
+            <Route path="payment-logs" element={<PaymentLogsPage />} />
           </Route>
         </Route>
 
