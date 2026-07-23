@@ -16,6 +16,7 @@ import PersonalSection from "../../components/student/enroll/PersonalSection";
 import AcademicSection from "../../components/student/enroll/AcademicSection";
 import IdentitySection from "../../components/student/enroll/IdentitySection";
 import GuardianSection from "../../components/student/enroll/GuardianSection";
+import PaymentStructureSection from "../../components/student/enroll/PaymentStructureSection";
 
 // primary color
 const PRIMARY = "#0189c7";
@@ -24,14 +25,20 @@ const PRIMARY = "#0189c7";
 const ENROLL_API = "https://6p7z2hkjxc.execute-api.ap-south-1.amazonaws.com/student/enroll";
 const S3_URL_API = "https://ixov8eynl3.execute-api.ap-south-1.amazonaws.com/get-upload-url";
 
-// Initial states (Declaration removed)
+// Initial state (includes dynamic installments array)
 const INITIAL = {
     fullName: "", dob: "", gender: "",
     studentPhone: "", studentEmail: "", address: "",
     collegeName: "", course: "", otherCourse: "",
-    enrollingFor: "", year: "", duration: "", idType: "Aadhaar Card",
+    enrollingFor: "", year: "", idType: "Aadhaar Card",
     otherIdType: "", idNumber: "", parentName: "",
     parentPhone: "", emergencyContact: "",
+    batchEnrolledIn: "", enrollmentDate: "", totalFeeAgreed: "",
+    registrationFees: "", numberOfInstallments: "1",
+    assignedCounsellor: "",
+    installments: [
+        { id: Date.now(), amount: "", dueDate: "" }
+    ]
 };
 
 // student enrollment form
@@ -48,7 +55,7 @@ export default function StudentEnrollment() {
     const [dragOver, setDragOver] = useState(false);
     const [uploadError, setUploadError] = useState("");
 
-    // handle change (Simplified to remove checkbox logic)
+    // handle change
     const handleChange = useCallback((e) => {
         const { name, value } = e.target;
 
@@ -163,7 +170,7 @@ export default function StudentEnrollment() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    ...formData,
+                    ...submissionData,
                     idProofUrl,
                     action: "enroll"
                 }),
@@ -183,7 +190,7 @@ export default function StudentEnrollment() {
                 duration: 6000,
             });
 
-            setFormData(INITIAL);
+            setFormData({ ...INITIAL, installments: [{ id: Date.now(), amount: "", dueDate: "" }] });
             setSelectedFile(null);
             setPreview(null);
             setErrors({});
@@ -327,6 +334,20 @@ export default function StudentEnrollment() {
                         errors={errors}
                         formData={formData}
                         fp={fp}
+                    />
+
+                    {/* ── SECTION 5: Payment Structure Section ──────────────────── */}
+                    <PaymentStructureSection
+                        sectionTitleCls={sectionTitleCls}
+                        PRIMARY={PRIMARY}
+                        labelCls={labelCls}
+                        labelStyle={labelStyle}
+                        inputCls={inputCls}
+                        errors={errors}
+                        formData={formData}
+                        selectCls={selectCls}
+                        fp={fp}
+                        setFormData={setFormData}
                     />
 
                     <button

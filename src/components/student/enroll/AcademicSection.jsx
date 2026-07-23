@@ -2,7 +2,7 @@
 import { FieldError } from "./FieldError";
 
 // import icons
-import { Calendar, ChevronDown, School, BookOpen, Clock, CheckCircle2 } from "lucide-react";
+import { Calendar, ChevronDown, School, BookOpen, Clock, CheckCircle2, Edit3 } from "lucide-react";
 
 // academic section component
 export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, labelStyle, inputCls, errors, formData, selectCls, fp }) {
@@ -46,7 +46,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                         className={labelCls}
                         style={labelStyle("course")}
                     >
-                        Course / Programme
+                        Degree
                     </label>
 
                     <div className="relative select-group">
@@ -58,7 +58,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                             required
                             value={formData.course}
                         >
-                            <option value="">Select Course</option>
+                            <option value="">Select Your Degree</option>
 
                             {["BCA", "MCA", "Btech", "Mtech", "BBA", "MBA", "Other"].map(c => (
                                 <option
@@ -83,7 +83,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                 {/* Conditional Other Course Field */}
                 {formData.course === "Other" && (
                     <div>
-                        <label className={labelCls} style={labelStyle("otherCourse")}>Specify Course</label>
+                        <label className={labelCls} style={labelStyle("otherCourse")}>Specify Degree</label>
 
                         <div className="relative">
                             <Edit3 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
@@ -92,7 +92,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                                 {...fp("otherCourse")}
                                 required
                                 className={inputCls}
-                                placeholder="Enter your course name"
+                                placeholder="Enter your degree name"
                                 value={formData.otherCourse}
                             />
                         </div>
@@ -107,7 +107,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                         className={labelCls}
                         style={labelStyle("year")}
                     >
-                        Year of Study
+                        Year of Your Degree
                     </label>
 
                     <div className="relative select-group">
@@ -168,6 +168,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                                 "Data Analysis powered by Next GenAI",
                                 "Web Development with AI",
                                 "AI for Business and Management",
+                                "Rapid Data Analysis & Agentic AI Program"
                             ].map(p => (
                                 <option
                                     key={p}
@@ -186,46 +187,6 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
                     </div>
 
                     <FieldError msg={errors.enrollingFor} />
-                </div>
-
-                {/* Duration */}
-                <div>
-                    <label
-                        className={labelCls}
-                        style={labelStyle("duration")}
-                    >
-                        Duration (Years)
-                    </label>
-
-                    <div className="relative select-group">
-                        <Clock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-
-                        <select
-                            {...fp("duration")}
-                            className={selectCls}
-                            required
-                            value={formData.duration}
-                        >
-                            <option value="">Select Duration</option>
-
-                            {[1, 2, 3, 4].map(d => (
-                                <option
-                                    key={d}
-                                    value={d}
-                                >
-                                    {d} Year{d > 1 ? "s" : ""}
-                                </option>
-                            ))}
-                        </select>
-
-                        <ChevronDown
-                            size={16}
-                            className="select-chevron absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none
-                            transition-transform duration-200"
-                        />
-                    </div>
-
-                    <FieldError msg={errors.duration} />
                 </div>
             </div>
         </section>

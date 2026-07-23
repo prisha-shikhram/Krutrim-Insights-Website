@@ -139,7 +139,7 @@ export default function PersonalSection({ sectionTitleCls, PRIMARY, labelCls, la
                         <textarea
                             {...fp("address")}
                             required
-                            className={`${inputCls} pl-11 h-12 pt-3`}
+                            className={`${inputCls} pl-11 h-12 pt-3 resize-none`}
                             placeholder="Full address..."
                             value={formData.address}
                         />

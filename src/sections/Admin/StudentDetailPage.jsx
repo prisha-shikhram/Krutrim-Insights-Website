@@ -1,7 +1,7 @@
 // import icons
 import {
     ArrowLeft, Calendar, Phone, MapPin, UserCircle2, GraduationCap, Users, ShieldCheck, Fingerprint, Clock, Activity, Loader2, Briefcase,
-    FileText, Award, CheckCircle2, XCircle, ExternalLink, Image, AlertCircle
+    FileText, Award, CreditCard, Hash, IndianRupee, Layers, UserCheck, CheckCircle2, XCircle, ExternalLink, Image, AlertCircle
 } from "lucide-react";
 
 // import toast
@@ -65,7 +65,7 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
 
             const queryParams = new URLSearchParams({
                 email: data.email.toLowerCase(),
-                batch: (data.batchCode || "").trim()
+                batch: (data.batchCode || data.batchEnrolledIn || "").trim()
             }).toString();
 
             try {
@@ -138,11 +138,59 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
             {/* Academic Section */}
             <Section title="Academic & Program Details" icon={<GraduationCap size={16} />}>
                 <Field label="College Name" value={data.collegeName} icon={<Briefcase size={10} />} />
-                <Field label="Course" value={data.course === "Other" ? data.otherCourse : data.course} />
+                <Field label="Degree" value={data.course === "Other" ? data.otherCourse : data.course} />
                 <Field label="Current Year" value={data.year} />
                 <Field label="Program Enrolled" value={data.enrollingFor} icon={<Award size={10} />} />
-                <Field label="Course Duration" value={`${data.duration} Years`} />
                 <Field label="Enrolled On" value={fmt(data.createdAt)} icon={<Clock size={10} />} />
+            </Section>
+
+            {/* Payment Structure Details */}
+            <Section title="Payment & Financial Structure" icon={<CreditCard size={16} />}>
+                <Field label="Batch Code" value={data.batchCode || data.batchEnrolledIn || "UNASSIGNED"} icon={<Hash size={10} />} mono />
+                <Field label="Enrollment Date" value={fmt(data.enrollmentDate || data.createdAt)} icon={<Calendar size={10} />} />
+
+                <Field
+                    label="Total Fee Agreed"
+                    value={data.totalFeeAgreed ? `₹${Number(data.totalFeeAgreed).toLocaleString("en-IN")}` : "N/A"}
+                    icon={<IndianRupee size={10} />}
+                />
+
+                <Field
+                    label="Registration Fee"
+                    value={data.registrationFees ? `₹${Number(data.registrationFees).toLocaleString("en-IN")}` : "N/A"}
+                    icon={<IndianRupee size={10} />}
+                />
+
+                <Field label="Assigned Counsellor" value={data.assignedCounsellor || "N/A"} icon={<UserCheck size={10} />} />
+                <Field label="Installments Count" value={data.numberOfInstallments ? `${data.numberOfInstallments} Installment(s)` : "N/A"} icon={<Layers size={10} />} />
+
+                {/* Dynamic Installments Breakdown if present */}
+                {Array.isArray(data.installments) && data.installments.length > 0 && (
+                    <div className="col-span-full mt-4 pt-4 border-t border-slate-100 space-y-3">
+                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
+                            <Layers size={12} /> Configured Installment Milestones
+                        </p>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                            {data.installments.map((ins, idx) => (
+                                <div
+                                    key={ins.id || idx}
+                                    className="bg-slate-50 border border-slate-100 rounded-xl p-3 flex justify-between items-center text-xs"
+                                >
+                                    <div>
+                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Installment #{idx + 1}</span>
+                                        <strong className="text-slate-800 text-sm font-black">₹{Number(ins.amount).toLocaleString("en-IN")}</strong>
+                                    </div>
+
+                                    <div className="text-right">
+                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Due Date</span>
+                                        <span className="text-slate-600 font-semibold">{ins.dueDate ? fmt(ins.dueDate) : "N/A"}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </Section>
 
             {/* Identity Verification Section */}
