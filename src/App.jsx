@@ -16,7 +16,7 @@ import PrivacyPage from "./pages/PrivacyPage";
 
 // admin portal pages
 import AdminLoginPage from "./pages/AdminLoginPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminDashboard from "./sections//Admin/AdminDashboard.jsx";
 
 // admin dashboard pages
 import Overview from "./sections/Admin/Overview";
@@ -113,7 +113,7 @@ export default function App() {
 
         {/* --- ADMIN PRIVATE ROUTES --- */}
         <Route element={<ProtectedRoute userType="admin" />}>
-          <Route path="/admin/dashboard" element={<AdminDashboardPage />}>
+          <Route path="/admin/dashboard" element={<AdminDashboard />}>
             <Route index element={<Overview />} />
             <Route path="contact" element={<ContactLeads />} />
             <Route path="brochure" element={<BrochureLeads />} />

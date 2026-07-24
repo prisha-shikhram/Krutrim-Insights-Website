@@ -53,6 +53,7 @@ export default function AdminPaymentLogin() {
 
             // Safe JSON parsing
             let data = {};
+
             try {
                 data = await res.json();
             } catch {

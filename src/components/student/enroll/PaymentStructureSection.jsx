@@ -109,7 +109,6 @@ export default function PaymentStructureSection({ sectionTitleCls, PRIMARY, labe
 
                         <input
                             {...fp("totalFeeAgreed")}
-                            type="number"
                             required
                             className={inputCls}
                             placeholder="e.g. 50000"
@@ -131,7 +130,6 @@ export default function PaymentStructureSection({ sectionTitleCls, PRIMARY, labe
 
                         <input
                             {...fp("registrationFees")}
-                            type="number"
                             required
                             className={inputCls}
                             placeholder="e.g. 5000"

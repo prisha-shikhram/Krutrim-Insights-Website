@@ -2,13 +2,16 @@
 import { useState, useEffect } from "react";
 
 // import icons
-import { Search, Bell, Calendar, CheckCircle2, Clock, AlertCircle, Send, Loader2, Mail } from "lucide-react";
+import { Calendar, CheckCircle2, Clock, AlertCircle, Send, Loader2, Mail } from "lucide-react";
 
 // import toast
 import toast from "react-hot-toast";
 
 // import custom logs hook
 import { usePaymentLogs } from "../../components/utils/usePaymentLogs";
+
+// import components
+import RemindersHeader from "../../components/payment/reminders/RemindersHeader";
 
 // payment reminder
 export default function PaymentReminders() {
@@ -130,27 +133,11 @@ export default function PaymentReminders() {
     return (
         <div className="space-y-6 p-1">
             {/* ACTION SEARCH PANEL HEADER */}
-            <div className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-
-                    <input
-                        type="text"
-                        placeholder="Search student notification targets..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-800 
-                        placeholder-slate-400 outline-none text-sm transition-all focus:border-[#0189c7] focus:bg-white"
-                    />
-                </div>
-
-                <div
-                    className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 
-                    bg-slate-50 rounded-lg border border-slate-100 self-start md:self-auto"
-                >
-                    <Bell size={14} className="text-[#0189c7]" /> Active Targets: {filteredReminders.length}
-                </div>
-            </div>
+            <RemindersHeader
+                filteredReminders={filteredReminders}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
 
             {/* REMINDERS INTERFACE GRID COMPONENT */}
             <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
@@ -287,7 +274,7 @@ export default function PaymentReminders() {
                                                     onClick={() => handleSendReminder(record)}
                                                     disabled={sendingId === recordUniqueId}
                                                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px] font-bold rounded-lg border 
-                                                        transition-all cursor-pointer shadow-sm active:scale-95 
+                                                    transition-all cursor-pointer shadow-sm active:scale-95 
                                                         ${record.isMailsSent
                                                             ? "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300"
                                                             : "bg-white text-slate-700 border-slate-200 hover:bg-[#0189c7] hover:text-white hover:border-[#0189c7] disabled:opacity-50"

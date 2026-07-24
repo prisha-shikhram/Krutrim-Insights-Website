@@ -60,6 +60,7 @@ export default function AdminPaymentDashboard() {
 
             // Super Admins map to system assets, others fall back to stored profile properties
             let profileImg = null;
+
             if (isSuper) {
                 profileImg = SUPER_ADMIN_IMAGES[name];
             } else {
@@ -177,6 +178,7 @@ export default function AdminPaymentDashboard() {
                             alt="Logo"
                             className="h-10 w-auto"
                         />
+
                         {!collapsed && <span className="font-black text-xl tracking-tight text-slate-800 uppercase">Payments</span>}
                     </div>
 

@@ -2,13 +2,14 @@
 import { useState, useEffect } from "react";
 
 // import icons
-import { PlusCircle, Edit3, Search, BookOpen, GraduationCap } from "lucide-react";
+import { PlusCircle, Edit3, BookOpen } from "lucide-react";
 
 // import toast
 import toast from "react-hot-toast";
 
-// import payment structure component
+// import components
 import CreatePaymentStructure from "./CreatePaymentStructure";
+import PaymentModuleHeader from "../../components/payment/module/PaymentModuleHeader";
 
 // payment module
 export default function PaymentModule() {
@@ -98,27 +99,11 @@ export default function PaymentModule() {
     return (
         <div className="space-y-6 p-1">
             {/* ACTION HEADER BAR */}
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-                <div className="relative flex-1 max-w-md">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-
-                    <input
-                        type="text"
-                        placeholder="Search student records, courses, or system schemas..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-100 rounded-xl text-slate-800 
-                        placeholder-slate-400 outline-none text-sm transition-all focus:border-[#0189c7] focus:bg-white"
-                    />
-                </div>
-
-                <div
-                    className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 py-1.5 
-                    bg-slate-50 rounded-lg border border-slate-100 self-start md:self-auto"
-                >
-                    <GraduationCap size={14} /> Total Records: {filteredStudents.length}
-                </div>
-            </div>
+            <PaymentModuleHeader
+                filteredStudents={filteredStudents}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+            />
 
             {/* DATA GRID DISPLAY INTERFACE */}
             <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
@@ -183,7 +168,7 @@ export default function PaymentModule() {
                                         <td className="px-6 py-4 border-y border-gray-50">
                                             <span
                                                 className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[10px] font-bold border 
-                                                bg-blue-50 border-blue-100 text-[#0189c7]"
+                                                bg-blue-50 border-blue-100 text-[#0189c7] truncate"
                                             >
                                                 <BookOpen size={10} /> {student.course || "General Course"}
                                             </span>
@@ -208,7 +193,7 @@ export default function PaymentModule() {
                                         </td>
 
                                         {/* DYNAMIC OPERATION LOGIC HOOK */}
-                                        <td className="px-6 py-4 text-right rounded-r-xl border-y border-r border-gray-50">
+                                        <td className="px-6 py-4 text-right rounded-r-xl border-y border-r border-gray-50 truncate">
                                             {!student.hasStructure ? (
                                                 <button
                                                     onClick={() => handleCreateStructure(student)}
