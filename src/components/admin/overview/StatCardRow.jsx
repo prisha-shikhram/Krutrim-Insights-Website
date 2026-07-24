@@ -65,7 +65,7 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pt-5">
             {CARDS.map((card) => {
                 const allowed = user.isSuper || user.permissions?.includes(card.key);
 
@@ -78,7 +78,7 @@ export default function StatCardRow({ data, PRIMARY, user, onNavigate }) {
                         }}
                         className={`transition-all duration-300
                             ${allowed
-                                ? "cursor-pointer hover:scale-[1.02]"
+                                ? "cursor-pointer"
                                 : "cursor-not-allowed opacity-80"
                             }`}
                     >

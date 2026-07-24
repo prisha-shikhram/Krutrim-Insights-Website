@@ -9,7 +9,7 @@ export default function BatchesGrid({ batches, setShowAssignModal, setSearchTerm
                 <div
                     key={batch.batchCode}
                     className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 
-                    hover:border-indigo-200 hover:-translate-y-1 transition-all duration-300 group flex flex-col h-full relative overflow-hidden"
+                    hover:border-indigo-200 group flex flex-col h-full relative overflow-hidden"
                 >
                     {/* Decorative Background Glow */}
                     <div

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // import icons
-import { Check, Loader2, X, UserCheck, CalendarCheck } from "lucide-react";
+import { Check, Loader2, X, UserCheck, CalendarCheck, Users, Sparkles } from "lucide-react";
 
 // import Custom select component
 import CustomSelect from "./CustomSelect";
@@ -10,12 +10,20 @@ import CustomSelect from "./CustomSelect";
 // import toast
 import toast from "react-hot-toast";
 
-// create atttendance modal
+// create attendance modal
 export default function CreateAttendanceModal({ onClose, batches, mentor, ATTENDANCE_API }) {
-    const [dateConfig, setDateConfig] = useState({
-        year: "2026",
-        month: "May",
-        day: "4"
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const years = ["2026", "2027", "2028", "2029", "2030"];
+    const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
+
+    // Initialize with live current date dynamically
+    const [dateConfig, setDateConfig] = useState(() => {
+        const now = new Date();
+        return {
+            year: now.getFullYear().toString(),
+            month: months[now.getMonth()],
+            day: now.getDate().toString()
+        };
     });
 
     const [selectedBatches, setSelectedBatches] = useState([]);
@@ -23,10 +31,6 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
     const [existingAttendance, setExistingAttendance] = useState([]);
     const [fetchingStatus, setFetchingStatus] = useState(false);
     const [saving, setSaving] = useState(false);
-
-    const years = ["2026", "2027", "2028", "2029", "2030"];
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const days = Array.from({ length: 31 }, (_, i) => (i + 1).toString());
 
     const formattedDate = `${dateConfig.day}-${dateConfig.month}-${dateConfig.year}`;
 
@@ -82,6 +86,15 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
         .filter(b => selectedBatches.includes(b.batchCode))
         .flatMap(b => (b.students || []).map(email => ({ email, batchCode: b.batchCode })));
 
+    // quick selection helpers
+    const selectAllStudents = () => {
+        setPresentStudents(allStudents.map(s => s.email));
+    };
+
+    const deselectAllStudents = () => {
+        setPresentStudents([]);
+    };
+
     // handle save
     const handleSave = async () => {
         if (selectedBatches.length === 0) return toast.error("Select a batch");
@@ -114,120 +127,207 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
-            <div className="bg-white w-full max-w-4xl rounded-[3.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                {/* header */}
-                <div className="p-10 border-b border-slate-50 flex justify-between items-center bg-slate-50/50">
-                    <div>
-                        <h3 className="text-xl font-black text-slate-800">Batch Attendance Sync</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-md p-4 transition-all">
+            <div className="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] border border-slate-100">
+                {/* HEADER */}
+                <div className="px-8 py-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/80">
+                    <div className="flex items-center gap-3">
+                        <div className="p-2.5 bg-indigo-50 text-indigo-600 rounded-xl border border-indigo-100">
+                            <CalendarCheck size={22} />
+                        </div>
 
-                        <p className="text-[10px] font-black text-indigo-600 uppercase tracking-widest mt-1">
-                            Status: {fetchingStatus ? "Fetching DB..." : "Ready"}
-                        </p>
+                        <div>
+                            <h3 className="text-lg font-bold text-slate-900 tracking-tight">Batch Attendance Sync</h3>
+
+                            <div className="flex items-center gap-2 mt-0.5">
+                                <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-500">
+                                    <span className={`w-2 h-2 rounded-full ${fetchingStatus ? "bg-amber-400 animate-ping" : "bg-emerald-500"}`} />
+                                    {fetchingStatus ? "Fetching DB Records..." : "Database Ready"}
+                                </span>
+                            </div>
+                        </div>
                     </div>
 
                     <button
                         onClick={onClose}
-                        className="p-3 hover:bg-white rounded-full cursor-pointer transition-all border border-transparent hover:border-slate-100 shadow-sm"
+                        className="p-2.5 text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 rounded-full transition-all cursor-pointer"
                     >
                         <X size={20} />
                     </button>
                 </div>
 
-                <div className="p-10 overflow-y-auto space-y-10 custom-scrollbar">
+                {/* BODY CONTENT */}
+                <div className="p-8 overflow-y-auto space-y-8 custom-scrollbar">
                     {/* DATE SELECTORS */}
-                    <div className="grid grid-cols-3 gap-6">
-                        <CustomSelect label="Year" value={dateConfig.year} options={years} onChange={(v) => setDateConfig({ ...dateConfig, year: v })} />
-                        <CustomSelect label="Month" value={dateConfig.month} options={months} onChange={(v) => setDateConfig({ ...dateConfig, month: v })} />
-                        <CustomSelect label="Date" value={dateConfig.day} options={days} onChange={(v) => setDateConfig({ ...dateConfig, day: v })} />
+                    <div className="bg-slate-50/60 p-5 rounded-2xl border border-slate-100/80">
+                        <label className="text-[11px] font-black uppercase text-slate-400 tracking-wider block mb-3">Target Date Configuration</label>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <CustomSelect label="Year" value={dateConfig.year} options={years} onChange={(v) => setDateConfig({ ...dateConfig, year: v })} />
+                            <CustomSelect label="Month" value={dateConfig.month} options={months} onChange={(v) => setDateConfig({ ...dateConfig, month: v })} />
+                            <CustomSelect label="Date" value={dateConfig.day} options={days} onChange={(v) => setDateConfig({ ...dateConfig, day: v })} />
+                        </div>
                     </div>
 
-                    {/* BATCH TABS */}
+                    {/* BATCH SELECTION */}
                     <section>
-                        <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest block mb-4">Select Target Batches</label>
+                        <div className="flex items-center justify-between mb-3">
+                            <label className="text-[11px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-2">
+                                <Users size={14} className="text-indigo-500" /> Target Batches
+                            </label>
 
-                        <div className="flex flex-wrap gap-2">
-                            {batches.map(b => (
-                                <button
-                                    key={b.batchCode}
-                                    onClick={() => toggleBatch(b.batchCode)}
-                                    className={`px-5 py-2.5 rounded-2xl text-xs font-bold transition-all border cursor-pointer 
-                                    ${selectedBatches.includes(b.batchCode) ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-100"
-                                            : "bg-white text-slate-500 border-slate-100 hover:border-indigo-200"}`}
-                                >
-                                    {b.batchName || b.batchCode}
-                                </button>
-                            ))}
+                            <span className="text-[11px] font-semibold text-slate-400">
+                                {selectedBatches.length} selected
+                            </span>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2.5">
+                            {batches.map(b => {
+                                const isSelected = selectedBatches.includes(b.batchCode);
+
+                                return (
+                                    <button
+                                        key={b.batchCode}
+                                        onClick={() => toggleBatch(b.batchCode)}
+                                        className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all border cursor-pointer flex items-center gap-2
+                                        ${isSelected
+                                                ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100 scale-[1.01]"
+                                                : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-slate-50"
+                                            }`
+                                        }
+                                    >
+                                        <span>{b.batchName || b.batchCode}</span>
+                                        {isSelected && <Check size={14} strokeWidth={3} />}
+                                    </button>
+                                );
+                            })}
                         </div>
                     </section>
 
                     {/* STUDENT GRID */}
                     <section>
-                        <div className="flex items-center justify-between mb-4 px-2">
-                            <label className="text-[10px] font-black uppercase text-slate-400 tracking-widest">
-                                Attendance Checklist ({presentStudents.length} Present)
-                            </label>
+                        <div className="flex items-center justify-between mb-3 px-1">
+                            <div className="flex items-center gap-2">
+                                <label className="text-[11px] font-black uppercase text-slate-400 tracking-wider">
+                                    Attendance Checklist
+                                </label>
 
-                            {fetchingStatus && <Loader2 size={16} className="animate-spin text-indigo-500" />}
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
+                                    {presentStudents.length} Present
+                                </span>
+                            </div>
+
+                            {allStudents.length > 0 && (
+                                <div className="flex items-center gap-3 text-xs font-bold">
+                                    <button
+                                        type="button"
+                                        onClick={selectAllStudents}
+                                        className="text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+                                    >
+                                        Mark All Present
+                                    </button>
+
+                                    <span className="text-slate-300">|</span>
+
+                                    <button
+                                        type="button"
+                                        onClick={deselectAllStudents}
+                                        className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                                    >
+                                        Clear All
+                                    </button>
+
+                                    {fetchingStatus && <Loader2 size={16} className="animate-spin text-indigo-500 ml-1" />}
+                                </div>
+                            )}
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50/50 p-8 rounded-[2.5rem] border border-slate-100">
+                        <div className="bg-slate-50/70 p-6 rounded-2xl border border-slate-100 min-h-55 flex flex-col justify-center">
                             {allStudents.length === 0 ? (
-                                <div className="col-span-full py-16 text-center">
-                                    <UserCheck className="mx-auto text-slate-200 mb-4" size={32} />
-                                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Select batches to manage students</p>
+                                <div className="py-12 text-center my-auto">
+                                    <UserCheck className="mx-auto text-slate-300 mb-3" size={36} />
+                                    <p className="text-xs font-bold text-slate-400 tracking-wide">No batches selected</p>
+                                    <p className="text-[11px] text-slate-400 mt-1">Select one or more batches above to display students.</p>
                                 </div>
                             ) : (
-                                allStudents.map(({ email, batchCode }) => {
-                                    const isMarked = existingAttendance.find(r => r.studentEmail === email);
-                                    const isCurrentlyPresent = presentStudents.includes(email);
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                                    {allStudents.map(({ email, batchCode }) => {
+                                        const isMarked = existingAttendance.find(r => r.studentEmail === email);
+                                        const isCurrentlyPresent = presentStudents.includes(email);
 
-                                    return (
-                                        <div
-                                            key={email}
-                                            onClick={() => setPresentStudents(prev => isCurrentlyPresent ? prev.filter(e => e !== email) : [...prev, email])}
-                                            className={`group flex items-center justify-between p-4 bg-white rounded-2xl border transition-all cursor-pointer 
-                                            hover:shadow-xl hover:shadow-slate-100 hover:-translate-y-0.5 
-                                            ${isCurrentlyPresent ? "border-emerald-200" : "border-slate-100"}`}
-                                        >
-                                            <div className="truncate pr-2">
-                                                <div className="flex items-center gap-2 mb-1">
-                                                    <p className="text-xs font-bold text-slate-700 truncate">{email.split('@')[0]}</p>
+                                        return (
+                                            <div
+                                                key={email}
+                                                onClick={() => setPresentStudents(prev => isCurrentlyPresent ? prev.filter(e => e !== email) : [...prev, email])}
+                                                className={`group flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer select-none
+                                                ${isCurrentlyPresent
+                                                        ? "bg-white border-emerald-300 shadow-sm shadow-emerald-50 ring-1 ring-emerald-300"
+                                                        : "bg-white border-slate-200/80 hover:border-indigo-200 hover:shadow-sm"
+                                                    }`
+                                                }
+                                            >
+                                                <div className="truncate pr-3">
+                                                    <div className="flex items-center gap-2 mb-0.5">
+                                                        <p className="text-xs font-bold text-slate-800 truncate">{email.split('@')[0]}</p>
 
-                                                    {isMarked && (
-                                                        <span className="text-[7px] bg-slate-900 text-white px-1.5 py-0.5 rounded-md font-black 
-                                                        uppercase tracking-tighter">In DB</span>
-                                                    )}
+                                                        {isMarked && (
+                                                            <span
+                                                                className="text-[9px] bg-slate-100 text-slate-600 border border-slate-200 
+                                                                px-1.5 py-0.2 rounded font-bold uppercase tracking-wider"
+                                                            >
+                                                                In DB
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-[10px] font-semibold text-slate-400 truncate">{email}</span>
+
+                                                        <span
+                                                            className="text-[9px] font-bold text-indigo-500 bg-indigo-50 px-1.5 py-0.2 rounded 
+                                                            border border-indigo-100 uppercase"
+                                                        >
+                                                            {batchCode}
+                                                        </span>
+                                                    </div>
                                                 </div>
 
-                                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-tighter">{batchCode}</p>
+                                                <div
+                                                    className={`w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all shrink-0
+                                                    ${isCurrentlyPresent
+                                                            ? "bg-emerald-500 border-emerald-500 text-white shadow-sm shadow-emerald-200"
+                                                            : "border-slate-200 bg-slate-50 group-hover:border-indigo-300"
+                                                        }`
+                                                    }
+                                                >
+                                                    {isCurrentlyPresent && <Check size={14} strokeWidth={3} />}
+                                                </div>
                                             </div>
-
-                                            <div
-                                                className={`w-8 h-8 rounded-xl border-2 flex items-center justify-center transition-all 
-                                                ${isCurrentlyPresent ? "bg-emerald-500 border-emerald-500 text-white shadow-lg shadow-emerald-100"
-                                                        : "border-slate-100 bg-slate-50 group-hover:border-indigo-200"}`}
-                                            >
-                                                {isCurrentlyPresent && <Check size={16} strokeWidth={4} />}
-                                            </div>
-                                        </div>
-                                    );
-                                })
+                                        );
+                                    })}
+                                </div>
                             )}
                         </div>
                     </section>
                 </div>
 
                 {/* FOOTER */}
-                <div className="p-10 bg-slate-50/50 border-t border-slate-100">
+                <div className="p-6 bg-slate-50/80 border-t border-slate-100 flex items-center justify-end gap-3">
+                    <button
+                        onClick={onClose}
+                        className="px-5 py-3 rounded-xl text-xs font-bold text-slate-600 hover:bg-slate-200/60 transition-all cursor-pointer"
+                    >
+                        Cancel
+                    </button>
+
                     <button
                         disabled={saving || selectedBatches.length === 0}
                         onClick={handleSave}
-                        className="w-full py-5 bg-slate-900 text-white rounded-3xl font-black text-xs uppercase flex items-center justify-center gap-3 
-                        hover:bg-black transition-all shadow-2xl shadow-slate-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                        className="px-6 py-3 bg-slate-900 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 
+                        hover:bg-black transition-all shadow-lg shadow-slate-200 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                     >
-                        {saving ? <Loader2 className="animate-spin" size={18} /> : <CalendarCheck size={18} />}
-                        Sync Attendance for {allStudents.length} Students
+                        {saving ? <Loader2 className="animate-spin" size={16} /> : <Sparkles size={16} />}
+                        Sync Attendance ({allStudents.length} Students)
                     </button>
                 </div>
             </div>

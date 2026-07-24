@@ -32,8 +32,7 @@ export default function AssignmentList({ loading, assignments, handleOpenShare }
                     return (
                         <div
                             key={item.assignmentId}
-                            className="group relative bg-white border border-slate-100 p-8 rounded-[3rem] shadow-sm hover:shadow-xl 
-                            hover:shadow-indigo-500/5 hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                            className="group relative bg-white border border-slate-100 p-8 rounded-[3rem] shadow-sm flex flex-col"
                         >
                             {/* Icon and ID */}
                             <div className="flex justify-between items-center mb-8">

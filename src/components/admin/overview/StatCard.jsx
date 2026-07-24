@@ -5,8 +5,7 @@ import { Lock } from "lucide-react";
 export default function StatCard({ title, count, color, icon, trend, allowed }) {
     return (
         <div
-            className="relative bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-hidden group transition-all 
-            duration-300 hover:shadow-lg hover:-translate-y-1"
+            className="relative bg-white p-6 rounded-3xl border border-gray-100 shadow-sm overflow-hidden"
         >
             {/* TOP ROW */}
             <div className="flex items-center justify-between mb-4">
@@ -53,7 +52,7 @@ export default function StatCard({ title, count, color, icon, trend, allowed }) 
 
             {/* BACKGROUND GLOW */}
             <div
-                className="absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-10 blur-2xl group-hover:scale-125 transition-transform"
+                className="absolute -right-10 -bottom-10 w-32 h-32 rounded-full opacity-10 blur-2xl"
                 style={{ background: color }}
             />
         </div>
