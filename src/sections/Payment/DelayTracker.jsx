@@ -40,33 +40,10 @@ export default function DelayTracker() {
                 }
 
                 const data = await response.json();
-
-                // Compute real-time delay days metrics based on system anchor parameter target (2026-07-18)
-                const computedRecords = data.map(record => {
-                    const baselineDate = new Date("2026-07-18");
-                    baselineDate.setHours(0, 0, 0, 0);
-
-                    const due = new Date(record.dueDate);
-                    due.setHours(0, 0, 0, 0);
-
-                    let daysDelayed = 0;
-
-                    if (record.paidLater && record.paidDate) {
-                        const paid = new Date(record.paidDate);
-                        paid.setHours(0, 0, 0, 0);
-                        daysDelayed = Math.max(0, Math.ceil((paid - due) / (1000 * 60 * 60 * 24)));
-                    } else {
-                        daysDelayed = Math.max(0, Math.ceil((baselineDate - due) / (1000 * 60 * 60 * 24)));
-                    }
-
-                    return {
-                        ...record,
-                        daysDelayed
-                    };
-                });
+                console.log(data);
 
                 if (isMounted) {
-                    setDelayRecords(computedRecords);
+                    setDelayRecords(data);
                 }
             } catch (err) {
                 console.error("Delay Retrieval Matrix Error:", err);
@@ -210,7 +187,7 @@ export default function DelayTracker() {
 
                                         {/* INDEPENDENT HISTORICAL PAID FLAG DIMENSION */}
                                         <td className="px-6 py-4 rounded-r-xl border-y border-r border-gray-50">
-                                            {record.paidLater ? (
+                                            {record.paidLater === "Yes" || record.status === "Paid" ? (
                                                 <span
                                                     className="inline-flex items-center gap-1 text-[10px] font-extrabold bg-emerald-50 border 
                                                     border-emerald-100 text-emerald-600 px-2.5 py-1 rounded-md uppercase tracking-wider"
