@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 
 // import icons
-import { Plus, Users, Loader2, X, Search, Edit3, UserMinus, AlertTriangle, CheckCircle2 } from "lucide-react";
+import { Plus, Users, Loader2, X, Search, Edit3, UserMinus, AlertTriangle, CheckCircle2, Edit2 } from "lucide-react";
 
 // import toast
 import toast from "react-hot-toast";
@@ -18,8 +18,9 @@ import CreateModal from "../../components/admin/batches/CreateModal";
 import AssignModal from "../../components/admin/batches/AssignModal";
 import ManageModal from "../../components/admin/batches/ManageModal";
 import ConfirmRemove from "../../components/admin/batches/ConfirmRemove";
+import EditModal from "../../components/admin/batches/EditModal";
 
-// batch mangement page
+// batch management page
 export default function BatchManagement() {
     const [batches, setBatches] = useState([]);
     const [unassignedStudents, setUnassignedStudents] = useState([]);
@@ -31,6 +32,7 @@ export default function BatchManagement() {
     const [showCreateModal, setShowCreateModal] = useState(false);
     const [showAssignModal, setShowAssignModal] = useState(null);
     const [showManageModal, setShowManageModal] = useState(null);
+    const [showEditModal, setShowEditModal] = useState(null);
     const [confirmRemove, setConfirmRemove] = useState(null);
 
     const [selectedStudents, setSelectedStudents] = useState([]);
@@ -43,7 +45,7 @@ export default function BatchManagement() {
         fetchInitialData();
     }, []);
 
-    // Fetch data with toast feedback
+    // Fetch initial data
     const fetchInitialData = async (silent = false) => {
         let tid;
         if (!silent) setLoading(true);
@@ -69,7 +71,7 @@ export default function BatchManagement() {
         }
     };
 
-    // handle batch creation
+    // Create batch
     const handleCreateBatch = async (e) => {
         e.preventDefault();
         setSubmitting(true);
@@ -85,7 +87,7 @@ export default function BatchManagement() {
                 toast.success("Batch created successfully", { id: tid });
                 setShowCreateModal(false);
                 setNewBatch({ batchName: "", batchCode: "" });
-                fetchInitialData(true); // Silent sync
+                fetchInitialData(true);
             } else {
                 throw new Error();
             }
@@ -96,7 +98,40 @@ export default function BatchManagement() {
         }
     };
 
-    // handle student addition
+    // Edit batch details handler
+    const handleEditBatch = async (e) => {
+        e.preventDefault();
+        if (!showEditModal) return;
+
+        setSubmitting(true);
+        const tid = toast.loading("Updating batch details...");
+
+        try {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                body: JSON.stringify({
+                    action: "editBatch",
+                    oldBatchCode: showEditModal.originalBatchCode || showEditModal.id,
+                    batchName: showEditModal.batchName,
+                    batchCode: showEditModal.batchCode
+                })
+            });
+
+            if (res.ok) {
+                toast.success("Batch updated successfully", { id: tid });
+                setShowEditModal(null);
+                fetchInitialData(true);
+            } else {
+                throw new Error();
+            }
+        } catch (err) {
+            toast.error("Failed to update batch", { id: tid });
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    // Assign students
     const handleConfirmAssignment = async () => {
         setSubmitting(true);
         const tid = toast.loading(`Assigning ${selectedStudents.length} students...`);
@@ -126,7 +161,7 @@ export default function BatchManagement() {
         }
     };
 
-    // handle student removal
+    // Remove student
     const handleRemoveStudent = async () => {
         setSubmitting(true);
         const tid = toast.loading("Removing student from batch...");
@@ -157,7 +192,7 @@ export default function BatchManagement() {
         }
     };
 
-    // filter
+    // Filter unassigned
     const filteredUnassigned = useMemo(() => {
         return unassignedStudents.filter(s =>
             s.fullName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -168,7 +203,7 @@ export default function BatchManagement() {
     // loading
     if (loading) return (
         <div className="h-96 flex flex-col items-center justify-center gap-4 text-slate-400">
-            <Loader2 className="animate-spin" size={40} />
+            <Loader2 className="animate-spin text-indigo-600" size={40} />
             <p className="text-xs font-bold uppercase tracking-[0.2em]">Synchronizing Data...</p>
         </div>
     );
@@ -181,12 +216,13 @@ export default function BatchManagement() {
                 batches={batches}
             />
 
-            {/* Batches Grid */}
+            {/* Batches Grid with edit modal trigger */}
             <BatchesGrid
                 batches={batches}
                 setShowAssignModal={setShowAssignModal}
                 setSearchTerm={setSearchTerm}
                 setShowManageModal={setShowManageModal}
+                setShowEditModal={setShowEditModal}
             />
 
             {/* CREATE MODAL */}
@@ -197,6 +233,14 @@ export default function BatchManagement() {
                 handleCreateBatch={handleCreateBatch}
                 newBatch={newBatch}
                 setNewBatch={setNewBatch}
+            />
+
+            {/* EDIT MODAL */}
+            <EditModal
+                showEditModal={showEditModal}
+                setShowEditModal={setShowEditModal}
+                submitting={submitting}
+                handleEditBatch={handleEditBatch}
             />
 
             {/* ASSIGN STUDENTS MODAL */}

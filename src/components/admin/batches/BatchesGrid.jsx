@@ -2,77 +2,105 @@
 import { Users, Plus, Edit3, ArrowUpRight } from "lucide-react";
 
 // batches grid component
-export default function BatchesGrid({ batches, setShowAssignModal, setSearchTerm, setShowManageModal }) {
+export default function BatchesGrid({ batches = [], setShowAssignModal, setSearchTerm, setShowManageModal, setShowEditModal }) {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {batches.map(batch => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+            {batches.map((batch) => (
                 <div
-                    key={batch.batchCode}
-                    className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-indigo-500/5 
-                    hover:border-indigo-200 group flex flex-col h-full relative overflow-hidden"
+                    key={batch.batchCode || batch.id}
+                    className="bg-white p-6 md:p-8 rounded-2xl border border-slate-200/80 shadow-xs 
+                    hover:shadow-xl hover:shadow-indigo-500/5 hover:border-indigo-200
+                    group flex flex-col h-full relative overflow-hidden transition-all duration-300"
                 >
-                    {/* Decorative Background Glow */}
+                    {/* Background Glow */}
                     <div
                         className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-50 rounded-full blur-3xl opacity-0 group-hover:opacity-100 
-                        transition-opacity duration-500"
+                        transition-opacity duration-500 pointer-events-none"
                     />
 
-                    <div className="flex justify-between items-start mb-8 relative z-10">
+                    {/* Header Row */}
+                    <div className="flex justify-between items-start mb-6 relative z-10">
                         <div
-                            className="w-14 h-14 bg-slate-50 text-slate-400 rounded-2xl flex items-center justify-center 
-                            group-hover:bg-indigo-600 group-hover:text-white group-hover:rotate-6 transition-all duration-500 shadow-inner"
+                            className="w-12 h-12 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center 
+                            group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-xs shrink-0"
                         >
-                            <Users size={28} />
+                            <Users size={24} />
                         </div>
 
                         <div className="text-right">
                             <div className="flex items-center justify-end gap-1">
-                                <p className="text-3xl font-black text-slate-900 tracking-tighter">
-                                    {String(batch.students?.length || 0).padStart(2, '0')}
+                                <p className="text-2xl font-black text-slate-800 tracking-tight tabular-nums">
+                                    {String(batch.students?.length || 0).padStart(2, "0")}
                                 </p>
 
-                                <ArrowUpRight size={14} className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                <ArrowUpRight
+                                    size={14}
+                                    className="text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                />
                             </div>
 
-                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Students</p>
-                        </div>
-                    </div>
-
-                    <div className="mb-10 flex-1 relative z-10">
-                        <h3 className="text-xl font-black text-slate-800 leading-tight group-hover:text-indigo-600 transition-colors mb-3">
-                            {batch.batchName}
-                        </h3>
-
-                        <div className="flex items-center gap-2 mt-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-
-                            <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em] bg-slate-100 px-3 py-1 rounded-full">
-                                {batch.batchCode}
+                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                Students
                             </p>
                         </div>
                     </div>
 
-                    <div className="flex gap-3 relative z-10">
+                    {/* Content */}
+                    <div className="mb-8 flex-1 relative z-10">
+                        <h3 className="text-lg font-bold text-slate-800 leading-snug group-hover:text-indigo-600 transition-colors mb-2">
+                            {batch.batchName || "Unnamed Batch"}
+                        </h3>
+
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+
+                            <p
+                                className="text-[10px] font-mono font-bold text-slate-600 uppercase tracking-widest bg-slate-100/80
+                                px-2.5 py-1 rounded-md border border-slate-200/60 w-fit"
+                            >
+                                {batch.batchCode || "NO CODE"}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-2 relative z-10 pt-2 border-t border-slate-100">
                         <button
-                            onClick={() => { setShowAssignModal(batch.batchCode); setSearchTerm(""); }}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-100 text-slate-600 
-                            font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-indigo-600 hover:border-indigo-600 
-                            hover:text-white transition-all duration-300 cursor-pointer"
+                            type="button"
+                            onClick={() => {
+                                setShowAssignModal?.(batch.batchCode);
+                                setSearchTerm?.("");
+                            }}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-slate-50 border border-slate-200/70 text-slate-700 
+                            font-bold text-xs rounded-lg hover:bg-indigo-600 hover:border-indigo-600 hover:text-white transition-all duration-200 cursor-pointer"
                         >
-                            <Plus size={16} /> Assign
+                            <Plus size={14} /> Assign
                         </button>
 
                         <button
-                            onClick={() => setShowManageModal(batch)}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-white border border-slate-100 text-slate-600 
-                            font-black text-[10px] uppercase tracking-widest rounded-2xl hover:bg-emerald-600 hover:border-emerald-600 
-                            hover:text-white transition-all duration-300 cursor-pointer"
+                            type="button"
+                            onClick={() => setShowManageModal?.(batch)}
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-slate-50 border border-slate-200/70 text-slate-700 
+                            font-bold text-xs rounded-lg hover:bg-emerald-600 hover:border-emerald-600 hover:text-white transition-all duration-200 cursor-pointer"
                         >
-                            <Edit3 size={16} /> Manage
+                            <Users size={14} /> Manage
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setShowEditModal({
+                                ...batch,
+                                originalBatchCode: batch.batchCode
+                            })}
+                            title="Edit Batch Details"
+                            className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-slate-50 border border-slate-200/70 text-slate-700 
+                            font-bold text-xs rounded-lg hover:bg-slate-800 hover:border-slate-800 hover:text-white transition-all duration-200 cursor-pointer"
+                        >
+                            <Edit3 size={14} /> Edit
                         </button>
                     </div>
                 </div>
             ))}
         </div>
-    )
+    );
 }

@@ -77,6 +77,7 @@ export default function ActivityTable({ data, onNavigate }) {
                 <thead className="text-gray-400 text-[10px] uppercase tracking-[2px] font-bold">
                     <tr>
                         <th className="px-6 py-3">User</th>
+                        <th className="px-6 py-3">Email</th>
                         <th className="px-6 py-3">Module</th>
                         <th className="px-6 py-3">Date</th>
                         <th className="px-6 py-3 text-right">Details</th>
@@ -86,7 +87,7 @@ export default function ActivityTable({ data, onNavigate }) {
                 <tbody className="text-sm text-gray-600">
                     {data.loading ? (
                         <tr>
-                            <td colSpan="4" className="py-20 text-center text-gray-400 italic">
+                            <td colSpan="5" className="py-20 text-center text-gray-400 italic">
                                 Synchronizing with AWS...
                             </td>
                         </tr>
@@ -104,23 +105,22 @@ export default function ActivityTable({ data, onNavigate }) {
                                         handleRedirect(item);
                                     }}
                                 >
-                                    {/* USER */}
+                                    {/* USER / NAME */}
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-600 text-xs">
+                                            <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center font-bold text-gray-600 text-xs shrink-0">
                                                 {getInitial(item)}
                                             </div>
 
-                                            <div>
-                                                <p className="font-semibold text-gray-800 text-sm">
-                                                    {item.name || item.fullName || item.email || "Unknown User"}
-                                                </p>
-
-                                                <p className="text-[11px] text-gray-400">
-                                                    {item.email || "No email"}
-                                                </p>
-                                            </div>
+                                            <p className="font-semibold text-gray-800 text-sm">
+                                                {item.name || item.fullName || "Unknown User"}
+                                            </p>
                                         </div>
+                                    </td>
+
+                                    {/* EMAIL */}
+                                    <td className="px-6 py-4 text-xs text-gray-500 font-medium">
+                                        {item.email || "No email"}
                                     </td>
 
                                     {/* MODULE */}
@@ -161,7 +161,10 @@ export default function ActivityTable({ data, onNavigate }) {
                         })
                     ) : (
                         <tr>
-                            <td colSpan="4" className="py-20 text-center text-gray-400 italic">
+                            <td
+                                colSpan="5"
+                                className="py-20 text-center text-gray-400 italic"
+                            >
                                 No recent activity found.
                             </td>
                         </tr>

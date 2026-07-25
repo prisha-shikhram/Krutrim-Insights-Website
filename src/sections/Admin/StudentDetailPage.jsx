@@ -151,18 +151,18 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
 
                 <Field
                     label="Total Fee Agreed"
-                    value={data.totalFeeAgreed ? `₹${Number(data.totalFeeAgreed).toLocaleString("en-IN")}` : "N/A"}
+                    value={data.totalFees ? `₹${Number(data.totalFees).toLocaleString("en-IN")}` : "N/A"}
                     icon={<IndianRupee size={10} />}
                 />
 
                 <Field
                     label="Registration Fee"
-                    value={data.registrationFees ? `₹${Number(data.registrationFees).toLocaleString("en-IN")}` : "N/A"}
+                    value={data.registrationAmount ? `₹${Number(data.registrationAmount).toLocaleString("en-IN")}` : "N/A"}
                     icon={<IndianRupee size={10} />}
                 />
 
                 <Field label="Assigned Counsellor" value={data.assignedCounsellor || "N/A"} icon={<UserCheck size={10} />} />
-                <Field label="Installments Count" value={data.numberOfInstallments ? `${data.numberOfInstallments} Installment(s)` : "N/A"} icon={<Layers size={10} />} />
+                <Field label="Installments Count" value={data.installmentsCount ? `${data.installmentsCount} Installment(s)` : "N/A"} icon={<Layers size={10} />} />
 
                 {/* Dynamic Installments Breakdown if present */}
                 {Array.isArray(data.installments) && data.installments.length > 0 && (
