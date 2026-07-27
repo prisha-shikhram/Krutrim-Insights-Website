@@ -163,34 +163,6 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
 
                 <Field label="Assigned Counsellor" value={data.assignedCounsellor || "N/A"} icon={<UserCheck size={10} />} />
                 <Field label="Installments Count" value={data.installmentsCount ? `${data.installmentsCount} Installment(s)` : "N/A"} icon={<Layers size={10} />} />
-
-                {/* Dynamic Installments Breakdown if present */}
-                {Array.isArray(data.installments) && data.installments.length > 0 && (
-                    <div className="col-span-full mt-4 pt-4 border-t border-slate-100 space-y-3">
-                        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 flex items-center gap-1.5">
-                            <Layers size={12} /> Configured Installment Milestones
-                        </p>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                            {data.installments.map((ins, idx) => (
-                                <div
-                                    key={ins.id || idx}
-                                    className="bg-slate-50 border border-slate-100 rounded-xl p-3 flex justify-between items-center text-xs"
-                                >
-                                    <div>
-                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Installment #{idx + 1}</span>
-                                        <strong className="text-slate-800 text-sm font-black">₹{Number(ins.amount).toLocaleString("en-IN")}</strong>
-                                    </div>
-
-                                    <div className="text-right">
-                                        <span className="text-[10px] font-bold text-slate-400 block uppercase">Due Date</span>
-                                        <span className="text-slate-600 font-semibold">{ins.dueDate ? fmt(ins.dueDate) : "N/A"}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </Section>
 
             {/* Identity Verification Section */}
@@ -213,10 +185,40 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
                     <Activity size={14} /> Portal Engagement
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <PortalStat label="Attendance" value={stats.attendance.present} total={stats.attendance.total} color="blue" />
-                    <PortalStat label="Assignments" value={stats.assignments.submitted} total={stats.assignments.total} color="violet" />
-                    <PortalStat label="Projects" value={stats.projects.submitted} total={stats.projects.total} color="emerald" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* Attendance Stats */}
+                    <PortalStat
+                        label="Present Days"
+                        value={stats.attendance.present}
+                        total={stats.attendance.total}
+                        color="emerald"
+                    />
+                    <PortalStat
+                        label="On Leave"
+                        value={stats.attendance.leave ?? 0}
+                        total={stats.attendance.total}
+                        color="amber"
+                    />
+                    <PortalStat
+                        label="Absent Days"
+                        value={stats.attendance.absent ?? (stats.attendance.total - (stats.attendance.present + (stats.attendance.leave || 0)))}
+                        total={stats.attendance.total}
+                        color="rose"
+                    />
+
+                    {/* Deliverable Stats */}
+                    <PortalStat
+                        label="Assignments"
+                        value={stats.assignments.submitted}
+                        total={stats.assignments.total}
+                        color="violet"
+                    />
+                    <PortalStat
+                        label="Projects"
+                        value={stats.projects.submitted}
+                        total={stats.projects.total}
+                        color="blue"
+                    />
                 </div>
             </div>
 

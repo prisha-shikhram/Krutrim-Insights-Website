@@ -6,7 +6,12 @@ import Section from "../enroll/Section";
 
 // Attendance History component
 export default function AttendanceHistory({ portalData, fmt }) {
-    const attendanceLogs = portalData?.attendance || [];
+    const rawLogs = portalData?.attendance || [];
+
+    // Sort attendance logs newest first
+    const attendanceLogs = [...rawLogs].sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
 
     // Helper for formatting date safely
     const formatDate = (date) => {
@@ -28,6 +33,11 @@ export default function AttendanceHistory({ portalData, fmt }) {
                 return {
                     className: "bg-emerald-50 text-emerald-700 border-emerald-200/60",
                     icon: <CheckCircle2 size={12} className="text-emerald-600" />,
+                };
+            case "leave":
+                return {
+                    className: "bg-amber-50 text-amber-700 border-amber-200/60",
+                    icon: <Clock size={12} className="text-amber-600" />,
                 };
             case "absent":
                 return {
