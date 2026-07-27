@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // import icons
-import { Check, Loader2, X, UserCheck, CalendarCheck, Users, Sparkles } from "lucide-react";
+import { Check, Loader2, X, UserCheck, CalendarCheck, Users, Sparkles, Clock } from "lucide-react";
 
 // import Custom select component
 import CustomSelect from "./CustomSelect";
@@ -27,7 +27,7 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
     });
 
     const [selectedBatches, setSelectedBatches] = useState([]);
-    const [presentStudents, setPresentStudents] = useState([]);
+    const [attendanceState, setAttendanceState] = useState({});
     const [existingAttendance, setExistingAttendance] = useState([]);
     const [fetchingStatus, setFetchingStatus] = useState(false);
     const [saving, setSaving] = useState(false);
@@ -40,11 +40,11 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
             checkExistingAttendance();
         } else {
             setExistingAttendance([]);
-            setPresentStudents([]);
+            setAttendanceState({});
         }
     }, [dateConfig, selectedBatches]);
 
-    // existing attendance
+    // Fetch existing attendance
     const checkExistingAttendance = async () => {
         setFetchingStatus(true);
         try {
@@ -59,16 +59,17 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
             });
 
             const data = await res.json();
-
-            // Extract array from data.Items if necessary
             const actualData = Array.isArray(data) ? data : (data.Items || []);
             setExistingAttendance(actualData);
 
-            // Auto-load present students
-            const alreadyPresent = actualData
-                .filter(r => r.status === 'present')
-                .map(r => r.studentEmail);
-            setPresentStudents(alreadyPresent);
+            // Populate attendance state map
+            const newMap = {};
+            actualData.forEach(r => {
+                if (r.studentEmail && r.status) {
+                    newMap[r.studentEmail] = r.status; // 'present', 'leave', or 'absent'
+                }
+            });
+            setAttendanceState(newMap);
         } catch (err) {
             console.error("Sync error:", err);
         } finally {
@@ -86,14 +87,25 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
         .filter(b => selectedBatches.includes(b.batchCode))
         .flatMap(b => (b.students || []).map(email => ({ email, batchCode: b.batchCode })));
 
-    // quick selection helpers
-    const selectAllStudents = () => {
-        setPresentStudents(allStudents.map(s => s.email));
+    // Status helpers
+    const setStatusForStudent = (email, status) => {
+        setAttendanceState(prev => ({
+            ...prev,
+            [email]: status
+        }));
     };
 
-    const deselectAllStudents = () => {
-        setPresentStudents([]);
+    const setAllStatus = (status) => {
+        const updated = { ...attendanceState };
+        allStudents.forEach(s => {
+            updated[s.email] = status;
+        });
+        setAttendanceState(updated);
     };
+
+    // Counts
+    const presentCount = allStudents.filter(s => (attendanceState[s.email] || 'absent') === 'present').length;
+    const leaveCount = allStudents.filter(s => attendanceState[s.email] === 'leave').length;
 
     // handle save
     const handleSave = async () => {
@@ -105,7 +117,7 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
             date: formattedDate,
             batchCode,
             studentEmail: email,
-            status: presentStudents.includes(email) ? "present" : "absent",
+            status: attendanceState[email] || "absent",
             markedBy: mentor.email
         }));
 
@@ -193,8 +205,7 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
                                         ${isSelected
                                                 ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100 scale-[1.01]"
                                                 : "bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:bg-slate-50"
-                                            }`
-                                        }
+                                            }`}
                                     >
                                         <span>{b.batchName || b.batchCode}</span>
                                         {isSelected && <Check size={14} strokeWidth={3} />}
@@ -213,7 +224,11 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
                                 </label>
 
                                 <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-600 border border-emerald-100">
-                                    {presentStudents.length} Present
+                                    {presentCount} Present
+                                </span>
+
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-50 text-amber-600 border border-amber-100">
+                                    {leaveCount} On Leave
                                 </span>
                             </div>
 
@@ -221,8 +236,8 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
                                 <div className="flex items-center gap-3 text-xs font-bold">
                                     <button
                                         type="button"
-                                        onClick={selectAllStudents}
-                                        className="text-indigo-600 hover:text-indigo-800 transition-colors cursor-pointer"
+                                        onClick={() => setAllStatus('present')}
+                                        className="text-emerald-600 hover:text-emerald-800 transition-colors cursor-pointer"
                                     >
                                         Mark All Present
                                     </button>
@@ -231,7 +246,17 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
 
                                     <button
                                         type="button"
-                                        onClick={deselectAllStudents}
+                                        onClick={() => setAllStatus('leave')}
+                                        className="text-amber-600 hover:text-amber-800 transition-colors cursor-pointer"
+                                    >
+                                        Mark All Leave
+                                    </button>
+
+                                    <span className="text-slate-300">|</span>
+
+                                    <button
+                                        type="button"
+                                        onClick={() => setAllStatus('absent')}
                                         className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                                     >
                                         Clear All
@@ -253,18 +278,18 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
                                     {allStudents.map(({ email, batchCode }) => {
                                         const isMarked = existingAttendance.find(r => r.studentEmail === email);
-                                        const isCurrentlyPresent = presentStudents.includes(email);
+                                        const status = attendanceState[email] || 'absent';
 
                                         return (
                                             <div
                                                 key={email}
-                                                onClick={() => setPresentStudents(prev => isCurrentlyPresent ? prev.filter(e => e !== email) : [...prev, email])}
-                                                className={`group flex items-center justify-between p-3.5 rounded-xl border transition-all cursor-pointer select-none
-                                                ${isCurrentlyPresent
+                                                className={`group flex items-center justify-between p-3.5 rounded-xl border transition-all select-none
+                                                ${status === 'present'
                                                         ? "bg-white border-emerald-300 shadow-sm shadow-emerald-50 ring-1 ring-emerald-300"
-                                                        : "bg-white border-slate-200/80 hover:border-indigo-200 hover:shadow-sm"
-                                                    }`
-                                                }
+                                                        : status === 'leave'
+                                                            ? "bg-white border-amber-300 shadow-sm shadow-amber-50 ring-1 ring-amber-300"
+                                                            : "bg-white border-slate-200/80 hover:border-indigo-200 hover:shadow-sm"
+                                                    }`}
                                             >
                                                 <div className="truncate pr-3">
                                                     <div className="flex items-center gap-2 mb-0.5">
@@ -284,23 +309,43 @@ export default function CreateAttendanceModal({ onClose, batches, mentor, ATTEND
                                                         <span className="text-[10px] font-semibold text-slate-400 truncate">{email}</span>
 
                                                         <span
-                                                            className="text-[9px] font-bold text-indigo-500 bg-indigo-50 px-1.5 py-0.2 rounded 
-                                                            border border-indigo-100 uppercase"
+                                                            className="text-[9px] font-bold text-indigo-500 bg-indigo-50 px-1.5 py-0.2 
+                                                            rounded border border-indigo-100 uppercase"
                                                         >
                                                             {batchCode}
                                                         </span>
                                                     </div>
                                                 </div>
 
-                                                <div
-                                                    className={`w-7 h-7 rounded-lg border-2 flex items-center justify-center transition-all shrink-0
-                                                    ${isCurrentlyPresent
-                                                            ? "bg-emerald-500 border-emerald-500 text-white shadow-sm shadow-emerald-200"
-                                                            : "border-slate-200 bg-slate-50 group-hover:border-indigo-300"
-                                                        }`
-                                                    }
-                                                >
-                                                    {isCurrentlyPresent && <Check size={14} strokeWidth={3} />}
+                                                {/* STATUS SWITCHER BUTTONS */}
+                                                <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl shrink-0">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setStatusForStudent(email, status === 'present' ? 'absent' : 'present')}
+                                                        className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 
+                                                            ${status === 'present'
+                                                                ? "bg-emerald-500 text-white shadow-sm"
+                                                                : "text-slate-500 hover:text-slate-800"
+                                                            }`}
+                                                        title="Mark Present"
+                                                    >
+                                                        <Check size={12} strokeWidth={3} />
+                                                        P
+                                                    </button>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setStatusForStudent(email, status === 'leave' ? 'absent' : 'leave')}
+                                                        className={`px-2 py-1 rounded-lg text-[10px] font-bold transition-all cursor-pointer flex items-center gap-1 
+                                                            ${status === 'leave'
+                                                                ? "bg-amber-500 text-white shadow-sm"
+                                                                : "text-slate-500 hover:text-slate-800"
+                                                            }`}
+                                                        title="Mark Leave"
+                                                    >
+                                                        <Clock size={12} strokeWidth={3} />
+                                                        L
+                                                    </button>
                                                 </div>
                                             </div>
                                         );

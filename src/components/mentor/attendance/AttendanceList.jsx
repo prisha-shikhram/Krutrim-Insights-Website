@@ -1,16 +1,83 @@
+import { useState, useMemo } from "react";
 // import icons
-import { Loader2, CalendarCheck } from "lucide-react"
+import { Loader2, CalendarCheck, ExternalLink } from "lucide-react";
+
+// import AttendanceDetail component
+import AttendanceDetail from "./AttendenceDetail";
 
 // attendance list component
 export default function AttendanceList({ loading, attendanceHistory }) {
+    // Local state to track selected student (null = show table view)
+    const [selectedStudentEmail, setSelectedStudentEmail] = useState(null);
+
+    // Group logs per student and compute stats
+    const aggregatedStudents = useMemo(() => {
+        if (!attendanceHistory || attendanceHistory.length === 0) return [];
+
+        const studentMap = {};
+
+        attendanceHistory.forEach((rec) => {
+            const key = rec.studentEmail;
+
+            if (!studentMap[key]) {
+                studentMap[key] = {
+                    studentEmail: rec.studentEmail,
+                    batchCode: rec.batchCode,
+                    latestDate: rec.date,
+                    totalPresents: 0,
+                    totalLeaves: 0,
+                    totalAbsents: 0,
+                    totalDays: 0,
+                    logs: []
+                };
+            }
+
+            studentMap[key].logs.push(rec);
+            studentMap[key].totalDays += 1;
+
+            if (rec.status === "present") {
+                studentMap[key].totalPresents += 1;
+            } else if (rec.status === "leave") {
+                studentMap[key].totalLeaves += 1;
+            } else {
+                studentMap[key].totalAbsents += 1;
+            }
+        });
+
+        return Object.values(studentMap).map((student) => {
+            const sortedLogs = [...student.logs].sort(
+                (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+            );
+
+            return {
+                ...student,
+                latestDate: sortedLogs[0]?.date || student.latestDate,
+                logs: sortedLogs
+            };
+        });
+    }, [attendanceHistory]);
+
+    // If a student is selected, render AttendanceDetail view
+    if (selectedStudentEmail) {
+        return (
+            <AttendanceDetail
+                studentEmail={selectedStudentEmail}
+                attendanceHistory={attendanceHistory}
+                onBack={() => setSelectedStudentEmail(null)}
+            />
+        );
+    }
+
     return (
         <>
             {loading ? (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                     <Loader2 className="animate-spin text-indigo-600" size={40} />
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">Loading Records...</p>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                        Loading Records...
+                    </p>
                 </div>
-            ) : attendanceHistory.length === 0 ? (
+            ) : aggregatedStudents.length === 0 ? (
                 <div className="bg-white border border-slate-100 rounded-[3rem] p-20 text-center shadow-sm">
                     <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6 text-slate-200">
                         <CalendarCheck size={40} />
@@ -25,52 +92,104 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                         <table className="w-full text-left border-collapse">
                             <thead>
                                 <tr className="bg-slate-50/50">
-                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">Student Details</th>
-                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">Marked Date</th>
-                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">Batch Code</th>
-                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">Status</th>
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                                        Student Details
+                                    </th>
+
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                                        Recent Marked Date
+                                    </th>
+
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                                        Batch Code
+                                    </th>
+
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">
+                                        Presents / Total
+                                    </th>
+
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">
+                                        Absent / Leave
+                                    </th>
+
+                                    <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-right">
+                                        Logs
+                                    </th>
                                 </tr>
                             </thead>
 
                             <tbody className="divide-y divide-slate-50">
-                                {attendanceHistory.map((rec) => (
+                                {aggregatedStudents.map((student) => (
                                     <tr
-                                        key={rec.attendanceId}
+                                        key={student.studentEmail}
                                         className="hover:bg-slate-50/30 transition-colors"
                                     >
+                                        {/* STUDENT DETAILS */}
                                         <td className="p-6">
                                             <div className="flex items-center gap-3">
                                                 <div
-                                                    className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 
-                                                    font-black text-[10px] uppercase"
+                                                    className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center 
+                                                    justify-center text-indigo-600 font-black text-xs uppercase"
                                                 >
-                                                    {rec.studentEmail[0]}
+                                                    {student.studentEmail[0]}
                                                 </div>
 
                                                 <div>
-                                                    <p className="text-sm font-bold text-slate-700 leading-none">{rec.studentEmail.split('@')[0]}</p>
-                                                    <p className="text-[12px] text-slate-400 mt-1">{rec.studentEmail}</p>
+                                                    <p className="text-sm font-bold text-slate-800 leading-none">
+                                                        {student.studentEmail.split("@")[0]}
+                                                    </p>
+
+                                                    <p className="text-[12px] text-slate-400 mt-1">
+                                                        {student.studentEmail}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </td>
 
-                                        <td className="p-6 text-[12px] font-bold text-slate-600">{rec.date}</td>
+                                        {/* RECENT MARKED DATE */}
+                                        <td className="p-6 text-[12px] font-bold text-slate-600">
+                                            {student.latestDate}
+                                        </td>
 
+                                        {/* BATCH CODE */}
                                         <td className="p-6">
-                                            <span className="text-[12px] font-black bg-indigo-50 text-indigo-500 px-3 py-1 rounded-lg uppercase">
-                                                {rec.batchCode}
+                                            <span className="text-[11px] font-black bg-indigo-50 text-indigo-600 px-3 py-1 rounded-lg uppercase">
+                                                {student.batchCode}
                                             </span>
                                         </td>
 
-                                        <td className="p-6">
-                                            <div className="flex justify-center">
-                                                <span
-                                                    className={`text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-tighter 
-                                                    ${rec.status === 'present' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}
-                                                >
-                                                    {rec.status}
-                                                </span>
+                                        {/* PRESENTS / TOTAL DAYS */}
+                                        <td className="p-6 text-center">
+                                            <span
+                                                className="inline-flex items-center gap-1.5 text-xs font-extrabold bg-emerald-50 
+                                                text-emerald-700 px-3 py-1 rounded-full border border-emerald-100"
+                                            >
+                                                {student.totalPresents} / {student.totalDays} Days
+                                            </span>
+                                        </td>
+
+                                        {/* ABSENT / LEAVE COUNT */}
+                                        <td className="p-6 text-center">
+                                            <div
+                                                className="inline-flex items-center gap-2 text-xs font-extrabold bg-slate-50 text-slate-600
+                                                px-3 py-1 rounded-full border border-slate-200"
+                                            >
+                                                <span className="text-rose-600">{student.totalAbsents} Absents</span>
+                                                <span className="text-slate-300">•</span>
+                                                <span className="text-amber-600">{student.totalLeaves} Leaves</span>
                                             </div>
+                                        </td>
+
+                                        {/* ICON-ONLY BUTTON TO OPEN DETAIL */}
+                                        <td className="p-6 text-right">
+                                            <button
+                                                onClick={() => setSelectedStudentEmail(student.studentEmail)}
+                                                className="p-2.5 rounded-xl text-slate-500 bg-slate-100 hover:bg-indigo-600 
+                                                hover:text-white transition-all cursor-pointer inline-flex items-center justify-center"
+                                                title="View Student Attendance Logs"
+                                            >
+                                                <ExternalLink size={16} />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -80,5 +199,5 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                 </div>
             )}
         </>
-    )
+    );
 }
