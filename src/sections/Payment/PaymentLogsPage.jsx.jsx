@@ -111,7 +111,10 @@ export default function PaymentLogsPage() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         <div className="flex flex-col items-center gap-2">
                                             <RefreshCw size={20} className="animate-spin text-[#0189c7]" />
                                             <span>Fetching historical log records from DynamoDB...</span>
@@ -194,7 +197,10 @@ export default function PaymentLogsPage() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         <div className="flex flex-col items-center gap-2">
                                             <Layers size={24} className="text-slate-300" />
                                             <span>No matching audit log records found in system memory.</span>

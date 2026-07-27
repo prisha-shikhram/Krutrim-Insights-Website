@@ -128,7 +128,10 @@ export default function AdminPaymentLogin() {
                 style={{ animation: "slideUp 0.7s cubic-bezier(.16,1,.3,1) both" }}
             >
                 {/* Admin Header */}
-                <AdminHeader PRIMARY={PRIMARY} text="Payment Portal Login" />
+                <AdminHeader
+                    PRIMARY={PRIMARY}
+                    text="Payment Portal Login"
+                />
 
                 {/* Form */}
                 <form

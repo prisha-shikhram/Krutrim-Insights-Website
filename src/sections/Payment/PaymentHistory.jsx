@@ -111,7 +111,10 @@ export default function PaymentHistory() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         Loading transactional data streams...
                                     </td>
                                 </tr>
@@ -194,7 +197,10 @@ export default function PaymentHistory() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         No settled payment logs resolved inside the active filtering matrix query.
                                     </td>
                                 </tr>

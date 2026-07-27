@@ -167,7 +167,10 @@ export default function PaymentReminders() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="6" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="6"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         Loading systemic transmission matrices...
                                     </td>
                                 </tr>
@@ -210,7 +213,7 @@ export default function PaymentReminders() {
                                             </td>
 
                                             {/* CRITICAL TIMELINE TARGET DATE */}
-                                            <td className="px-6 py-4 text-gray-400 text-xs font-medium tabular-nums border-y border-gray-50">
+                                            <td className="px-6 py-4 text-gray-400 text-xs font-medium tabular-nums border-y border-gray-50 truncate">
                                                 <div className="flex items-center gap-1.5 text-slate-500">
                                                     <Calendar size={13} className="text-slate-400" />
 
@@ -269,7 +272,7 @@ export default function PaymentReminders() {
                                             </td>
 
                                             {/* ACTION BUTTON */}
-                                            <td className="px-6 py-4 text-right rounded-r-xl border-y border-r border-gray-50">
+                                            <td className="px-6 py-4 text-right rounded-r-xl border-y border-r border-gray-50 truncate">
                                                 <button
                                                     onClick={() => handleSendReminder(record)}
                                                     disabled={sendingId === recordUniqueId}
@@ -303,7 +306,10 @@ export default function PaymentReminders() {
                                 })
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="6"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         No pending reminder processing queues located.
                                     </td>
                                 </tr>

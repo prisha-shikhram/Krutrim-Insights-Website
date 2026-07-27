@@ -8,6 +8,7 @@ export default function TermsOfUse() {
                     <h1 className="text-3xl uppercase tracking-tighter">
                         Terms of Use
                     </h1>
+
                     <p className="mt-4 text-sm">Krutrim Insights</p>
                 </header>
 
@@ -19,17 +20,20 @@ export default function TermsOfUse() {
                         'Krutrim Insights', or 'the Company'). The Company has its registered office at, E-47A,
                         Sobha International City, Sector-109, Gurugram, Haryana, Pin - 122017, India.
                     </p>
+
                     <p>
                         These Terms and Conditions for Trainees (hereinafter 'Terms of Use') pertain to the
                         services made available through which the Trainee consumes the services. For these
                         Terms of Use, wherever the context so requires, 'Trainee' shall mean any natural or legal
                         person who has enrolled into our Training Programme.
                     </p>
+
                     <p>
                         We reserve the right to amend the Terms of Use (at any time without prior notice),
                         which shall be updated on this page, regularly, so that you are always aware of the
                         latest developments in our Services.
                     </p>
+
                     <p>
                         By enrolling into our Training Programme, you agree to these terms and conditions.
                     </p>
@@ -52,6 +56,7 @@ export default function TermsOfUse() {
                             engagement data, student discussions, feedback, testimonials (published or
                             unpublished).
                         </p>
+
                         <p>
                             It also includes information relating to the business methods, management systems,
                             digital and community information, marketing plans, strategic plans, finances, new or
@@ -60,11 +65,13 @@ export default function TermsOfUse() {
                             which Company owes a duty of confidentiality to any third party and including in particular
                             any confidential information disclosed prior to execution of this Agreement.
                         </p>
+
                         <p>
                             “Training Materials” means any information provided by Krutrim Insights to accompany
                             training provided as part of the Services, whether in hard copy or electronic form, including
                             data images, audio or video material in any medium provided.
                         </p>
+
                         <p>
                             “Intellectual Property Rights” means copyright, database rights, patent rights,
                             performers' rights, designs rights (registered or unregistered), trademarks, rights relating
@@ -72,6 +79,7 @@ export default function TermsOfUse() {
                             or unregistered). They also include the Training Programme Materials provided by Krutrim
                             Insights upon enrollment in the Training Programme and speeches by teachers.
                         </p>
+
                         <p>
                             “Services” means the provision of the Training and/or the Training Materials, together
                             with any additional services agreed upon from time to time.

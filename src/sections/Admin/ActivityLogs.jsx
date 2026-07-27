@@ -132,7 +132,10 @@ export default function ActivityLogs() {
                     <tbody className="divide-y divide-slate-50">
                         {loading ? (
                             <tr>
-                                <td colSpan="5" className="py-20 text-center">
+                                <td
+                                    colSpan="5"
+                                    className="py-20 text-center"
+                                >
                                     <div className="flex flex-col items-center gap-3">
                                         <Loader2 className="animate-spin text-[#0189c7]" size={32} />
                                         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Fetching Cloud Logs...</p>
@@ -159,7 +162,8 @@ export default function ActivityLogs() {
                                     <td className="px-8 py-5 truncate">
                                         <div className="flex items-center gap-3">
                                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-[10px] font-black border
-                                                ${log.admin === "Unknown" ? "bg-rose-50 text-rose-500 border-rose-100"
+                                                ${log.admin === "Unknown"
+                                                    ? "bg-rose-50 text-rose-500 border-rose-100"
                                                     : "bg-slate-50 text-[#0189c7] border-slate-100"
                                                 }`}>
                                                 {log.admin ? log.admin[0] : "?"}

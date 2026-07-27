@@ -117,7 +117,10 @@ export default function DelayTracker() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         Calculating metrics layer matrices...
                                     </td>
                                 </tr>

@@ -111,7 +111,6 @@ export default function RegisteredStudents() {
 
     return (
         <div className="w-full max-w-7xl mx-auto space-y-6 animate-in fade-in duration-700 pb-20">
-
             {/* HEADER */}
             <LeadsHeader
                 searchTerm={searchTerm}
@@ -157,6 +156,7 @@ export default function RegisteredStudents() {
                                                     <Building2 size={14} className="text-slate-300" />
                                                     {student.college}
                                                 </div>
+                                                
                                                 <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
                                                     <GraduationCap size={14} />
                                                     {student.course}

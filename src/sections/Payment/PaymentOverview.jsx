@@ -168,7 +168,10 @@ export default function PaymentOverview() {
                         <tbody className="text-sm text-gray-600">
                             {upcomingLoading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         Synchronizing with AWS...
                                     </td>
                                 </tr>
@@ -240,7 +243,10 @@ export default function PaymentOverview() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         No outstanding milestones scheduled for today.
                                     </td>
                                 </tr>

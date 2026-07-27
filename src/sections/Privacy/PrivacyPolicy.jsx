@@ -8,6 +8,7 @@ export default function PrivacyPolicy() {
                     <h1 className="text-3xl uppercase tracking-tighter">
                         Privacy Policy
                     </h1>
+
                     <p className="mt-4 text-sm">Krutrim Insights</p>
                     <p className="mt-1 text-xs text-gray-500 italic">Effective Date: 1 April 2026</p>
                 </header>
@@ -19,6 +20,7 @@ export default function PrivacyPolicy() {
                         Policy explains how we collect, use, store, and protect your information when you access our website, programs,
                         services, internships, workshops, or training platforms.
                     </p>
+
                     <p>
                         By using our website or services, you agree to the practices described in this Privacy Policy.
                     </p>
@@ -36,12 +38,14 @@ export default function PrivacyPolicy() {
                                 and payment information where applicable.
                             </p>
                         </div>
+
                         <div>
                             <p className="font-bold mb-1">b) Technical Information</p>
                             <p className="leading-relaxed">
                                 We may automatically collect IP address, browser type, device information, pages visited, cookies, and analytics.
                             </p>
                         </div>
+
                         <div>
                             <p className="font-bold mb-1">c) User Content</p>
                             <p className="leading-relaxed">
@@ -135,6 +139,7 @@ export default function PrivacyPolicy() {
                 {/* 11. CONTACT US */}
                 <section className="mt-10 mb-10 space-y-4">
                     <h2 className="text-xl border-b-2 border-black pb-1">11. CONTACT US</h2>
+
                     <div className="pl-4 space-y-1">
                         <p className="font-bold text-base">Krutrim Insights</p>
                         <p className="text-sm">Email: support@krutriminsights.com</p>

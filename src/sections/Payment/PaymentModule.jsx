@@ -132,7 +132,10 @@ export default function PaymentModule() {
                         <tbody className="text-sm text-gray-600">
                             {loading ? (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         Synchronizing structural schemas with AWS...
                                     </td>
                                 </tr>
@@ -218,7 +221,10 @@ export default function PaymentModule() {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-20 text-center text-gray-400 italic">
+                                    <td
+                                        colSpan="5"
+                                        className="py-20 text-center text-gray-400 italic"
+                                    >
                                         No matching student matrices resolved.
                                     </td>
                                 </tr>

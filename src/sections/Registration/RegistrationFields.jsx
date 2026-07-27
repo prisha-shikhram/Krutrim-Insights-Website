@@ -3,7 +3,6 @@ import { User, Phone, School, BookOpen, Calendar, ChevronDown } from "lucide-rea
 
 // registration fields component
 export default function RegistrationFields({ labelCls, inputCls, formData, handleChange, focused, setFocused, PRIMARY }) {
-
     const fieldStyle = (name) => ({
         borderColor: focused === name ? PRIMARY : "#e5e7eb"
     });
@@ -124,7 +123,7 @@ export default function RegistrationFields({ labelCls, inputCls, formData, handl
                             style={fieldStyle("passingYear")}
                         >
                             <option value="" disabled>Select Year</option>
-                            
+
                             {passingYears.map(year => (
                                 <option
                                     key={year}

@@ -209,8 +209,10 @@ export default function ContactFormSection() {
                                     type="submit"
                                     disabled={loading}
                                     className={`w-full py-4 rounded-2xl font-black flex items-center justify-center gap-3 transition-all text-white cursor-pointer
-                                    ${loading ? "bg-slate-400 cursor-not-allowed" :
-                                            "bg-[#0189c7] hover:bg-[#0178af] active:scale-95 text-white shadow-xl shadow-blue-100"}`}
+                                    ${loading
+                                            ? "bg-slate-400 cursor-not-allowed"
+                                            : "bg-[#0189c7] hover:bg-[#0178af] active:scale-95 text-white shadow-xl shadow-blue-100"
+                                        }`}
                                 >
                                     {loading ? (
                                         <>

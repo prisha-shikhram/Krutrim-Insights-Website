@@ -140,7 +140,6 @@ export default function ContactLeads() {
             <div className="bg-white rounded-4xl border border-gray-100 shadow-sm overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
-
                         <thead className="bg-gray-50/50 text-gray-400 text-[10px] uppercase tracking-[2px] font-bold">
                             <tr>
                                 <th className="px-8 py-5">Full Name</th>
