@@ -195,13 +195,6 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
                     />
 
                     <PortalStat
-                        label="On Leave"
-                        value={stats.attendance.leave ?? 0}
-                        total={stats.attendance.total}
-                        color="amber"
-                    />
-
-                    <PortalStat
                         label="Absent Days"
                         value={stats.attendance.absent ?? (stats.attendance.total - (stats.attendance.present + (stats.attendance.leave || 0)))}
                         total={stats.attendance.total}

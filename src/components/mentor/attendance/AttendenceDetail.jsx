@@ -2,9 +2,9 @@
 import { useMemo } from "react";
 
 // import icons
-import { ArrowLeft, CheckCircle2, Clock, XCircle, Calendar } from "lucide-react";
+import { ArrowLeft, CheckCircle2, XCircle, Calendar } from "lucide-react";
 
-// attendacne detail page
+// attendance detail page
 export default function AttendanceDetail({ studentEmail, attendanceHistory, onBack }) {
     const decodedEmail = decodeURIComponent(studentEmail || "");
 
@@ -19,12 +19,10 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
         if (studentLogs.length === 0) return null;
 
         let totalPresents = 0;
-        let totalLeaves = 0;
         let totalAbsents = 0;
 
         studentLogs.forEach((rec) => {
             if (rec.status === "present") totalPresents++;
-            else if (rec.status === "leave") totalLeaves++;
             else totalAbsents++;
         });
 
@@ -33,11 +31,25 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
             batchCode: studentLogs[0].batchCode,
             totalDays: studentLogs.length,
             totalPresents,
-            totalLeaves,
             totalAbsents,
             logs: studentLogs
         };
     }, [attendanceHistory, decodedEmail]);
+
+    // if attendance is not present
+    if (!studentData) {
+        return (
+            <div className="w-full p-8 text-center">
+                <p className="text-slate-500 font-bold mb-4">No attendance records found for this student.</p>
+                <button
+                    onClick={onBack}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl cursor-pointer"
+                >
+                    <ArrowLeft size={16} /> Go Back
+                </button>
+            </div>
+        );
+    }
 
     // stat cards
     const statCards = [
@@ -58,14 +70,6 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
             valueColor: "text-emerald-600"
         },
         {
-            label: "Leaves",
-            value: studentData.totalLeaves,
-            icon: <Clock size={22} />,
-            bg: "bg-amber-50",
-            textColor: "text-amber-600",
-            valueColor: "text-amber-600"
-        },
-        {
             label: "Absents",
             value: studentData.totalAbsents,
             icon: <XCircle size={22} />,
@@ -74,21 +78,6 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
             valueColor: "text-rose-600"
         }
     ];
-
-    // if attendance is not present
-    if (!studentData) {
-        return (
-            <div className="w-full p-8 text-center">
-                <p className="text-slate-500 font-bold mb-4">No attendance records found for this student.</p>
-                <button
-                    onClick={onBack}
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white text-xs font-bold rounded-xl cursor-pointer"
-                >
-                    <ArrowLeft size={16} /> Go Back
-                </button>
-            </div>
-        );
-    }
 
     return (
         <div className="w-full space-y-8">
@@ -115,7 +104,7 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
             </div>
 
             {/* OVERVIEW STATS CARDS */}
-            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {statCards.map((stat, idx) => (
                     <div
                         key={idx}
@@ -184,25 +173,14 @@ export default function AttendanceDetail({ studentEmail, attendanceHistory, onBa
                                     </td>
 
                                     <td className="p-4 text-center">
-                                        {log.status === "present" && (
+                                        {log.status === "present" ? (
                                             <span
                                                 className="inline-flex items-center gap-1.5 text-[10px] font-extrabold bg-emerald-50 
                                                 text-emerald-600 px-3 py-1 rounded-full border border-emerald-100 uppercase"
                                             >
                                                 <CheckCircle2 size={12} /> Present
                                             </span>
-                                        )}
-
-                                        {log.status === "leave" && (
-                                            <span
-                                                className="inline-flex items-center gap-1.5 text-[10px] font-extrabold bg-amber-50 text-amber-600 
-                                                px-3 py-1 rounded-full border border-amber-100 uppercase"
-                                            >
-                                                <Clock size={12} /> Leave
-                                            </span>
-                                        )}
-
-                                        {log.status === "absent" && (
+                                        ) : (
                                             <span
                                                 className="inline-flex items-center gap-1.5 text-[10px] font-extrabold bg-rose-50 
                                                 text-rose-600 px-3 py-1 rounded-full border border-rose-100 uppercase"

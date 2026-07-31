@@ -1,4 +1,6 @@
+// import hooks
 import { useState, useMemo } from "react";
+
 // import icons
 import { Loader2, CalendarCheck, ExternalLink } from "lucide-react";
 
@@ -25,7 +27,6 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                     batchCode: rec.batchCode,
                     latestDate: rec.date,
                     totalPresents: 0,
-                    totalLeaves: 0,
                     totalAbsents: 0,
                     totalDays: 0,
                     logs: []
@@ -37,8 +38,6 @@ export default function AttendanceList({ loading, attendanceHistory }) {
 
             if (rec.status === "present") {
                 studentMap[key].totalPresents += 1;
-            } else if (rec.status === "leave") {
-                studentMap[key].totalLeaves += 1;
             } else {
                 studentMap[key].totalAbsents += 1;
             }
@@ -109,7 +108,7 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                                     </th>
 
                                     <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-center">
-                                        Absent / Leave
+                                        Total Absents
                                     </th>
 
                                     <th className="p-6 text-[10px] font-black uppercase text-slate-400 tracking-widest text-right">
@@ -168,16 +167,14 @@ export default function AttendanceList({ loading, attendanceHistory }) {
                                             </span>
                                         </td>
 
-                                        {/* ABSENT / LEAVE COUNT */}
+                                        {/* ABSENT COUNT */}
                                         <td className="p-6 text-center">
-                                            <div
-                                                className="inline-flex items-center gap-2 text-xs font-extrabold bg-slate-50 text-slate-600
-                                                px-3 py-1 rounded-full border border-slate-200"
+                                            <span
+                                                className="inline-flex items-center gap-1.5 text-xs font-extrabold bg-rose-50 
+                                                text-rose-600 px-3 py-1 rounded-full border border-rose-100"
                                             >
-                                                <span className="text-rose-600">{student.totalAbsents} Absents</span>
-                                                <span className="text-slate-300">•</span>
-                                                <span className="text-amber-600">{student.totalLeaves} Leaves</span>
-                                            </div>
+                                                {student.totalAbsents} Absents
+                                            </span>
                                         </td>
 
                                         {/* ICON-ONLY BUTTON TO OPEN DETAIL */}
