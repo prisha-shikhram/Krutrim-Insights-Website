@@ -60,6 +60,7 @@ export default function MentorDashboard() {
     // title mapping
     const TITLE_MAP = {
         overview: "Mentor Overview",
+        classes: "Class Management",
         students: "Student Directory",
         attendance: "Manage Attendance",
         assignments: "Review Assignments",
@@ -98,6 +99,7 @@ export default function MentorDashboard() {
     // menu items
     const menuItems = [
         { id: "overview", label: "Overview", icon: <LayoutDashboard size={20} /> },
+        { id: "classes", label: "Classes", icon: <BookOpen size={20} /> },
         { id: "attendance", label: "Attendance", icon: <ClipboardCheck size={20} /> },
         { id: "assignments", label: "Assignments", icon: <BookOpen size={20} /> },
         { id: "projects", label: "Projects", icon: <MessageSquare size={20} /> },
