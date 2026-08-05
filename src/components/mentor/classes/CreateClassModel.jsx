@@ -2,7 +2,7 @@
 import { Video, X, ChevronDown, Loader2 } from "lucide-react";
 
 // Create Class Modal Component
-export default function CreateClassModel({ setShowCreateModal, handleCreateClass, formData, setFormData, handleDateChange, submitting }) {
+export default function CreateClassModel({ setShowCreateModal, handleCreateClass, formData, setFormData, handleDateChange, submitting, batches }) {
     return (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
             <div

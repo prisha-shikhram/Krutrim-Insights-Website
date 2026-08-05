@@ -485,6 +485,7 @@ export default function MentorClasses() {
                     setFormData={setFormData}
                     setShowCreateModal={setShowCreateModal}
                     submitting={submitting}
+                    batches={batches}
                 />
             )}
         </div>
