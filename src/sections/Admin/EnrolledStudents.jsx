@@ -14,6 +14,7 @@ import { useOutletContext } from "react-router-dom";
 
 // API CONFIG
 const API_URL = "https://6p7z2hkjxc.execute-api.ap-south-1.amazonaws.com/student/enroll";
+const BATCH_API = "https://6p7z2hkjxc.execute-api.ap-south-1.amazonaws.com/student/batches";
 
 // HELPERS
 const fmt = (iso) => iso ? new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" }) : "—";
@@ -26,6 +27,7 @@ export default function EnrolledStudents() {
     const { user, mentor } = useOutletContext();
     const [view, setView] = useState("list");
     const [students, setStudents] = useState([]);
+    const [batches, setBatches] = useState([]);
     const [selectedEmail, setSelectedEmail] = useState(null);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
@@ -37,19 +39,35 @@ export default function EnrolledStudents() {
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
-        fetchStudents();
+
+        // Fetch students and batches simultaneously
+        fetchData();
     }, []);
 
-    // fetch students
-    const fetchStudents = async () => {
+    // Fetch students and batches
+    const fetchData = async () => {
         setLoading(true);
         const tid = toast.loading("Syncing student directory...");
 
         try {
-            const res = await fetch(API_URL);
-            if (!res.ok) throw new Error("Network error");
-            const data = await res.json();
-            setStudents(Array.isArray(data) ? data : []);
+            const [studentsRes, batchesRes] = await Promise.all([
+                fetch(API_URL),
+                fetch(BATCH_API)
+            ]);
+
+            if (!studentsRes.ok || !batchesRes.ok) throw new Error("Network error");
+
+            const studentsData = await studentsRes.json();
+            const batchesData = await batchesRes.json();
+
+            setStudents(Array.isArray(studentsData) ? studentsData : []);
+
+            // Extract batchCode strings if batches return as objects array or simple array
+            const batchList = Array.isArray(batchesData)
+                ? batchesData.map(b => (typeof b === "string" ? b : b.batchCode)).filter(Boolean)
+                : [];
+
+            setBatches(batchList);
             toast.success("Directory synchronized", { id: tid });
         } catch (err) {
             toast.error("Failed to sync student directory", { id: tid });
@@ -111,7 +129,8 @@ export default function EnrolledStudents() {
                         <input
                             type="text"
                             placeholder="Filter by name or email..."
-                            className="bg-slate-50 border border-slate-100 rounded-2xl pl-12 pr-5 py-2.5 text-sm outline-none focus:bg-white w-64 transition-all"
+                            className="bg-slate-50 border border-slate-100 rounded-2xl pl-12 pr-5 py-2.5 text-sm outline-none 
+                            focus:bg-white w-64 transition-all"
                             value={searchTerm}
                             onChange={e => setSearchTerm(e.target.value)}
                         />
@@ -126,6 +145,15 @@ export default function EnrolledStudents() {
                         >
                             <option value="All">All Batches</option>
                             <option value="UNASSIGNED">Unassigned</option>
+
+                            {batches.map((code) => (
+                                <option
+                                    key={code}
+                                    value={code}
+                                >
+                                    {code}
+                                </option>
+                            ))}
                         </select>
 
                         <ChevronDown

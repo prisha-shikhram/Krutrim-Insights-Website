@@ -41,8 +41,86 @@ export default function PaymentHistory() {
                 }
 
                 const data = await response.json();
+
                 if (isMounted) {
-                    setPaymentRecords(data);
+                    const rawList = Array.isArray(data) ? data : [];
+
+                    const standardizedLogs = rawList.flatMap((item, parentIdx) => {
+                        const logs = [];
+                        const userIdentifier = item.email || item.fullName || `user-${parentIdx}`;
+
+                        // Helper: check truthy state safely (handles true, "true", "TRUE", "Paid", "paid")
+                        const isPaidValue = (val) => {
+                            if (typeof val === "boolean") return val;
+                            if (typeof val === "string") {
+                                const v = val.toLowerCase();
+                                return v === "true" || v === "paid" || v === "yes";
+                            }
+                            return false;
+                        };
+
+                        // 1. Process Registration Payment Receipt
+                        const isRegPaid = isPaidValue(item.registrationIsPaid);
+                        const hasRegAmount = Number(item.registrationAmount || 0) > 0;
+
+                        if (isRegPaid || hasRegAmount) {
+                            logs.push({
+                                // Guaranteed Unique Key combining user identifier + timestamp + index
+                                uniqueKey: `reg-${userIdentifier}-${item.registrationPaidDate || item.createdAt || parentIdx}-${parentIdx}`,
+                                fullName: item.fullName || item.name || "Student",
+                                email: item.email || "—",
+                                course: item.course || "N/A",
+                                type: "Registration",
+                                rawType: "registration",
+                                amount: Number(item.registrationAmount || 0),
+                                paidDate: item.registrationPaidDate || item.createdAt
+                            });
+                        }
+
+                        // 2. Process Installment Payment Receipts
+                        if (Array.isArray(item.installments)) {
+                            item.installments.forEach((inst, instIdx) => {
+                                const dataObj = inst.M || inst;
+                                const statusVal = dataObj.paidStatus?.S || dataObj.paidStatus;
+                                const isInstPaid = isPaidValue(statusVal);
+                                const instAmount = Number(dataObj.amount?.N || dataObj.amount || 0);
+
+                                if (isInstPaid || instAmount > 0) {
+                                    logs.push({
+                                        uniqueKey: `inst-${userIdentifier}-${dataObj.id?.S || dataObj.id || instIdx}-${parentIdx}-${instIdx}`,
+                                        fullName: item.fullName || item.name || "Student",
+                                        email: item.email || "—",
+                                        course: item.course || "N/A",
+                                        type: "Installment",
+                                        rawType: "installment",
+                                        amount: instAmount,
+                                        paidDate: dataObj.paidDate?.S || dataObj.paidDate || item.createdAt
+                                    });
+                                }
+                            });
+                        }
+
+                        // 3. Fallback: If item is pre-flattened by backend
+                        if (logs.length === 0 && (item.amount || item.type)) {
+                            const itemType = (item.type || "").toLowerCase();
+                            const derivedRawType = itemType.includes("reg") ? "registration" : "installment";
+
+                            logs.push({
+                                uniqueKey: `flat-${userIdentifier}-${item.id || parentIdx}`,
+                                fullName: item.fullName || item.name || "Student",
+                                email: item.email || "—",
+                                course: item.course || "N/A",
+                                type: item.type || "Payment",
+                                rawType: derivedRawType,
+                                amount: Number(item.amount || 0),
+                                paidDate: item.paidDate || item.createdAt
+                            });
+                        }
+
+                        return logs;
+                    });
+
+                    setPaymentRecords(standardizedLogs);
                 }
             } catch (err) {
                 console.error("Failed to fetch transaction histories:", err);
@@ -61,16 +139,23 @@ export default function PaymentHistory() {
         };
     }, []);
 
-    // Filter array records based on active string queries and categorical type filters
+    // Filter array records based on active search queries and tab filters
     const filteredPayments = paymentRecords.filter(record => {
+        const query = searchQuery.toLowerCase().trim();
+
+        // 1. Search Query Match
         const matchesSearch =
-            record.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            record.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            record.course?.toLowerCase().includes(searchQuery.toLowerCase());
+            !query ||
+            record.fullName.toLowerCase().includes(query) ||
+            record.email.toLowerCase().includes(query) ||
+            record.course.toLowerCase().includes(query);
 
-        const matchesType = activeFilter === "all" || record.type?.toLowerCase() === activeFilter;
+        // 2. Category Tab Match
+        const matchesCategory =
+            activeFilter === "all" ||
+            record.rawType === activeFilter;
 
-        return matchesSearch && matchesType;
+        return matchesSearch && matchesCategory;
     });
 
     return (
@@ -119,9 +204,9 @@ export default function PaymentHistory() {
                                     </td>
                                 </tr>
                             ) : filteredPayments.length > 0 ? (
-                                filteredPayments.map((record, index) => (
+                                filteredPayments.map((record) => (
                                     <tr
-                                        key={record.id || index}
+                                        key={record.uniqueKey}
                                         className="bg-white shadow-sm border border-gray-100 rounded-xl hover:shadow-md transition-all group"
                                     >
                                         {/* STUDENT PROFILE IDENTITY CELL */}
@@ -131,12 +216,12 @@ export default function PaymentHistory() {
                                                     className="w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 flex items-center 
                                                     justify-center font-bold text-slate-700 text-xs shrink-0"
                                                 >
-                                                    {record.name ? record.name.split(" ").map(n => n[0]).join("") : "U"}
+                                                    {record.fullName.split(" ").map(n => n[0]).join("").slice(0, 2)}
                                                 </div>
 
                                                 <div>
                                                     <p className="font-semibold text-gray-800 text-sm">
-                                                        {record.name}
+                                                        {record.fullName}
                                                     </p>
 
                                                     <p className="text-[11px] text-gray-400">
@@ -161,7 +246,7 @@ export default function PaymentHistory() {
                                             <span
                                                 className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-extrabold 
                                                 border uppercase tracking-wider 
-                                                ${record.type === "Registration"
+                                                ${record.rawType === "registration"
                                                         ? "bg-purple-50 border-purple-100 text-purple-600"
                                                         : "bg-indigo-50 border-indigo-100 text-indigo-600"
                                                     }`}
@@ -174,7 +259,7 @@ export default function PaymentHistory() {
                                         {/* MONETARY SETTLED LEVERAGE BALANCE */}
                                         <td className="px-6 py-4 font-bold text-slate-800 text-sm tracking-tight border-y border-gray-50">
                                             <span className="text-emerald-600 inline-flex items-center gap-0.5">
-                                                ₹{Number(record.amount || 0).toLocaleString("en-IN")}
+                                                ₹{Number(record.amount).toLocaleString("en-IN")}
                                                 <ArrowUpRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
                                             </span>
                                         </td>
