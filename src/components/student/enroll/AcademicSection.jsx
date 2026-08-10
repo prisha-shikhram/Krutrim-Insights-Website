@@ -165,6 +165,7 @@ export default function AcademicSection({ sectionTitleCls, PRIMARY, labelCls, la
 
                             {[
                                 "Agentic AI with Data Analysis",
+                                "Agentic AI with Data Science",
                                 "Data Analysis powered by Next GenAI",
                                 "Web Development with AI",
                                 "AI for Business and Management",

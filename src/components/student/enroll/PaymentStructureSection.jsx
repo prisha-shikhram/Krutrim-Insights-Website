@@ -143,7 +143,7 @@ export default function PaymentStructureSection({ sectionTitleCls, PRIMARY, labe
                 {/* Assigned Counsellor (Moved to Left of Payment Plan) */}
                 <div>
                     <label className={labelCls} style={labelStyle("assignedCounsellor")}>
-                        Assigned Counsellor
+                        Assigned Mentor
                     </label>
 
                     <div className="relative select-group">
@@ -155,9 +155,9 @@ export default function PaymentStructureSection({ sectionTitleCls, PRIMARY, labe
                             required
                             value={formData.assignedCounsellor || ""}
                         >
-                            <option value="">Select Assigned Counsellor</option>
+                            <option value="">Select Assigned Mentor</option>
                             <option value="Garv Aggarwal">Garv Aggarwal</option>
-                            <option value="Pooja Gupta">Pooja Gupta</option>
+                            <option value="Pooja Gupta">Abhishek W</option>
                         </select>
 
                         <ChevronDown
