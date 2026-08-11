@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 // import icons
-import { LayoutDashboard, ClipboardCheck, BookOpen, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, GraduationCap, FolderOpen } from "lucide-react";
+import { LayoutDashboard, ClipboardCheck, BookOpen, MessageSquare, Bell, LogOut, ChevronLeft, ChevronRight, GraduationCap, FolderOpen, Calendar1 } from "lucide-react";
 
 // import toast
 import toast, { Toaster } from "react-hot-toast";
@@ -61,6 +61,7 @@ export default function MentorDashboard() {
     const TITLE_MAP = {
         overview: "Mentor Overview",
         classes: "Class Management",
+        schedule_classes: "Schedule Classes",
         students: "Student Directory",
         attendance: "Manage Attendance",
         assignments: "Review Assignments",
@@ -99,6 +100,7 @@ export default function MentorDashboard() {
     // menu items
     const menuItems = [
         { id: "overview", label: "Overview", icon: <LayoutDashboard size={20} /> },
+        { id: "schedule/classes", label: "Schedule Classes", icon: <Calendar1 size={20} /> },
         { id: "classes", label: "Classes", icon: <BookOpen size={20} /> },
         { id: "attendance", label: "Attendance", icon: <ClipboardCheck size={20} /> },
         { id: "assignments", label: "Assignments", icon: <BookOpen size={20} /> },

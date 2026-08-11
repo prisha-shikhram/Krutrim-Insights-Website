@@ -42,6 +42,7 @@ import MentorAttendance from "./sections/Mentor/MentorAttendance";
 import MentorProjects from "./sections/Mentor/MentorProjects";
 import MentorNotes from "./sections/Mentor/MentorNotes";
 import MentorClasses from "./sections/Mentor/MentorClasses.jsx";
+import MentorScheduleClasses from "./sections/Mentor/MentorScheduleClasses.jsx";
 
 // student portal pages
 import StudentLogin from "./sections/Student/StudentLogin";
@@ -138,6 +139,7 @@ export default function App() {
           <Route path="/mentor/dashboard" element={<MentorDashboard />}>
             <Route index element={<EnrolledStudents />} />
 
+            <Route path="schedule/classes" element={<MentorScheduleClasses />} />
             <Route path="classes" element={<MentorClasses />} />
             <Route path="assignments" element={<MentorAssignments />} />
             <Route path="attendance" element={<MentorAttendance />} />
