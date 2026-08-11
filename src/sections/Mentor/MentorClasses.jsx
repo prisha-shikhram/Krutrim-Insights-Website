@@ -135,7 +135,6 @@ export default function MentorClasses() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     action: "listClasses",
-                    createdBy: mentor?.email || "",
                 }),
             });
 
