@@ -19,24 +19,26 @@ const navlinks = [
             { name: "Data Analysis powered by Next GenAI", link: "/courses/data-analysis" },
             { name: "Web Development with AI", link: "/courses/web-development" },
             { name: "AI for business and management", link: "/courses/ai-for-business" },
-        ]
-    },
-    {
-        label: "Campus",
-        dropdown: [
-            { name: "College Collaborations", link: "/college/home" },
-            { name: "Tecnia Institute of Advanced Studies", link: "/college/Tecnia" },
-            { name: "SGTBIMIT", link: "/college/SGTBIMIT" },
-        ]
-    },
-    {
-        label: "Explore",
-        dropdown: [
             { name: "Project Gallery", link: "/project-gallery" },
-            // { name: "AI Lab", link: "" },
         ]
     },
-    { label: "Contact Us", link: "/contact#send-message" },
+    { label: "Corporate Training", link: "/corporate/training" },
+    // {
+    //     label: "Campus",
+    //     dropdown: [
+    //         { name: "College Collaborations", link: "/college/home" },
+    //         { name: "Tecnia Institute of Advanced Studies", link: "/college/Tecnia" },
+    //         { name: "SGTBIMIT", link: "/college/SGTBIMIT" },
+    //     ]
+    // },
+    // {
+    //     label: "Explore",
+    //     dropdown: [
+    //         { name: "Project Gallery", link: "/project-gallery" },
+    //         // { name: "AI Lab", link: "" },
+    //     ]
+    // },
+    // { label: "Contact Us", link: "/contact#send-message" },
 ];
 
 // import components

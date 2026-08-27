@@ -222,20 +222,21 @@ export default function HeroSection() {
                     transition={{ delay: 0.25 }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6"
                 >
-                    <button
-                        onClick={() => setIsModalOpen(true)}
-                        className="px-7 py-3 bg-[#0189c7] text-white text-[16px] font-bold rounded-full hover:bg-sky-600 transition-all shadow-lg
-                        shadow-sky-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer max-sm:w-full"
-                    >
-                        Get Brochure
-                    </button>
-
                     <Link to="/training">
+                        <button
+                            className="px-7 py-3 bg-[#0189c7] text-white text-[16px] font-bold rounded-full hover:bg-sky-600 transition-all shadow-lg
+                            shadow-sky-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer max-sm:w-full"
+                        >
+                            Training Programs
+                        </button>
+                    </Link>
+
+                    <Link to="/corporate/training">
                         <button
                             className="px-7 py-3 bg-transparent text-[#0189c7] border-2 border-[#0189c7] text-[16px] font-bold rounded-full
                             hover:bg-sky-50 transition-all hover:-translate-y-0.5 active:translate-y-0 cursor-pointer max-sm:w-full"
                         >
-                            Explore Training Programs
+                            Corporate Training
                         </button>
                     </Link>
                 </motion.div>

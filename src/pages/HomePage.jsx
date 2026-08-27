@@ -24,13 +24,13 @@ export default function HomePage() {
             <Navbar />
 
             {/* new course strip */}
-            <DataPromoStrip onOpenModal={() => setIsDataModalOpen(true)} />
+            <DataPromoStrip />
 
             {/* New Agentic AI Program Modal */}
-            <DataAnalysisModal
+            {/* <DataAnalysisModal
                 isOpen={isDataModalOpen}
                 onClose={() => setIsDataModalOpen(false)}
-            />
+            /> */}
 
             <HeroSection />
             <CoursesSection />

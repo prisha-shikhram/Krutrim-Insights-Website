@@ -54,9 +54,9 @@ export default function DesktopNav({ navlinks }) {
                 ))}
             </ul>
 
-            <Link to="/student/login">
+            <Link to="/contact">
                 <button className="bg-[#0189c7] px-4 py-2 text-xl rounded-lg text-white font-medium cursor-pointer font-[Montserrat]">
-                    Student Portal
+                    Contact Us
                 </button>
             </Link>
         </div>

@@ -1,6 +1,5 @@
 // import routers
 import { Routes, Route } from "react-router-dom";
-import { Navigate, Outlet } from "react-router-dom";
 
 // import scroll to top
 import ScrollToTop from "./components/utils/Scroltotop";
@@ -13,6 +12,7 @@ import Gallery from "./pages/Gallery";
 import ContactPage from "./pages/ContactPage";
 import TermsPage from "./pages/TermsPage";
 import PrivacyPage from "./pages/PrivacyPage";
+import CorporateTrainingPage from "./pages/CorporateTrainingPage.jsx";
 
 // admin portal pages
 import AdminLoginPage from "./pages/AdminLoginPage";
@@ -107,6 +107,7 @@ export default function App() {
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/project-submission" element={<ProjeProjectSubmission />} />
         <Route path="/student-registration" element={<StudentRegistration />} />
+        <Route path="/corporate/training" element={<CorporateTrainingPage />} />
 
         {/* --- ADMIN AUTH ROUTES --- */}
         <Route element={<PublicRoute userType="admin" />}>

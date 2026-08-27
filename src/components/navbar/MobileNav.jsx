@@ -64,11 +64,11 @@ export default function MobileNav({ navlinks, activeDropdown, setActiveDropdown,
                 ))}
 
                 <Link
-                    to="/student/login"
+                    to="/contact"
                     className="w-full"
                 >
                     <button className="bg-[#0189c7] px-4 py-2 text-lg rounded-lg text-white font-medium cursor-pointer font-[Montserrat] w-full">
-                        Student Portal
+                        Contact Us
                     </button>
                 </Link>
             </ul>

@@ -24,10 +24,10 @@ export default function Footer() {
 
     // quick links
     const companyLinks = [
+        { name: "Home", link: "/home" },
         { name: "About", link: "/about" },
         { name: "Our Programs", link: "/training" },
-        { name: "College Collaborations", link: "/college/home" },
-        { name: "Project Gallery", link: "/project-gallery" },
+        { name: "Corporate Training", link: "/corporate/training" },
         { name: "Contact Us", link: "/contact#send-message" },
     ];
 
