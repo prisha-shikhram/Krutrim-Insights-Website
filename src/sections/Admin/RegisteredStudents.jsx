@@ -46,7 +46,12 @@ export default function RegisteredStudents() {
             if (!res.ok) throw new Error("Failed to sync registration data");
             const data = await res.json();
 
-            setStudents(Array.isArray(data) ? data : []);
+            // Handle wrapped response object ({ count, students }) or direct array
+            const studentList = Array.isArray(data)
+                ? data
+                : (Array.isArray(data?.students) ? data.students : []);
+
+            setStudents(studentList);
             toast.success("Database synced", { id: tid });
         } catch (err) {
             toast.error(err.message, { id: tid });
@@ -98,11 +103,12 @@ export default function RegisteredStudents() {
 
     // open whatsapp + logging
     const openWhatsApp = async (phone, name) => {
-        const cleanPhone = phone.replace(/\D/g, "");
+        if (!phone) return toast.error("Phone number missing");
+        const cleanPhone = String(phone).replace(/\D/g, "");
         window.open(`https://wa.me/${cleanPhone}`, "_blank");
 
         // Logger for WhatsApp Contact
-        if (user.name && !user.isSuper) {
+        if (user?.name && !user?.isSuper) {
             try {
                 await recordLog("WHATSAPP_CONTACT", `Initiated contact with student: ${name} (${phone})`, "action");
             } catch (e) { /* silent fail for logger */ }
@@ -156,7 +162,7 @@ export default function RegisteredStudents() {
                                                     <Building2 size={14} className="text-slate-300" />
                                                     {student.college}
                                                 </div>
-                                                
+
                                                 <div className="flex items-center gap-2 text-slate-400 text-xs font-medium">
                                                     <GraduationCap size={14} />
                                                     {student.course}

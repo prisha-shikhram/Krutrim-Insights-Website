@@ -47,6 +47,7 @@ export default function AdminLogin() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    action: "login", // <--- ADDED ACTION ROUTER FIELD
                     email: userEmail,
                     password: credentials.password
                 }),
@@ -73,7 +74,7 @@ export default function AdminLogin() {
                     await recordLog("ACCESS_DENIED", `Email: ${userEmail}`, "security_alert");
                 } catch { }
 
-                throw new Error(data?.error || "Access denied (not authorized)");
+                throw new Error(data?.message || data?.error || "Access denied (not authorized)");
             }
 
             // 401 → Invalid credentials
@@ -84,31 +85,37 @@ export default function AdminLogin() {
                     await recordLog("LOGIN_FAILURE", `Email: ${userEmail}`, "security_alert");
                 } catch { }
 
-                throw new Error(data?.error || "Invalid credentials");
+                throw new Error(data?.message || data?.error || "Invalid credentials");
             }
 
             // Other errors
             if (!res.ok) {
                 console.error("UNKNOWN ERROR:", data);
 
-                throw new Error(data?.error || "Login failed");
+                throw new Error(data?.message || data?.error || "Login failed");
             }
 
             // SUCCESS
             localStorage.setItem("admin_token", data.token);
-            localStorage.setItem("is_super", String(data.user.isSuper));
-            localStorage.setItem("admin_name", data.user.name);
-            localStorage.setItem("admin_data", JSON.stringify(data.user));
+
+            // Handle variations in user object mapping cleanly
+            const userObj = data.user || data.student || {};
+            const isSuper = Boolean(userObj.isSuper);
+            const userName = userObj.fullName || userObj.name || "User";
+
+            localStorage.setItem("is_super", String(isSuper));
+            localStorage.setItem("admin_name", userName);
+            localStorage.setItem("admin_data", JSON.stringify(userObj));
 
             try {
                 await recordLog(
                     "LOGIN_SUCCESS",
-                    data.user.isSuper ? "Super Admin Portal" : "Sub Admin Portal",
+                    isSuper ? "Super Admin Portal" : "Sub Admin Portal",
                     "security"
                 );
             } catch { }
 
-            toast.success(`Welcome, ${data.user.name}!`, { id: loadingToast });
+            toast.success(`Welcome, ${userName}!`, { id: loadingToast });
 
             setTimeout(() => {
                 navigate("/admin/dashboard", { replace: true });

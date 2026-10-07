@@ -56,8 +56,17 @@ export default function MentorNoticePage() {
         if (!silent) setLoading(true);
 
         try {
+            const token = localStorage.getItem("mentor_token");
+            const authHeaders = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            };
+
             // Fetch batches
-            const batchRes = await fetch(BATCH_API);
+            const batchRes = await fetch(BATCH_API, {
+                method: "GET",
+                headers: authHeaders,
+            });
             const batchData = await batchRes.json();
             const actualBatches = Array.isArray(batchData) ? batchData : (batchData.Items || []);
             setBatches(actualBatches);
@@ -65,9 +74,7 @@ export default function MentorNoticePage() {
             // Fetch notices
             const res = await fetch(PORTAL_API, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: authHeaders,
                 body: JSON.stringify({
                     action: "getAllNotices",
                     role: "Mentor"
@@ -93,16 +100,22 @@ export default function MentorNoticePage() {
         const tid = toast.loading("Sending to Admin for approval...");
 
         try {
+            const token = localStorage.getItem("mentor_token");
+            const authHeaders = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            };
+
             const res = await fetch(PORTAL_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: authHeaders,
                 body: JSON.stringify({
                     action: "createNotice",
                     title: formData.title,
                     content: formData.content,
                     noticeType: formData.type,
                     targetBatch: formData.targetBatch,
-                    createdBy: mentor.name,
+                    createdBy: mentor?.name || "Mentor",
                     role: "Mentor"
                 })
             });

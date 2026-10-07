@@ -35,16 +35,25 @@ export default function MentorProjects() {
 
         setLoading(true);
         try {
+            const token = localStorage.getItem("mentor_token");
+            const authHeaders = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            };
+
             const [pRes, bRes] = await Promise.all([
                 fetch(PROJECT_API, {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers: authHeaders,
                     body: JSON.stringify({
                         action: "listProjects",
                         createdBy: mentor.email
                     })
                 }),
-                fetch(BATCH_API)
+                fetch(BATCH_API, {
+                    method: "GET",
+                    headers: authHeaders
+                })
             ]);
 
             const pData = await pRes.json();

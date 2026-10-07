@@ -25,6 +25,25 @@ const ATTENDANCE_API = "https://hnhefbqnzc.execute-api.ap-south-1.amazonaws.com/
 const ASSIGNMENT_API = "https://hnhefbqnzc.execute-api.ap-south-1.amazonaws.com/student/assignments";
 const PROJECT_API = "https://hnhefbqnzc.execute-api.ap-south-1.amazonaws.com/student/projects";
 
+// Helper to retrieve auth headers safely
+const getAuthHeaders = () => {
+    const token =
+        localStorage.getItem("admin_token") ||
+        localStorage.getItem("token") ||
+        localStorage.getItem("jwt_token") ||
+        localStorage.getItem("auth_token");
+
+    const headers = {
+        "Content-Type": "application/json"
+    };
+
+    if (token) {
+        headers["Authorization"] = `Bearer ${token.trim()}`;
+    }
+
+    return { headers, hasToken: Boolean(token) };
+};
+
 // student detail page component
 export default function StudentDetailPage({ email, onBack, API_URL, loading, setLoading, fmt, initials, avatarColor }) {
     const [data, setData] = useState(null);
@@ -41,19 +60,34 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
     // Fetch Base Profile
     useEffect(() => {
         const fetchDeepDetails = async () => {
+            const { headers, hasToken } = getAuthHeaders();
+
+            if (!hasToken) {
+                toast.error("Authentication token not found. Please log in again.");
+                setLoading(false);
+                return;
+            }
+
             try {
-                const res = await fetch(`${API_URL}?email=${encodeURIComponent(email)}`);
-                if (!res.ok) throw new Error("Failed to load profile");
+                const res = await fetch(`${API_URL}?email=${encodeURIComponent(email)}`, { headers });
+
+                if (!res.ok) {
+                    const errorData = await res.json().catch(() => ({}));
+                    throw new Error(errorData.message || `Failed to load profile (${res.status})`);
+                }
+
                 const result = await res.json();
                 setData(result);
             } catch (err) {
-                toast.error("Error loading detailed profile");
+                console.error("Profile fetch error:", err);
+                toast.error(err.message || "Error loading detailed profile");
             } finally {
                 setLoading(false);
             }
         };
-        fetchDeepDetails();
-    }, [email]);
+
+        if (email) fetchDeepDetails();
+    }, [email, API_URL]);
 
     // Fetch Portal Activity (Stats + Lists)
     useEffect(() => {
@@ -63,6 +97,14 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
             setPortalLoading(true);
             const syncToast = toast.loading("Syncing portal activity...");
 
+            const { headers, hasToken } = getAuthHeaders();
+
+            if (!hasToken) {
+                toast.error("Authentication token missing. Sync aborted.", { id: syncToast });
+                setPortalLoading(false);
+                return;
+            }
+
             const queryParams = new URLSearchParams({
                 email: data.email.toLowerCase(),
                 batch: (data.batchCode || data.batchEnrolledIn || "").trim()
@@ -70,20 +112,33 @@ export default function StudentDetailPage({ email, onBack, API_URL, loading, set
 
             try {
                 const [statsRes, attRes, asmRes, projRes] = await Promise.all([
-                    fetch(`${STATS_API}?${queryParams}&type=stats`),
-                    fetch(`${ATTENDANCE_API}?email=${data.email.toLowerCase()}&type=attendance`),
-                    fetch(`${ASSIGNMENT_API}?${queryParams}&type=assignments`),
-                    fetch(`${PROJECT_API}?${queryParams}&type=projects`)
+                    fetch(`${STATS_API}?${queryParams}&type=stats`, { headers }),
+                    fetch(`${ATTENDANCE_API}?email=${data.email.toLowerCase()}&type=attendance`, { headers }),
+                    fetch(`${ASSIGNMENT_API}?${queryParams}&type=assignments`, { headers }),
+                    fetch(`${PROJECT_API}?${queryParams}&type=projects`, { headers })
                 ]);
 
+                // Check for authorization or server failure across all endpoints
+                const responses = [statsRes, attRes, asmRes, projRes];
+                const failedRes = responses.find((r) => !r.ok);
+
+                if (failedRes) {
+                    const errBody = await failedRes.json().catch(() => ({}));
+                    throw new Error(errBody.message || `Portal sync failed with status ${failedRes.status}`);
+                }
+
                 const [stats, attendance, assignments, projects] = await Promise.all([
-                    statsRes.json(), attRes.json(), asmRes.json(), projRes.json()
+                    statsRes.json(),
+                    attRes.json(),
+                    asmRes.json(),
+                    projRes.json()
                 ]);
 
                 setPortalData({ stats, attendance, assignments, projects });
                 toast.success("Portal data synchronized", { id: syncToast });
             } catch (err) {
-                toast.error("Failed to fetch portal activity", { id: syncToast });
+                console.error("Portal activity error:", err);
+                toast.error(err.message || "Failed to fetch portal activity", { id: syncToast });
             } finally {
                 setPortalLoading(false);
             }

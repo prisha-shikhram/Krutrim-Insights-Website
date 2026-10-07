@@ -28,7 +28,16 @@ import BatchFilter from "../../components/mentor/classes/BatchFilter";
 import ClassStats from "../../components/mentor/classes/ClassStats";
 import CreateClassModel from "../../components/mentor/classes/CreateClassModel";
 
-// mentor classes
+// Helper function to get authorization headers
+const getAuthHeaders = () => {
+    const token = localStorage.getItem("token") || localStorage.getItem("mentor_token");
+    return {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+};
+
+// mentor classes component
 export default function MentorClasses() {
     const context = useOutletContext();
     const mentor = context?.mentor;
@@ -72,6 +81,21 @@ export default function MentorClasses() {
         if (!raw) return "";
         const str = String(raw).trim();
 
+        const MONTH_MAP = {
+            jan: "01", january: "01",
+            feb: "02", february: "02",
+            mar: "03", march: "03",
+            apr: "04", april: "04",
+            may: "05",
+            jun: "06", june: "06",
+            jul: "07", july: "07",
+            aug: "08", august: "08",
+            sep: "09", september: "09",
+            oct: "10", october: "10",
+            nov: "11", november: "11",
+            dec: "12", december: "12"
+        };
+
         // 1. Check if format is "DD-Month-YYYY" (e.g., "31-July-2026" or "31-Jul-2026")
         const dashParts = str.split("-");
         if (dashParts.length === 3) {
@@ -109,8 +133,13 @@ export default function MentorClasses() {
     const fetchInitialData = async () => {
         setLoading(true);
         try {
+            const authHeaders = getAuthHeaders();
+
             // Fetch Batches
-            const bRes = await fetch(BATCH_API);
+            const bRes = await fetch(BATCH_API, {
+                method: "GET",
+                headers: authHeaders,
+            });
             const bData = await bRes.json();
             const actualBatches = Array.isArray(bData) ? bData : bData.Items || [];
             setBatches(actualBatches);
@@ -122,7 +151,7 @@ export default function MentorClasses() {
             // Fetch Attendance Logs
             const aRes = await fetch(ATTENDANCE_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: authHeaders,
                 body: JSON.stringify({ action: "listAllAttendance" }),
             });
             const aData = await aRes.json();
@@ -132,7 +161,7 @@ export default function MentorClasses() {
             // Fetch Saved Class Items
             const cRes = await fetch(MENTOR_CLASSES_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: authHeaders,
                 body: JSON.stringify({
                     action: "listClasses",
                 }),
@@ -140,11 +169,6 @@ export default function MentorClasses() {
 
             const cData = await cRes.json();
             const rawClasses = Array.isArray(cData) ? cData : cData.Items || [];
-
-            // Debug Logs in Browser Console
-            console.log("=== DEBUG: Raw Batches ===", actualBatches);
-            console.log("=== DEBUG: Raw Attendance Logs ===", rawAttendance);
-            console.log("=== DEBUG: Raw Class Items ===", rawClasses);
 
             // Synthesize Class items with attendance lookup
             const parsedClasses = rawClasses.map((item) => {
@@ -175,8 +199,6 @@ export default function MentorClasses() {
                     return st === "present" || st === "p";
                 }).length;
 
-                console.log(`[Class ${item.classId}] Date: ${item.date} (${normalizedClassDate}), Batch: ${item.batchCode} | Matching Logs Found:`, matchingAttendanceRecords.length, "Present Count:", presentCount);
-
                 return {
                     id: item.classId || item.id,
                     date: item.date || "",
@@ -204,7 +226,7 @@ export default function MentorClasses() {
         return batches.find((b) => b.batchCode === formData.batchCode);
     }, [batches, formData.batchCode]);
 
-    // handle data change
+    // handle date change
     const handleDateChange = (e) => {
         const dateVal = e.target.value;
         setFormData((prev) => ({
@@ -235,7 +257,7 @@ export default function MentorClasses() {
 
             const res = await fetch(MENTOR_CLASSES_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: getAuthHeaders(),
                 body: JSON.stringify(payload),
             });
 

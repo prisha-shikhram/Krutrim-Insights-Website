@@ -20,6 +20,16 @@ import ManageModal from "../../components/admin/batches/ManageModal";
 import ConfirmRemove from "../../components/admin/batches/ConfirmRemove";
 import EditModal from "../../components/admin/batches/EditModal";
 
+// Helper function to generate auth headers
+const getAuthHeaders = (extraHeaders = {}) => {
+    const token = localStorage.getItem("admin_token") || localStorage.getItem("token") || "";
+    return {
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json",
+        ...extraHeaders,
+    };
+};
+
 // batch management page
 export default function BatchManagement() {
     const [batches, setBatches] = useState([]);
@@ -52,20 +62,25 @@ export default function BatchManagement() {
         else tid = toast.loading("Syncing latest data...");
 
         try {
+            const headers = getAuthHeaders();
             const [bRes, sRes] = await Promise.all([
-                fetch(`${API_URL}?type=batches`),
-                fetch(API_URL)
+                fetch(`${API_URL}?type=batches`, { headers }),
+                fetch(API_URL, { headers })
             ]);
+
+            if (bRes.status === 401 || sRes.status === 401 || bRes.status === 403 || sRes.status === 403) {
+                throw new Error("Authorization failed. Please log in again.");
+            }
 
             const bData = await bRes.json();
             const sData = await sRes.json();
 
             setBatches(Array.isArray(bData) ? bData : []);
-            setUnassignedStudents(sData.filter(s => s.batchCode === "UNASSIGNED"));
+            setUnassignedStudents(Array.isArray(sData) ? sData.filter(s => s.batchCode === "UNASSIGNED") : []);
 
             if (silent) toast.success("Data synchronized", { id: tid });
         } catch (err) {
-            toast.error("Error loading data", { id: tid });
+            toast.error(err.message || "Error loading data", { id: tid });
         } finally {
             setLoading(false);
         }
@@ -80,6 +95,7 @@ export default function BatchManagement() {
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
+                headers: getAuthHeaders(),
                 body: JSON.stringify({ ...newBatch, action: "createBatch" })
             });
 
@@ -89,10 +105,11 @@ export default function BatchManagement() {
                 setNewBatch({ batchName: "", batchCode: "" });
                 fetchInitialData(true);
             } else {
-                throw new Error();
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.error || errData.message || "Failed to create batch");
             }
         } catch (err) {
-            toast.error("Failed to create batch", { id: tid });
+            toast.error(err.message || "Failed to create batch", { id: tid });
         } finally {
             setSubmitting(false);
         }
@@ -109,6 +126,7 @@ export default function BatchManagement() {
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     action: "editBatch",
                     oldBatchCode: showEditModal.originalBatchCode || showEditModal.id,
@@ -122,10 +140,11 @@ export default function BatchManagement() {
                 setShowEditModal(null);
                 fetchInitialData(true);
             } else {
-                throw new Error();
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.error || errData.message || "Failed to update batch");
             }
         } catch (err) {
-            toast.error("Failed to update batch", { id: tid });
+            toast.error(err.message || "Failed to update batch", { id: tid });
         } finally {
             setSubmitting(false);
         }
@@ -139,6 +158,7 @@ export default function BatchManagement() {
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     action: "assignStudents",
                     batchCode: showAssignModal,
@@ -152,10 +172,11 @@ export default function BatchManagement() {
                 setSelectedStudents([]);
                 fetchInitialData(true);
             } else {
-                throw new Error();
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.error || errData.message || "Assignment failed");
             }
         } catch (err) {
-            toast.error("Assignment failed", { id: tid });
+            toast.error(err.message || "Assignment failed", { id: tid });
         } finally {
             setSubmitting(false);
         }
@@ -169,6 +190,7 @@ export default function BatchManagement() {
         try {
             const res = await fetch(API_URL, {
                 method: "POST",
+                headers: getAuthHeaders(),
                 body: JSON.stringify({
                     action: "removeStudent",
                     batchCode: confirmRemove.batchCode,
@@ -183,10 +205,11 @@ export default function BatchManagement() {
                 setConfirmRemove(null);
                 fetchInitialData(true);
             } else {
-                throw new Error();
+                const errData = await res.json().catch(() => ({}));
+                throw new Error(errData.error || errData.message || "Removal failed");
             }
         } catch (err) {
-            toast.error("Removal failed", { id: tid });
+            toast.error(err.message || "Removal failed", { id: tid });
         } finally {
             setSubmitting(false);
         }

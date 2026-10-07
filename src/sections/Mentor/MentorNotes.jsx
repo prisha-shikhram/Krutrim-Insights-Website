@@ -45,8 +45,17 @@ export default function MentorNotes() {
 
         setLoading(true);
         try {
+            const token = localStorage.getItem("mentor_token");
+            const authHeaders = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            };
+
             // 1. Fetch Batches
-            const batchRes = await fetch(BATCH_API);
+            const batchRes = await fetch(BATCH_API, {
+                method: "GET",
+                headers: authHeaders,
+            });
             const batchData = await batchRes.json();
 
             const actualBatches = Array.isArray(batchData)
@@ -58,9 +67,9 @@ export default function MentorNotes() {
             // 2. Fetch Notes
             const notesRes = await fetch(NOTES_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: authHeaders,
                 body: JSON.stringify({
-                    action: "listNotes", // Updated action code block mapping
+                    action: "listNotes",
                     createdBy: mentor.email
                 })
             });

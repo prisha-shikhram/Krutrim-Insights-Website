@@ -32,8 +32,17 @@ export default function MentorAttendance() {
     const fetchInitialData = async () => {
         setLoading(true);
         try {
+            const token = localStorage.getItem("mentor_token");
+            const authHeaders = {
+                "Content-Type": "application/json",
+                ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            };
+
             // 1. Fetch Batches
-            const bRes = await fetch(BATCH_API);
+            const bRes = await fetch(BATCH_API, {
+                method: "GET",
+                headers: authHeaders,
+            });
             const bData = await bRes.json();
             const actualBatches = Array.isArray(bData) ? bData : (bData.Items || []);
             setBatches(actualBatches);
@@ -41,8 +50,8 @@ export default function MentorAttendance() {
             // 2. Fetch Attendance List
             const aRes = await fetch(ATTENDANCE_API, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ action: "listAllAttendance" })
+                headers: authHeaders,
+                body: JSON.stringify({ action: "listAllAttendance" }),
             });
 
             const aData = await aRes.json();

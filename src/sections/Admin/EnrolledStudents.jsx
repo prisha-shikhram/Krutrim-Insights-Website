@@ -44,18 +44,45 @@ export default function EnrolledStudents() {
         fetchData();
     }, []);
 
+    // Dynamic helper to retrieve token from your specific localStorage keys or profile object
+    const getAuthHeaders = () => {
+        const rawToken =
+            activeProfile?.token ||
+            activeProfile?.admin_token ||
+            localStorage.getItem("admin_token") ||
+            localStorage.getItem("token") ||
+            localStorage.getItem("mentor_token");
+
+        if (!rawToken) {
+            console.warn("No auth token found in localStorage or React Context!");
+            return { "Content-Type": "application/json" };
+        }
+
+        // Ensure token is formatted with 'Bearer ' prefix expected by Lambda verifyAuth()
+        const formattedToken = rawToken.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}`;
+
+        return {
+            "Content-Type": "application/json",
+            "Authorization": formattedToken
+        };
+    };
+
     // Fetch students and batches
     const fetchData = async () => {
         setLoading(true);
         const tid = toast.loading("Syncing student directory...");
 
         try {
+            const headers = getAuthHeaders();
+
             const [studentsRes, batchesRes] = await Promise.all([
-                fetch(API_URL),
-                fetch(BATCH_API)
+                fetch(API_URL, { headers }),
+                fetch(BATCH_API, { headers })
             ]);
 
-            if (!studentsRes.ok || !batchesRes.ok) throw new Error("Network error");
+            if (!studentsRes.ok || !batchesRes.ok) {
+                throw new Error(`HTTP Error: Students (${studentsRes.status}), Batches (${batchesRes.status})`);
+            }
 
             const studentsData = await studentsRes.json();
             const batchesData = await batchesRes.json();
@@ -70,6 +97,7 @@ export default function EnrolledStudents() {
             setBatches(batchList);
             toast.success("Directory synchronized", { id: tid });
         } catch (err) {
+            console.error("fetchData error:", err);
             toast.error("Failed to sync student directory", { id: tid });
         } finally {
             setLoading(false);
